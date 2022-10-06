@@ -35,12 +35,10 @@ class GraphQlClient {
   static var GRAPH_TOKEN = "";
   static var CUSTOMER_ID = "";
 
-  static QueryOptions customerQueryOptions = QueryOptions(
+/*  static QueryOptions customerQueryOptions = QueryOptions(
     document: gql(customerQuery),
-/*    variables: <String, dynamic>{
-      'name': '',
-    },*/
-  );
+
+  );*/
 
   static updateCustomerMutations(
       String mutation, double latitude, double longitude, int modelYear) {

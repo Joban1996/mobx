@@ -1,9 +1,10 @@
-import 'package:customer/apis/graph_ql_client.dart';
-import 'package:customer/utils/app.dart';
-import 'package:customer/utils/constants.dart';
+/*
 import 'package:flutter/cupertino.dart';
 import 'package:graphql/client.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:mobx/api/graphql_client.dart';
+
+import '../utils/constants/constants_colors.dart';
 
 final policies = Policies(
   fetch: FetchPolicy.noCache,
@@ -40,3 +41,4 @@ class GraphQLClientAPI {
   );
 
 }
+*/

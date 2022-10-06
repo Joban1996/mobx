@@ -233,8 +233,8 @@ double getCurrentScreenWidth(BuildContext context) => MediaQuery.of(context).siz
 verticalSpacing({required double heightInDouble,required BuildContext context}){
   return SizedBox(height: getCurrentScreenHeight(context)*heightInDouble);
 }
-horizontalSpacing({required double heightInDouble,required BuildContext context}){
-  return SizedBox(width: getCurrentScreenWidth(context)*heightInDouble);
+horizontalSpacing({required double widthInDouble,required BuildContext context}){
+  return SizedBox(width: getCurrentScreenWidth(context)*widthInDouble);
 }
 
 Widget dividerCommon(BuildContext context){

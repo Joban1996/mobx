@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
           child: Row(
             children: [
               Expanded(child: Text(txt,style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 10),)),
-              horizontalSpacing(heightInDouble: 0.01, context: context),
+              horizontalSpacing(widthInDouble: 0.01, context: context),
               SizedBox(
                   height: 55,width: 30,
                   child: Image.asset("assets/images/iphone_mini.png"))

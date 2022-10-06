@@ -13,6 +13,7 @@ import 'package:mobx/UI/dashboard/sell/sell_home.dart';
 import '../UI/dashboard/home/product_details2.dart';
 import '../UI/dashboard/home/product_details3.dart';
 import '../UI/dashboard/home/shopping_cart.dart';
+import '../UI/dashboard/profile/account_information.dart';
 import '../UI/dashboard/repair/repair_home.dart';
 
 
@@ -38,6 +39,7 @@ class Routes {
   static const productListing = "productListing";
   static const enterOtp = "enterOtp";
   static const splashScreen = "splashScreen";
+  static const accountInformation = "accountInformation";
 
 static Route<dynamic> generatedRoute(RouteSettings settings){
         switch(settings.name){
@@ -69,6 +71,8 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
             return MaterialPageRoute(builder: (_) => EnterOtp());
           case splashScreen:
             return MaterialPageRoute(builder: (_) => SplashScreen());
+          case accountInformation:
+            return MaterialPageRoute(builder: (_) => AccountInformation());
           default:
             return MaterialPageRoute(
                 builder: (_) => Scaffold(

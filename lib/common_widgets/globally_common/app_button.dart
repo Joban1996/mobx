@@ -8,8 +8,9 @@ class AppButton extends StatelessWidget {
   final VoidCallback onTap;
   final Color? btnColor;
   final bool  isSize;
+  final bool isTrailing;
 
-  const AppButton({required this.onTap, required this.text,this.btnColor, this.isSize = true,Key? key}) : super(key: key);
+  const AppButton({this.isTrailing = true,required this.onTap, required this.text,this.btnColor, this.isSize = true,Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +31,8 @@ class AppButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(text,style: const TextStyle(fontSize: 14),),
-              SizedBox(width: getCurrentScreenWidth(context)*0.02,),
-              Image.asset("assets/images/arrow_forward.png")
+              isTrailing ?  SizedBox(width: getCurrentScreenWidth(context)*0.02,) : Container(),
+              isTrailing ?  Image.asset("assets/images/arrow_forward.png") : Container()
             ],
           )),
     );

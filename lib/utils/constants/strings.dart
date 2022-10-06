@@ -12,4 +12,8 @@ class Strings {
   static String welcome_subTagLine1 = "65+ Quality Checks";
   static String welcome_subTagLine2 = "1 Year Warranty";
   static String welcome_subTagLine3 = "Easy EMI Options Available";
+
+  //profile
+  static String accountInfo = "ACCOUNT INFORMATION";
+  static String aboutLegal = "ABOUT & LEGAL";
 }

@@ -47,7 +47,7 @@ Widget appBarTitle(BuildContext context,String titleText){
                   child: Text("Please enter your phone number",
                     style: Theme.of(context).textTheme.caption,),
                 ),
-                SizedBox(height: getCurrentScreenHeight(context)*0.02,),
+                verticalSpacing(heightInDouble: 0.02, context: context),
                 TextField(
                   inputFormatters: [LengthLimitingTextInputFormatter(10),],
                   style: Theme.of(context).textTheme.bodyText2,
