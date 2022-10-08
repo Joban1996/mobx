@@ -3,8 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/globally_common/app_button.dart';
 import 'package:mobx/common_widgets/common_textfield_style.dart';
+import 'package:mobx/provider/auth/login_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/utilities.dart';
+import 'package:provider/provider.dart';
 
 import '../../utils/routes.dart';
 
@@ -43,8 +45,8 @@ class EnterOtp extends StatelessWidget {
                 children: [
                   RichText(text: TextSpan(
                       children: [
-                        TextSpan(text: "We’ve sent an OTP on",style: Theme.of(context).textTheme.caption),
-                        TextSpan(text: " +91-8080808080 ",style:
+                        TextSpan(text: "We’ve sent an OTP on ",style: Theme.of(context).textTheme.caption),
+                        TextSpan(text: context.read<LoginProvider>().getMobileNumber,style:
                         Theme.of(context).textTheme.caption!.copyWith(fontWeight: FontWeight.w600)),
                       ]
                   )

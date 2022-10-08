@@ -1,9 +1,8 @@
-/*
 import 'package:flutter/cupertino.dart';
 import 'package:graphql/client.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/api/graphql_client.dart';
-
+import '../utils/app.dart';
 import '../utils/constants/constants_colors.dart';
 
 final policies = Policies(
@@ -11,9 +10,7 @@ final policies = Policies(
 );
 
 class GraphQLClientAPI {
-  var link = AuthLink(
-    getToken: () async => 'Bearer ${App.localStorage.getString(PREF_TOKEN)}',
-  ).concat(HttpLink(GraphQlClient.GRAPH_URL));
+
 
   GraphQLClient mClient = GraphQLClient(
     cache: GraphQLCache(store: HiveStore()),
@@ -41,4 +38,3 @@ class GraphQLClientAPI {
   );
 
 }
-*/
