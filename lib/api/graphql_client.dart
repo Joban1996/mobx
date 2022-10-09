@@ -4,7 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as Http;
 import 'package:http_parser/http_parser.dart';
+import 'package:mobx/api/graphql_operation/customer_queries.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../provider/auth/login_provider.dart';
 
 enum HttpMethod { HTTP_GET, HTTP_POST, HTTP_PUT }
 
@@ -34,10 +37,7 @@ class GraphQlClient {
   static var GRAPH_TOKEN = "";
   static var CUSTOMER_ID = "";
 
- /* static QueryOptions customerQueryOptions = QueryOptions(
-    document: gql(customerQuery),
 
-  );*/
 
   static updateCustomerMutations(
       String mutation, double latitude, double longitude, int modelYear) {
@@ -62,6 +62,18 @@ class GraphQlClient {
       document: gql(mutation),
       variables: {
         'mobileNumber': mobileNo,
+        'websiteId': 1,
+
+      },
+    );
+  }
+  static loginOTPVerify(String query, String mobileNo,String otp) {
+    print(query);
+    return QueryOptions(
+      document: gql(query),
+      variables: {
+        'mobileNumber': mobileNo,
+        'otp': otp,
         'websiteId': 1,
       },
     );

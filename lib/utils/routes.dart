@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobx/UI/auth/enter_otp.dart';
 import 'package:mobx/UI/auth/login_screen.dart';
 import 'package:mobx/UI/auth/splash_screen.dart';
 import 'package:mobx/UI/dashboard/dashboard_screen.dart';
@@ -15,7 +14,7 @@ import '../UI/dashboard/home/product_details3.dart';
 import '../UI/dashboard/home/shopping_cart.dart';
 import '../UI/dashboard/profile/account_information.dart';
 import '../UI/dashboard/repair/repair_home.dart';
-
+import 'package:mobx/UI/auth/enter_otp.dart';
 
 
 
