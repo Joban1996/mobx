@@ -19,25 +19,25 @@ class ProductListing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarCommon(AppBarTitle("Refurbished Apple iPhone 12 Mini",
+      appBar: AppBarCommon(const AppBarTitle("Refurbished Apple iPhone 12 Mini",
           "Apple  > iPhone 12 Mini > Detail"),
         appbar: AppBar(), onTapCallback: (){},leadingImage: GestureDetector(
             onTap: ()=> Navigator.pop(context),
             child: Image.asset("assets/images/back_arrow.png"))
-        ,trailingAction: [Icon(Icons.star_border_outlined,color: Colors.black,),
+        ,trailingAction: [const Icon(Icons.star_border_outlined,color: Colors.black,),
           Image.asset("assets/images/lock.png")],
       ),
       body: Column(
         children: [
           Expanded(
             child: Container(
-              padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
               child: ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                   itemCount: 10,
                   itemBuilder: (context,index){
-                return HorizontalCircleList();
+                return const HorizontalCircleList();
               }),
             ),
           ),
@@ -56,7 +56,7 @@ class ProductListing extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                           onTap: () => Navigator.pushNamed(context, Routes.productDetail1),
-                          child: GridItem());
+                          child: const GridItem());
                     }
                 ),
               )),

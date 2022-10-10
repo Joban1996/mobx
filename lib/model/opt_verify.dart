@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-
-
-
 class OtpVerify {
   Data? data;
 
@@ -41,9 +37,9 @@ class Data {
 }
 
 class LoginOTPVerify {
-  String? message;
+  Null? message;
   bool? status;
-  Null? token;
+  String? token;
 
   LoginOTPVerify({this.message, this.status, this.token});
 
@@ -61,7 +57,3 @@ class LoginOTPVerify {
     return data;
   }
 }
-
-
-
-

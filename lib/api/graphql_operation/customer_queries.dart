@@ -14,3 +14,37 @@ loginOTPVerify(mobileNumber: \$mobileNumber,otp: \$otp,websiteId: \$websiteId){
   }
 }
 ''';
+
+var categories = '''
+query categories(\$filters: CategoryFilterInput!){
+ categories(filters: \$filters){
+    total_count
+    items {
+      uid
+      level
+      name
+      path
+      children_count
+      children {
+        uid
+        level
+        name
+        path
+        children_count
+        children {
+          uid
+          level
+          name
+          path
+        }
+      }
+    }
+    page_info {
+      current_page
+      page_size
+      total_pages
+    }
+  }
+}  
+
+''';

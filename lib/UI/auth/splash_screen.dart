@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mobx/UI/auth/welcome_screen.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/constants/strings.dart';
+import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -15,10 +19,28 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 5),(){
-      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> WelcomeScreen()));
-    });
     super.initState();
+    timerWithCheck(context);
+  }
+  Future getToken()async{
+    final prefs = await SharedPreferences.getInstance();
+    var sToken =  prefs.getString(PREF_TOKEN);
+    return sToken;
+  }
+  timerWithCheck(BuildContext context){
+    Timer(
+        const Duration(seconds: 3),
+            () =>
+        {
+          getToken().then((token) => {
+            if(token == null || token.toString().isEmpty){
+              debugPrint("token>>>>>>> $token"),
+              Navigator.of(context).pushReplacementNamed(Routes.loginScreen)
+            }else{
+              Navigator.of(context).pushReplacementNamed(Routes.dashboardScreen)
+            }
+          })
+        });
   }
 
   @override

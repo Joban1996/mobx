@@ -89,7 +89,7 @@ class _EnterOtpState extends State<EnterOtp> {
               Align(
                   alignment: Alignment.center,
                   child: GestureDetector(
-                      onTap: () =>  hitWebService(),
+                      onTap: () => context.read<LoginProvider>().remainingTime == 0 ? hitWebService(): {},
                       child: Text("Resent OTP | 00:${context.watch<LoginProvider>().getRemainingTime<10 ? "0":""}${context.watch<LoginProvider>().getRemainingTime}",
                         style:  Theme.of(context).textTheme.caption!.copyWith(color: Utility.getColorFromHex("#5F5F5F")),))),
               SizedBox(height: getCurrentScreenHeight(context)*0.03,),
@@ -98,7 +98,9 @@ class _EnterOtpState extends State<EnterOtp> {
                 context.read<LoginProvider>().hitOtpVerifyMutation(phone:
                 context.read<LoginProvider>().getMobileNumber,otp: otpController.text).then((value){
                   if(value){
-                    Navigator.pushReplacementNamed(context, Routes.dashboardScreen);
+                    timer?.cancel();
+                    //Navigator.pushReplacementNamed(context, Routes.dashboardScreen);
+                    Navigator.pushNamedAndRemoveUntil(context,Routes.dashboardScreen, (route) => false);
                   }
                   context.read<LoginProvider>().setLoadingBool(false);
                 });

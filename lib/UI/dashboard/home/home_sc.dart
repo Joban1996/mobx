@@ -1,12 +1,16 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
 
+import '../../../api/graphql_operation/customer_queries.dart';
 import '../../../common_widgets/dashboard/grid_Item.dart';
 
 import 'dart:math' as math;
+
+import '../../../model/categories_model.dart';
 
 class HomeScreen extends StatelessWidget {
    HomeScreen({Key? key}) : super(key: key);
@@ -19,11 +23,11 @@ class HomeScreen extends StatelessWidget {
   Widget _exploreItem(BuildContext context,String txt){
     return Expanded(
       child: GestureDetector(
-        onTap: ()=> Navigator.pushNamed(context, Routes.productListing),
+        onTap: () => Navigator.pushNamed(context, Routes.productListing),
         child: Container(
-          margin: EdgeInsets.only(right: 8,bottom: 8),
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)),
+          margin: const EdgeInsets.only(right: 8,bottom: 8),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(10)),
               color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.1)),
           child: Row(
             children: [
@@ -41,9 +45,29 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return
+      Query(
+        options: QueryOptions(
+        document: gql(categories),
+        variables: const {
+        'filters':{
+        'parent_id': {'in': ['1']}
+        }
+      }
+    ),
+    builder: (QueryResult result, { VoidCallback? refetch, FetchMore? fetchMore }) {
+    if (result.hasException) {
+    return Text(result.exception.toString());
+    }
+
+    if (result.isLoading) {
+    return const Text('Loading');
+    }
+    var parsedData = CategoriesModel.fromJson(result.data!);
+      debugPrint("categories result >>>> ${parsedData.categories!.items![5].name}");
+   return  SingleChildScrollView(
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
           color: Colors.white.withOpacity(0.8),
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,18 +95,24 @@ class HomeScreen extends StatelessWidget {
           verticalSpacing(heightInDouble: 0.01, context: context),
           Text("EXPLORE",style: Theme.of(context).textTheme.bodyText2,),
           verticalSpacing(heightInDouble: 0.01, context: context),
-          Row(
-            children: [
-            _exploreItem(context, _exploreListText[0]),
-            _exploreItem(context, _exploreListText[1]),
-            _exploreItem(context, _exploreListText[2]),
-          ],),
-          Row(
-            children: [
-              _exploreItem(context, _exploreListText[3]),
-              _exploreItem(context, _exploreListText[4]),
-              _exploreItem(context, _exploreListText[5]),
-            ],),
+          ListView.builder(
+            shrinkWrap: true,
+              itemCount:  parsedData.categories!.items!.length,
+              itemBuilder: (context,index){
+            return _exploreItem(context, parsedData.categories!.items![index].name.toString());
+          }),
+          // Row(
+          //   children: [
+          //   _exploreItem(context, _exploreListText[0]),
+          //   _exploreItem(context, _exploreListText[1]),
+          //   _exploreItem(context, _exploreListText[2]),
+          // ],),
+          // Row(
+          //   children: [
+          //     _exploreItem(context, _exploreListText[3]),
+          //     _exploreItem(context, _exploreListText[4]),
+          //     _exploreItem(context, _exploreListText[5]),
+          //   ],),
           verticalSpacing(heightInDouble: 0.01, context: context),
           Text("TODAY DEALS",style: Theme.of(context).textTheme.bodyText2,),
           verticalSpacing(heightInDouble: 0.01, context: context),
@@ -96,7 +126,7 @@ class HomeScreen extends StatelessWidget {
                 }),
           )
         ],
-      )),
-    );
+      )));
+    } );
   }
 }
