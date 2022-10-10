@@ -65,8 +65,8 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
           Image.asset("assets/images/lock.png")
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
+        //crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             height: MediaQuery.of(context).size.height * 0.16,
@@ -243,21 +243,20 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
             ),
             child: Text(Strings.all_phones),
           ),
-          Expanded(
-            child: GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 4/6,
-                  crossAxisSpacing: 1,
-                  crossAxisCount: 2,
-                ),
-                itemCount: 20,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, Routes.productDetail1),
-                      child: GridItem());
-                }
-            ),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: 4/6,
+                crossAxisSpacing: 1,
+                crossAxisCount: 2,
+              ),
+              itemCount: 20,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, Routes.productDetail1),
+                    child: GridItem());
+              }
           ),
         ],
       ),
