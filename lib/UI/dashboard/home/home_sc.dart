@@ -21,23 +21,22 @@ class HomeScreen extends StatelessWidget {
   final List<String> _exploreListText  = ["Refurbished Mobiles","Smart Watches","Tablets/iPads","Laptops","Headphones","Earphones"];
 
   Widget _exploreItem(BuildContext context,String txt){
-    return Expanded(
-      child: GestureDetector(
-        onTap: () => Navigator.pushNamed(context, Routes.productListing),
-        child: Container(
-          margin: const EdgeInsets.only(right: 8,bottom: 8),
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(10)),
-              color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.1)),
-          child: Row(
-            children: [
-              Expanded(child: Text(txt,style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 10),)),
-              horizontalSpacing(widthInDouble: 0.01, context: context),
-              SizedBox(
-                  height: 55,width: 30,
-                  child: Image.asset("assets/images/iphone_mini.png"))
-            ],
-          ),
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, Routes.productListing),
+      child: Container(
+        width: getCurrentScreenWidth(context)/3.5,
+        margin: const EdgeInsets.only(right: 8,bottom: 8),
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(10)),
+            color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.1)),
+        child: Row(
+          children: [
+            Expanded(child: Text(txt,style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 10),)),
+            horizontalSpacing(widthInDouble: 0.01, context: context),
+            SizedBox(
+                height: 55,width: 30,
+                child: Image.asset("assets/images/iphone_mini.png"))
+          ],
         ),
       ),
     );
@@ -95,12 +94,16 @@ class HomeScreen extends StatelessWidget {
           verticalSpacing(heightInDouble: 0.01, context: context),
           Text("EXPLORE",style: Theme.of(context).textTheme.bodyText2,),
           verticalSpacing(heightInDouble: 0.01, context: context),
-          ListView.builder(
-            shrinkWrap: true,
-              itemCount:  parsedData.categories!.items!.length,
-              itemBuilder: (context,index){
-            return _exploreItem(context, parsedData.categories!.items![index].name.toString());
-          }),
+            Wrap(
+            children: parsedData.categories!.items!.map((element) =>
+                _exploreItem(context, element.name.toString())).toList(),
+          ),
+          // ListView.builder(
+          //   shrinkWrap: true,
+          //     itemCount:  parsedData.categories!.items!.length,
+          //     itemBuilder: (context,index){
+          //   return _exploreItem(context, parsedData.categories!.items![index].name.toString());
+          // }),
           // Row(
           //   children: [
           //   _exploreItem(context, _exploreListText[0]),
