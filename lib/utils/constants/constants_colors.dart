@@ -21,5 +21,3 @@ const globalGreyBackgroundColor="#FAFAFA";
 const globalParrotColor="#06E745";
 const globalRedColor = "#F60C0C";
 const globalTextFieldBorderGrey = "#E0E0E0";
-const globalRedColor = "#F60C0C";
-const globalTextFieldBorderGrey = "#E0E0E0";

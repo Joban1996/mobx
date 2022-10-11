@@ -42,8 +42,8 @@ static String cashOnDelivery="Cash On Delivery";
   static String viewDetailsButton = "VIEW DETAIL";
 
   //profile
-  static String accountInfo = "ACCOUNT INFORMATION";
-  static String aboutLegal = "ABOUT & LEGAL";
+ // static String accountInfo = "ACCOUNT INFORMATION";
+  //static String aboutLegal = "ABOUT & LEGAL";
 
   //WishList
   static var addToCart="ADD TO CART";

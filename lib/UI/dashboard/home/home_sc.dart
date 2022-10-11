@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, Routes.productListing),
       child: Container(
-        width: getCurrentScreenWidth(context)/3.5,
+        width: getCurrentScreenWidth(context)/2.3,
         margin: const EdgeInsets.only(right: 8,bottom: 8),
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -94,10 +94,13 @@ class HomeScreen extends StatelessWidget {
           verticalSpacing(heightInDouble: 0.01, context: context),
           Text("EXPLORE",style: Theme.of(context).textTheme.bodyText2,),
           verticalSpacing(heightInDouble: 0.01, context: context),
-            Wrap(
-            children: parsedData.categories!.items!.map((element) =>
-                _exploreItem(context, element.name.toString())).toList(),
+            Align(
+              alignment: Alignment.center,
+              child: Wrap(
+              children: parsedData.categories!.items!.map((element) =>
+                  _exploreItem(context, element.name.toString())).toList(),
           ),
+            ),
           // ListView.builder(
           //   shrinkWrap: true,
           //     itemCount:  parsedData.categories!.items!.length,

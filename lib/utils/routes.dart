@@ -21,11 +21,9 @@ import 'package:mobx/UI/dashboard/profile/profile_addresses_screen.dart';
 import 'package:mobx/UI/dashboard/profile/profile_screen.dart';
 import 'package:mobx/UI/dashboard/profile/wishlist_screen.dart';
 import 'package:mobx/UI/dashboard/sell/sell_home.dart';
-
 import '../UI/dashboard/home/product_details2.dart';
 import '../UI/dashboard/home/product_details3.dart';
 import '../UI/dashboard/home/shopping_cart.dart';
-import '../UI/dashboard/profile/account_information.dart';
 import '../UI/dashboard/repair/repair_home.dart';
 import 'package:mobx/UI/auth/enter_otp.dart';
 
@@ -64,8 +62,6 @@ class Routes {
   static const faqScreen="FAQScreen";
   static const aboutUs="aboutUs";
   static const orderDetails="oderDetails";
-
-  static const accountInformation = "accountInformation";
 
 static Route<dynamic> generatedRoute(RouteSettings settings){
         switch(settings.name){
