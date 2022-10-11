@@ -28,13 +28,13 @@ class AppButton extends StatelessWidget {
           ),
           //style: ElevatedButton.styleFrom(primary: btnColor),
           onPressed: onTap, child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(text,style: const TextStyle(fontSize: 14),),
-              isTrailing ?  SizedBox(width: getCurrentScreenWidth(context)*0.02,) : Container(),
-              isTrailing ?  Image.asset("assets/images/arrow_forward.png") : Container()
-            ],
-          )),
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(text,style: const TextStyle(fontSize: 14),),
+          isTrailing ?  SizedBox(width: getCurrentScreenWidth(context)*0.02,) : Container(),
+          isTrailing ?  Image.asset("assets/images/arrow_forward.png") : Container()
+        ],
+      )),
     );
   }
 }

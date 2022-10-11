@@ -19,7 +19,8 @@ class AppBarCommon extends StatelessWidget implements PreferredSizeWidget{
     this.leadingImage, required this.onTapCallback }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)
+  {
     return AppBar(
       titleSpacing: 0,
       automaticallyImplyLeading: false,

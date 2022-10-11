@@ -20,12 +20,12 @@ class AccountInformation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBarCommon(AppBarTitle("ACCOUNT INFORMATION",
+        appBar: AppBarCommon(const AppBarTitle("ACCOUNT INFORMATION",
             "Edit your detail"),
-    appbar: AppBar(), onTapCallback: (){},leadingImage: IconButton(
-    padding: EdgeInsets.zero,
-    constraints: BoxConstraints(),
-    icon: Icon(Icons.arrow_back),color: Colors.black,onPressed: ()=>Navigator.pop(context),),),
+          appbar: AppBar(), onTapCallback: (){},leadingImage: IconButton(
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(),
+            icon: Icon(Icons.arrow_back),color: Colors.black,onPressed: ()=>Navigator.pop(context),),),
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(10),

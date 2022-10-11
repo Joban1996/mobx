@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter/services.dart';
 import 'package:mobx/UI/auth/enter_otp.dart';
 import 'package:mobx/UI/auth/login_screen.dart';
 import 'package:mobx/UI/dashboard/dashboard_screen.dart';
@@ -23,6 +24,11 @@ void main()async{
   WidgetsFlutterBinding.ensureInitialized();
   await initHiveForFlutter();
   await App.init();
+void main(){
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Color(0x00FFFFFF), // transparent status bar
+  ));
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => DashboardProvider()),

@@ -124,8 +124,9 @@ class HomeScreen extends StatelessWidget {
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: 6,
-                itemBuilder: (context,index){
-                  return GridItem();
+                itemBuilder: (context,index)
+                {
+                  return const GridItem();
                 }),
           )
         ],
