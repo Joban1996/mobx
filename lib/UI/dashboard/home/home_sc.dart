@@ -1,15 +1,14 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:mobx/provider/dashboard/dashboard_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
-
+import 'package:provider/provider.dart';
 import '../../../api/graphql_operation/customer_queries.dart';
 import '../../../common_widgets/dashboard/grid_Item.dart';
-
 import 'dart:math' as math;
-
 import '../../../model/categories_model.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -20,9 +19,11 @@ class HomeScreen extends StatelessWidget {
 
   final List<String> _exploreListText  = ["Refurbished Mobiles","Smart Watches","Tablets/iPads","Laptops","Headphones","Earphones"];
 
-  Widget _exploreItem(BuildContext context,String txt){
+  Widget _exploreItem(BuildContext context,String txt,List<Children> parsedData){
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, Routes.productListing),
+      onTap: () {
+        context.read<DashboardProvider>().setSubCate(parsedData);
+        Navigator.pushNamed(context, Routes.productListWithDeals);},
       child: Container(
         width: getCurrentScreenWidth(context)/2.3,
         margin: const EdgeInsets.only(right: 8,bottom: 8),
@@ -62,7 +63,7 @@ class HomeScreen extends StatelessWidget {
     if (result.isLoading) {
     return const Text('Loading');
     }
-    var parsedData = CategoriesModel.fromJson(result.data!);
+      var parsedData = CategoriesModel.fromJson(result.data!);
       debugPrint("categories result >>>> ${parsedData.categories!.items![5].name}");
    return  SingleChildScrollView(
       child: Container(
@@ -98,27 +99,10 @@ class HomeScreen extends StatelessWidget {
               alignment: Alignment.center,
               child: Wrap(
               children: parsedData.categories!.items!.map((element) =>
-                  _exploreItem(context, element.name.toString())).toList(),
+                  _exploreItem(context, element.name.toString(),element.children!)).toList(),
           ),
             ),
-          // ListView.builder(
-          //   shrinkWrap: true,
-          //     itemCount:  parsedData.categories!.items!.length,
-          //     itemBuilder: (context,index){
-          //   return _exploreItem(context, parsedData.categories!.items![index].name.toString());
-          // }),
-          // Row(
-          //   children: [
-          //   _exploreItem(context, _exploreListText[0]),
-          //   _exploreItem(context, _exploreListText[1]),
-          //   _exploreItem(context, _exploreListText[2]),
-          // ],),
-          // Row(
-          //   children: [
-          //     _exploreItem(context, _exploreListText[3]),
-          //     _exploreItem(context, _exploreListText[4]),
-          //     _exploreItem(context, _exploreListText[5]),
-          //   ],),
+
           verticalSpacing(heightInDouble: 0.01, context: context),
           Text("TODAY DEALS",style: Theme.of(context).textTheme.bodyText2,),
           verticalSpacing(heightInDouble: 0.01, context: context),

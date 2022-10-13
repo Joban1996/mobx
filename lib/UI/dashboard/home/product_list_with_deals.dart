@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mobx/common_widgets/dashboard/grid_Item.dart';
 import 'package:mobx/common_widgets/dashboard/horizontal_circle_brand_list.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
+import 'package:mobx/provider/dashboard/dashboard_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/constants/strings.dart';
 
 import '../../../common_widgets/dashboard/app_bar_title.dart';
 import '../../../utils/routes.dart';
 import '../../../utils/utilities.dart';
+import 'package:provider/provider.dart';
 
 class ProductListWithDeals extends StatefulWidget {
   const ProductListWithDeals({Key? key}) : super(key: key);
@@ -40,7 +42,6 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
 
   final PageController _pageController = PageController(
     initialPage: 0,
-    //keepPage: true,
     viewportFraction: 0.7,
   );
 
@@ -75,21 +76,27 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
               right: MediaQuery.of(context).size.width * 0.02,
             ),
             //padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-            child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, Routes.productListing);
-                    },
-                    child: HorizontalCircleBrandList(
-                        brandImage: 'assets/images/iphone_mini.png',
-                        brandName: 'apple',
-                        colorName: Colors.grey),
-                  );
-                }),
+            child: Consumer<DashboardProvider>(builder: (_,val,child){
+              if(val.getSubCate!.length! == 0){
+                return Text("No Data Found..");
+              }
+              return ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: val.getSubCate!.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                       // context.read<DashboardProvider>().setSubCate(parsedData);
+                        Navigator.pushNamed(context, Routes.productListing);
+                      },
+                      child: HorizontalCircleBrandList(
+                          brandImage: 'assets/images/iphone_mini.png',
+                          brandName: val.getSubCate![index].name!,
+                          colorName: Colors.grey),
+                    );
+                  });
+            }),
           ),
           Container(
             width: MediaQuery.of(context).size.width.toDouble(),
@@ -97,7 +104,6 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
             padding: EdgeInsets.only(
               left: MediaQuery.of(context).size.width * 0.02,
               right: MediaQuery.of(context).size.width * 0.02,
-              top: MediaQuery.of(context).size.height * 0.02,
               bottom: MediaQuery.of(context).size.height * 0.02,
             ),
             child: Text(Strings.today_deal),
@@ -202,35 +208,29 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
               top: MediaQuery.of(context).size.height * 0.02,
               bottom: MediaQuery.of(context).size.height * 0.02,
             ),
-            child: Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: 40,
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List<Widget>.generate(
-                      todaysDealList.length,
-                      (index) => Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: InkWell(
-                              onTap: () {
-                                _pageController.animateToPage(index,
-                                    duration: const Duration(milliseconds: 300),
-                                    curve: Curves.easeIn);
-                              },
-                              child: CircleAvatar(
-                                radius: 5,
-                                // check if a dot is connected to the current page
-                                // if true, give it a different color
-                                backgroundColor: _activePage == index
-                                    ? Utility.getColorFromHex(globalOrangeColor)
-                                    : Utility.getColorFromHex(globalGreyColor),
-                              ),
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List<Widget>.generate(
+                    todaysDealList.length,
+                    (index) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: InkWell(
+                            onTap: () {
+                              _pageController.animateToPage(index,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeIn);
+                            },
+                            child: CircleAvatar(
+                              radius: 5,
+                              // check if a dot is connected to the current page
+                              // if true, give it a different color
+                              backgroundColor: _activePage == index
+                                  ? Utility.getColorFromHex(globalOrangeColor)
+                                  : Utility.getColorFromHex(globalGreyColor),
                             ),
-                          )),
-                ),
+                          ),
+                        )),
               ),
             ),
           ),
