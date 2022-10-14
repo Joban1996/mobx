@@ -252,10 +252,11 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                 crossAxisCount: 2,
               ),
               itemCount: 20,
-              itemBuilder: (BuildContext context, int index) {
+              itemBuilder: (BuildContext context, int index)
+              {
                 return GestureDetector(
                     onTap: () => Navigator.pushNamed(context, Routes.productDetail1),
-                    child: GridItem());
+                    child: const GridItem());
               }
           ),
         ],
