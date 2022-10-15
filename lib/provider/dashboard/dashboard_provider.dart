@@ -9,7 +9,8 @@ class DashboardProvider with ChangeNotifier{
 
   int selectedIndex = 0;
 
-  setSelectedIndex(int index){
+  setSelectedIndex(int index)
+  {
     selectedIndex = index;
     notifyListeners();
   }
