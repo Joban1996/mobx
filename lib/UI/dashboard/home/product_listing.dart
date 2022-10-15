@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/common_widgets/dashboard/grid_Item.dart';
+import 'package:mobx/common_widgets/dashboard/horizontal_circle_brand_list.dart';
 import 'package:mobx/common_widgets/dashboard/horizontal_circle_list.dart';
 import 'package:mobx/utils/routes.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common_widgets/dashboard/app_bar_title.dart';
 import '../../../common_widgets/globally_common/app_bar_common.dart';
+import '../../../provider/dashboard/dashboard_provider.dart';
 
 
 
@@ -32,13 +35,19 @@ class ProductListing extends StatelessWidget {
           Expanded(
             child: Container(
               padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (context,index){
-                return const HorizontalCircleList();
-              }),
+              child: Consumer<DashboardProvider>(builder: (_,val,child){
+                return ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: val.getProducts?.length,
+                    itemBuilder: (context,index){
+                      return HorizontalCircleBrandList(
+                          brandImage: 'assets/images/iphone_mini.png',
+                          brandName: val.getProducts![index].name!,
+                          colorName: Colors.grey
+                      );
+                    });
+              },),
             ),
           ),
           Expanded(

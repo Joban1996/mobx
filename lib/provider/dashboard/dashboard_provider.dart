@@ -10,19 +10,20 @@ class DashboardProvider with ChangeNotifier{
 
   int selectedIndex = 0;
   List<Children>?  subCate;
-  var products;
+  List<Children>? products;
 
 
   List<Children>? get getSubCate => subCate;
-  //var get getProducts => products;
+  List<Children>? get getProducts => products;
 
   setSubCate(List<Children> subCategories){
     subCate = subCategories;
     notifyListeners();
   }
 
-  setProducts(){
-
+  setProducts(List<Children> val){
+    products = val;
+    notifyListeners();
   }
 
   setSelectedIndex(int index){

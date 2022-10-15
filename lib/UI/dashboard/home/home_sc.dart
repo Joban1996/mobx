@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
     return const Text('Loading');
     }
       var parsedData = CategoriesModel.fromJson(result.data!);
-      debugPrint("categories result >>>> ${parsedData.categories!.items![5].name}");
+      //debugPrint("categories result >>>> ${parsedData.categories!.items![5].name}");
    return  SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.all(10),

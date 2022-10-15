@@ -87,7 +87,7 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                       // context.read<DashboardProvider>().setSubCate(parsedData);
+                        //context.read<DashboardProvider>().setProducts(val.getSubCate![index]);
                         Navigator.pushNamed(context, Routes.productListing);
                       },
                       child: HorizontalCircleBrandList(
