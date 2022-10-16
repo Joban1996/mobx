@@ -72,7 +72,7 @@ class ProductDetails1 extends StatelessWidget {
                     Text("₹70,900",style: Theme.of(context).textTheme.caption!.copyWith(decoration: TextDecoration.lineThrough,),)
                     ,SizedBox(width: 3,),
                     Text("You Save ₹15,801 (20% OFF)",style: Theme.of(context).textTheme.caption!.copyWith(
-                      fontSize: 14,color: Utility.getColorFromHex(globalGreenColor)
+                      fontSize: 14,color: Utility.getColorFromHex(globalGreenColor),
                     ),)
                   ],
                 ),

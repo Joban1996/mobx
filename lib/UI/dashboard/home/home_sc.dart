@@ -11,8 +11,14 @@ import '../../../common_widgets/dashboard/grid_Item.dart';
 import 'dart:math' as math;
 import '../../../model/categories_model.dart';
 
-class HomeScreen extends StatelessWidget {
-   HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final _controller = PageController(
     initialPage: 0,
   );
@@ -47,22 +53,38 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  List<Map> todaysDealList = [
+    {
+      'image': 'https://media.mobex.in/media/wysiwyg/slide-1-sample.jpeg',
+    },
+    {
+      'image': 'https://media.mobex.in/media/wysiwyg/slide-2-sample.jpeg',
+    }
+  ];
+
+  final PageController _pageController = PageController(
+    initialPage: 0,
+    viewportFraction: 1.0,
+  );
+  List<String> split = [];
+  int _activePage = 0; // will hold current active page index value
+
   @override
   Widget build(BuildContext context) {
     return
       Query(
-        options: QueryOptions(
-        document: gql(categories),
-        variables: const {
-        'filters':{
-        'parent_id': {'in': ['1']}
-        }
-      }
-    ),
-    builder: (QueryResult result, { VoidCallback? refetch, FetchMore? fetchMore }) {
-    if (result.hasException) {
-    return Text(result.exception.toString());
-    }
+          options: QueryOptions(
+              document: gql(categories),
+              variables: const {
+                'filters':{
+                  'parent_id': {'in': ['1']}
+                }
+              }
+          ),
+          builder: (QueryResult result, { VoidCallback? refetch, FetchMore? fetchMore }) {
+            if (result.hasException) {
+              return Text(result.exception.toString());
+            }
 
     if (result.isLoading) {
       return globalLoader();
@@ -113,21 +135,24 @@ class HomeScreen extends StatelessWidget {
           ),
             ),
 
-          verticalSpacing(heightInDouble: 0.01, context: context),
-          Text("TODAY DEALS",style: Theme.of(context).textTheme.bodyText2,),
-          verticalSpacing(heightInDouble: 0.01, context: context),
-          SizedBox(
-            height: getCurrentScreenHeight(context)/2.5,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 6,
-                itemBuilder: (context,index)
-                {
-                  return  GridItem();
-                }),
-          )
-        ],
-      )));
-    } );
+                        verticalSpacing(heightInDouble: 0.01, context: context),
+                        Text("TODAY DEALS",style: Theme.of(context).textTheme.bodyText2,),
+                        verticalSpacing(heightInDouble: 0.01, context: context),
+                        SizedBox(
+                          height: getCurrentScreenHeight(context)/2.5,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 6,
+                              itemBuilder: (context,index)
+                              {
+                                return  GridItem();
+                              }),
+                        )
+                      ],
+                    )));
+          } );
   }
 }
+
+
+
