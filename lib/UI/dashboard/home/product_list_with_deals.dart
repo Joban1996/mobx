@@ -130,7 +130,7 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                           child: HorizontalCircleBrandList(
                               brandImage: 'assets/images/iphone_mini.png',
                               brandName: parsed.categories!.items![0].children![index].name!,
-                              colorName: Colors.grey),
+                              colorName: Colors.grey.withOpacity(0.3)),
                         );
                       })
               ),
@@ -147,7 +147,8 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
               Container(
                 color: Utility.getColorFromHex(globalGreyBackgroundColor),
                 height: MediaQuery.of(context).size.height * 0.35,
-                child: PageView.builder(
+                child:
+                PageView.builder(
                     controller: _pageController,
                     padEnds: false,
                     onPageChanged: (int index) {
