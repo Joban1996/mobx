@@ -72,7 +72,7 @@ class HomeScreen extends StatelessWidget {
    return  SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.all(10),
-          color: Colors.white.withOpacity(0.8),
+          decoration: BoxDecoration(color: Colors.white.withOpacity(0.8)),
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -82,9 +82,15 @@ class HomeScreen extends StatelessWidget {
             child: PageView(
               controller: _controller,
               children: [
+                Card(
+                  elevation: 3,
+                    child: Image.network('https://media.mobex.in/media/wysiwyg/slide-1-sample.jpeg')),
+                Card(
+                    elevation: 3,
+                    child: Image.network('https://media.mobex.in/media/wysiwyg/slide-2-sample.jpeg')),
+                /*Image.asset("assets/images/slider.png"),
                 Image.asset("assets/images/slider.png"),
-                Image.asset("assets/images/slider.png"),
-                Image.asset("assets/images/slider.png")
+                Image.asset("assets/images/slider.png")*/
               ],
             ),
           ),
@@ -92,7 +98,7 @@ class HomeScreen extends StatelessWidget {
             alignment: Alignment.center,
             child: DotsIndicator(
               decorator: DotsDecorator(activeColor: Utility.getColorFromHex(globalOrangeColor)),
-              dotsCount: 3,
+              dotsCount: 2,
               position: 0,
             ),
           ),
