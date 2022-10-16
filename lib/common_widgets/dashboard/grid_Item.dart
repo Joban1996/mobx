@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/utilities.dart';
-
-
+import 'package:mobx/model/product_model.dart' as pro;
 
 
 
 
 
 class GridItem extends StatelessWidget {
-  const GridItem({Key? key}) : super(key: key);
+   GridItem({this.productData,Key? key}) : super(key: key);
 
-
+pro.Items? productData;
 
   Widget _listItem(BuildContext context){
     return Column(

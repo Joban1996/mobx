@@ -7,6 +7,8 @@ import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
+import 'constants/constants_colors.dart';
+
 
 class Utility {
   delayed(Duration duration, VoidCallback voidCallback) => Timer(duration, voidCallback);
@@ -236,6 +238,10 @@ verticalSpacing({required double heightInDouble,required BuildContext context}){
 }
 horizontalSpacing({required double widthInDouble,required BuildContext context}){
   return SizedBox(width: getCurrentScreenWidth(context)*widthInDouble);
+}
+Widget globalLoader(){
+  return  Center(child: CircularProgressIndicator(valueColor:
+  AlwaysStoppedAnimation<Color>(Utility.getColorFromHex(globalOrangeColor))));
 }
 
 Widget dividerCommon(BuildContext context){

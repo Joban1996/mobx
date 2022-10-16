@@ -19,10 +19,13 @@ class HomeScreen extends StatelessWidget {
 
   final List<String> _exploreListText  = ["Refurbished Mobiles","Smart Watches","Tablets/iPads","Laptops","Headphones","Earphones"];
 
-  Widget _exploreItem(BuildContext context,String txt,List<Children> parsedData){
+  Widget _exploreItem(BuildContext context,String txt,List<Children> parsedData,String path,String cateId){
     return GestureDetector(
       onTap: () {
+        List<String> split = path.split("/");
         context.read<DashboardProvider>().setSubCate(parsedData);
+        context.read<DashboardProvider>().setCategoryID(cateId);
+        context.read<DashboardProvider>().setPath(split);
         Navigator.pushNamed(context, Routes.productListWithDeals);},
       child: Container(
         width: getCurrentScreenWidth(context)/2.3,
@@ -61,7 +64,7 @@ class HomeScreen extends StatelessWidget {
     }
 
     if (result.isLoading) {
-    return const Text('Loading');
+      return globalLoader();
     }
       var parsedData = CategoriesModel.fromJson(result.data!);
       //debugPrint("categories result >>>> ${parsedData.categories!.items![5].name}");
@@ -99,7 +102,7 @@ class HomeScreen extends StatelessWidget {
               alignment: Alignment.center,
               child: Wrap(
               children: parsedData.categories!.items!.map((element) =>
-                  _exploreItem(context, element.name.toString(),element.children!)).toList(),
+                  _exploreItem(context, element.name.toString(),element.children!,element.path!,element.uid!)).toList(),
           ),
             ),
 
@@ -113,7 +116,7 @@ class HomeScreen extends StatelessWidget {
                 itemCount: 6,
                 itemBuilder: (context,index)
                 {
-                  return const GridItem();
+                  return  GridItem();
                 }),
           )
         ],

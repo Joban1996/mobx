@@ -48,3 +48,42 @@ query categories(\$filters: CategoryFilterInput!){
 }  
 
 ''';
+var products = '''
+query products(\$filter: ProductAttributeFilterInput){
+  products(filter: \$filter) {
+    items {
+      name
+    image {
+        url
+        label
+      }
+      small_image{
+          url
+          label
+      }
+      sku
+      price_range {
+        minimum_price {
+          regular_price {
+            value
+            currency
+          }
+          final_price {
+            value
+            currency
+          }
+          discount {
+            amount_off
+            percent_off
+          }
+        
+        }
+      }
+    }
+    page_info {
+      page_size
+    }
+  }
+}  
+
+''';

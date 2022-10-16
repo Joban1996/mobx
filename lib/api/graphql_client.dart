@@ -2,10 +2,6 @@ import 'dart:convert' as convert;
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:http/http.dart' as Http;
-import 'package:http_parser/http_parser.dart';
-import 'package:mobx/api/graphql_operation/customer_queries.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../provider/auth/login_provider.dart';
 
