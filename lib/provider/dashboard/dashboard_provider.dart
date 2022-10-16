@@ -55,7 +55,8 @@ class DashboardProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  setSelectedIndex(int index){
+  setSelectedIndex(int index)
+  {
     selectedIndex = index;
     notifyListeners();
   }
