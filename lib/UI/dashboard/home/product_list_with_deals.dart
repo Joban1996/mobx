@@ -120,6 +120,8 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                         onTap: () {
                           List<String> split = parsed.categories!.items![0].children![index].path!.split("/");
                           context.read<DashboardProvider>().setInnerPath(split);
+                          context.read<DashboardProvider>().setSubCategoryID(parsed.categories!.items![0].children![index].uid!);
+                         print("id for sub cate products >>>> ${parsed.categories!.items![0].children![index].uid}");
                           Navigator.pushNamed(context, Routes.productListing);
                         },
                         child: HorizontalCircleBrandList(

@@ -13,15 +13,22 @@ class DashboardProvider with ChangeNotifier{
   List<String> _innerPath = [];
   List<String> _path = [];
   String _uID = "";
+  String _uIDSubCate = "";
 
 
   List<Children>? get getSubCate => _subCate;
   List<String> get getInnerPath => _innerPath;
   List<String> get getPath => _path;
   String get getCategoryID => _uID;
+  String get getSubCategoryID => _uIDSubCate;
 
   setCategoryID(String val){
     _uID = val;
+    notifyListeners();
+  }
+
+  setSubCategoryID(String val){
+    _uIDSubCate = val;
     notifyListeners();
   }
 

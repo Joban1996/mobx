@@ -25,24 +25,27 @@ pro.Items? productData;
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Utility.getColorFromHex(globalGreyColor))),
               height: getCurrentScreenHeight(context)/4,
-              child: Image.asset("assets/images/iphone_pic.png"),),
+              child: productData != null ? Image.network(productData!.image!.url.toString(),) : Image.asset("assets/images/iphone_pic.png"),),
               Container(
                 margin: EdgeInsets.only(top: 10),
                 padding: EdgeInsets.fromLTRB(8,4,8,4),
                   decoration: BoxDecoration(color: Utility.getColorFromHex(globalGreenColor)
                   ,borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10))),
-                  child: Text("40% OFF",style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 8,color: Colors.white),))
+                  child: Text(productData != null ? "${productData?.priceRange?.minimumPrice?.discount?.percentOff?.round()}% OFF" :"40% OFF",
+                    style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 8,color: Colors.white),))
           ],
         ),
           SizedBox(height: 5,),
           Container(
               width: getCurrentScreenWidth(context)/2,
-              child: Text("Refurbished Apple iPhone 12 128 GB",style: Theme.of(context).textTheme.caption,)),
+              child: Text(productData != null ? productData!.name.toString() :
+              "Refurbished Apple iPhone 12 128 GB",
+                style: Theme.of(context).textTheme.caption,maxLines: 2,)),
           SizedBox(height: 5,),
           Row(children: [
-            Text("₹55,099",style: Theme.of(context).textTheme.bodyText2,),
+            Text(productData != null ? productData!.priceRange!.minimumPrice!.finalPrice!.value.toString() :"₹55,099",style: Theme.of(context).textTheme.bodyText2,),
             SizedBox(width: 3,),
-            Text("₹70,900",style: Theme.of(context).textTheme.caption!.copyWith(decoration: TextDecoration.lineThrough,),)
+            Text(productData != null ? "₹${productData!.priceRange!.minimumPrice!.regularPrice!.value}" :"₹70,900",style: Theme.of(context).textTheme.caption!.copyWith(decoration: TextDecoration.lineThrough,),)
           ],)
       ],
     );

@@ -9,6 +9,7 @@ import '../../../api/graphql_operation/customer_queries.dart';
 import '../../../common_widgets/dashboard/app_bar_title.dart';
 import '../../../common_widgets/globally_common/app_bar_common.dart';
 import '../../../model/categories_model.dart';
+import '../../../model/product_model.dart' as pro;
 import '../../../provider/dashboard/dashboard_provider.dart';
 
 class ProductListing extends StatelessWidget {
@@ -61,43 +62,63 @@ class ProductListing extends StatelessWidget {
             var parsed = CategoriesModel.fromJson(result.data!);
             return Column(
               children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  height: getCurrentScreenHeight(context)/7,
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount:
+                          parsed.categories!.items![0].children!.length,
+                      itemBuilder: (context, index) {
+                        return HorizontalCircleBrandList(
+                            brandImage: 'assets/images/iphone_mini.png',
+                            brandName: parsed
+                                .categories!.items![0].children![index].name!,
+                            colorName: Colors.grey);
+                      }),
+                ),
+    Query(
+    options: QueryOptions(
+    document: gql(products),
+    variables:  {
+    'filter':{
+    'category_uid': {'eq': context.read<DashboardProvider>().getSubCategoryID},
+    }
+    }
+    ),
+    builder: (QueryResult result, { VoidCallback? refetch, FetchMore? fetchMore }) {
+    if (result.hasException) {
+    return Text(result.exception.toString());
+    }
+
+    if (result.isLoading) {
+    return globalLoader();
+    }
+    debugPrint("products >>>>>>> ${result.data}");
+    var subCateProductData = pro.ProductModel.fromJson(result.data!);
+    return
                 Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount:
-                            parsed.categories!.items![0].children!.length,
-                        itemBuilder: (context, index) {
-                          return HorizontalCircleBrandList(
-                              brandImage: 'assets/images/iphone_mini.png',
-                              brandName: parsed
-                                  .categories!.items![0].children![index].name!,
-                              colorName: Colors.grey);
+                  child: MediaQuery.removePadding(
+                    context: context,
+                    removeTop: true,
+                    child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: 4 / 6,
+                          crossAxisSpacing: 1,
+                          crossAxisCount: 2,
+                        ),
+                        itemCount: subCateProductData!.products!.items!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                              onTap: () => Navigator.pushNamed(
+                                  context, Routes.productDetail1),
+                              child:  GridItem(productData: subCateProductData!.products!.items![index],));
                         }),
                   ),
-                ),
-                Expanded(
-                    flex: 4,
-                    child: MediaQuery.removePadding(
-                      context: context,
-                      removeTop: true,
-                      child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 4 / 6,
-                            crossAxisSpacing: 1,
-                            crossAxisCount: 2,
-                          ),
-                          itemCount: 20,
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                                onTap: () => Navigator.pushNamed(
-                                    context, Routes.productDetail1),
-                                child:  GridItem());
-                          }),
-                    )),
+                );})
               ],
             );
           }),
