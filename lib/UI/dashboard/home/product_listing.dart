@@ -57,6 +57,7 @@ class ProductListing extends StatelessWidget {
 
             if (result.isLoading) {
               return globalLoader();
+
             }
             debugPrint("sub cate inner >>>>>>> ${result.data}");
             var parsed = CategoriesModel.fromJson(result.data!);
