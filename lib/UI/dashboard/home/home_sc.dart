@@ -24,6 +24,7 @@ class HomeScreen extends StatelessWidget {
       onTap: () {
         List<String> split = path.split("/");
         context.read<DashboardProvider>().setSubCate(parsedData);
+        context.read<DashboardProvider>().setCateName(txt);
         context.read<DashboardProvider>().setCategoryID(cateId);
         context.read<DashboardProvider>().setPath(split);
         Navigator.pushNamed(context, Routes.productListWithDeals);},

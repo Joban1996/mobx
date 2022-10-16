@@ -86,18 +86,15 @@ class ProductDetails1 extends StatelessWidget {
                 Text("Easy EMI Options Available",style: Theme.of(context).textTheme.caption),
                 Divider(height: getCurrentScreenHeight(context)*0.03,),
                 Text("EMI OPTION",style: Theme.of(context).textTheme.bodyText2),
-                GestureDetector(
-                  onTap: ()=> Navigator.pushNamed(context, Routes.productDetail2),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                    Text("3 interest-free payments of ₹ 15500 with",style: Theme.of(context).textTheme.caption),
-                    SizedBox(height: getCurrentScreenHeight(context)*0.01,),
-                    Image.asset("assets/images/zest_brand.png"),
-                    Expanded(child: Icon(Icons.arrow_forward_ios_rounded,color:
-                      Utility.getColorFromHex(globalSubTextGreyColor),))
-                  ],),
-                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                  Text("3 interest-free payments of ₹ 15500 with",style: Theme.of(context).textTheme.caption),
+                  SizedBox(height: getCurrentScreenHeight(context)*0.01,),
+                  Image.asset("assets/images/zest_brand.png"),
+                  Expanded(child: Icon(Icons.arrow_forward_ios_rounded,color:
+                    Utility.getColorFromHex(globalSubTextGreyColor),))
+                ],),
                 Divider(height: getCurrentScreenHeight(context)*0.03,),
                 // Text("SPECIFICATIONS",style: Theme.of(context).textTheme.bodyText2),
                 // SizedBox(height: getCurrentScreenHeight(context)*0.02,),
