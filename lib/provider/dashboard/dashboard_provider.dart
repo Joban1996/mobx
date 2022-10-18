@@ -17,6 +17,7 @@ class DashboardProvider with ChangeNotifier{
   String _uIDSubCate = "";
   String name = Strings.refurbished_mobiles;
   String subCateName = Strings.refurbished_mobiles;
+  String _uIDInnerSubCate = "";
 
 
   List<Children>? get getSubCate => _subCate;
@@ -24,8 +25,13 @@ class DashboardProvider with ChangeNotifier{
   List<String> get getPath => _path;
   String get getCategoryID => _uID;
   String get getSubCategoryID => _uIDSubCate;
+  String get getInnerSubCateID => _uIDInnerSubCate;
   String get getCategoryName => name;
   String get getSubCategoryName => subCateName;
+
+  setInnerSubCateId(String valId){
+    _uIDInnerSubCate = valId;
+  }
 
   setCategoryID(String val){
     _uID = val;
@@ -55,8 +61,7 @@ class DashboardProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  setSelectedIndex(int index)
-  {
+  setSelectedIndex(int index){
     selectedIndex = index;
     notifyListeners();
   }

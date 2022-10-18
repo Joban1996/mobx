@@ -73,11 +73,16 @@ class ProductListing extends StatelessWidget {
                       itemCount:
                           parsed.categories!.items![0].children!.length,
                       itemBuilder: (context, index) {
-                        return HorizontalCircleBrandList(
-                            brandImage: 'assets/images/iphone_mini.png',
-                            brandName: parsed
-                                .categories!.items![0].children![index].name!,
-                            colorName: Colors.grey);
+                        return GestureDetector(
+                          onTap: () {
+                            context.read<DashboardProvider>().setInnerSubCateId(parsed.categories!.items![0].children![index].uid!);
+                          },
+                          child: HorizontalCircleBrandList(
+                              brandImage: 'assets/images/iphone_mini.png',
+                              brandName: parsed
+                                  .categories!.items![0].children![index].name!,
+                              colorName: Colors.grey),
+                        );
                       }),
                 ),
     Query(
