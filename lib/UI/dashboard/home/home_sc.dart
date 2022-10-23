@@ -32,7 +32,14 @@ class HomeScreen extends StatelessWidget {
         context.read<DashboardProvider>().setCategoryID(cateId);
         context.read<DashboardProvider>().setPath(split);
         Navigator.pushNamed(context, Routes.productListWithDeals);},
-      child: Container(
+      child:
+      Padding(
+        padding: const EdgeInsets.only(top: 4 ,bottom: 8),
+        child: SizedBox(
+        height: getCurrentScreenHeight(context)*0.1,width: getCurrentScreenWidth(context)*0.3,
+    child: img != "null" ? Image.network(img.toString()) : Image.asset("assets/images/iphone_mini.png")),
+      )
+      /*Container(
         width: getCurrentScreenWidth(context)/2.3,
         margin: const EdgeInsets.only(right: 8,bottom: 8),
         padding: const EdgeInsets.all(8),
@@ -47,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                 child: img != "null" ? Image.network(img.toString()) : Image.asset("assets/images/iphone_mini.png"))
           ],
         ),
-      ),
+      ),*/
     );
   }
 
@@ -80,6 +87,24 @@ class HomeScreen extends StatelessWidget {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+        Query(
+    options: QueryOptions(
+    document: gql(homePageBanner),
+    variables: const {
+          "identifiers": "homepage-app-banner"
+    }
+    ),
+    builder: (QueryResult result, { VoidCallback? refetch, FetchMore? fetchMore }) {
+    if (result.hasException) {
+    return Text(result.exception.toString());
+    }
+
+    if (result.isLoading) {
+    return globalLoader();
+    }
+    var parsedData = CategoriesModel.fromJson(result.data!);
+    debugPrint("home page banner result >>>> ${result.data}");
+    return
           Container(
             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
             height: getCurrentScreenHeight(context)/3.5,
@@ -100,7 +125,7 @@ class HomeScreen extends StatelessWidget {
                 Image.asset("assets/images/slider.png")*/
               ],
             ),
-          ),
+          );}),
           Align(
             alignment: Alignment.center,
             child: Consumer<DashboardProvider>(builder: (_,val,child){
@@ -112,7 +137,7 @@ class HomeScreen extends StatelessWidget {
             }),
           ),
           verticalSpacing(heightInDouble: 0.01, context: context),
-          Text("EXPLORE",style: Theme.of(context).textTheme.bodyText2,),
+          Text("EXPLORE",style: Theme.of(context).textTheme.bodyMedium,),
           verticalSpacing(heightInDouble: 0.01, context: context),
             Align(
               alignment: Alignment.center,
@@ -122,8 +147,8 @@ class HomeScreen extends StatelessWidget {
           ),
             ),
 
-          verticalSpacing(heightInDouble: 0.01, context: context),
-          Text("TODAY DEALS",style: Theme.of(context).textTheme.bodyText2,),
+          verticalSpacing(heightInDouble: 0.02, context: context),
+          Text("TODAY DEALS",style: Theme.of(context).textTheme.bodyMedium,),
           verticalSpacing(heightInDouble: 0.01, context: context),
           Query(
               options: QueryOptions(

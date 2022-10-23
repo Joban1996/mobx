@@ -157,3 +157,14 @@ query products(\$filter: ProductAttributeFilterInput){
 }  
 
 ''';
+
+var homePageBanner = '''query cmsBlocks(\$identifiers: [String]){ 
+  cmsBlocks(identifiers: \$identifiers) {
+    items {
+      identifier
+      title
+      content
+    }
+  }
+}
+''';

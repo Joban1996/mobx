@@ -1,12 +1,5 @@
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:mobx/UI/dashboard/home/product_details3.dart';
-import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
-import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
-import 'package:mobx/common_widgets/globally_common/app_button_leading.dart';
-import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/utilities.dart';
-
 import '../../../utils/routes.dart';
 
 
@@ -24,8 +17,8 @@ Widget itemColumn(String txt1,String txt2,BuildContext context){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start ,
     children: [
-      Text(txt1,style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 11,height: 3)),
-      Text(txt2,style: Theme.of(context).textTheme.caption,)
+      Text(txt1,style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 11,height: 3)),
+      Text(txt2,style: Theme.of(context).textTheme.bodySmall,)
     ],
   );
 }
@@ -87,7 +80,7 @@ Widget titleRow(BuildContext context,String txt){
       titleRow(context,title),
       SizedBox(height: getCurrentScreenHeight(context)*0.01,),
       Text("Phone 11 Pro is the 13th generation premium flagship smartphone developed, manufactured, and marketed by the tech giant Apple Inc.",
-      style: Theme.of(context).textTheme.caption,)
+      style: Theme.of(context).textTheme.bodySmall,)
     ],
   );
   }
