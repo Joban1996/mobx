@@ -49,7 +49,8 @@ class LoginProvider with ChangeNotifier{
     QueryResult results = await GraphQLClientAPI().mClient
         .mutate(GraphQlClient.loginOTP(queryMutation.loginOTPMutation(mNumber,webSiteId),
         mNumber));
-    if (results.data!['loginOTP']['status'] == true) {
+    debugPrint("${results.data}");
+    if (results.data?['loginOTP']['status'] == true) {
       debugPrint("enable noti mutation result >>> ${results.data!['loginOTP']}");
       Utility.showSuccessMessage("${results.data!['loginOTP']['message']}");
       return true;

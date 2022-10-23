@@ -118,10 +118,9 @@ class ProductListing extends StatelessWidget {
                         ),
                         itemCount: subCateProductData!.products!.items!.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                              onTap: () => Navigator.pushNamed(
-                                  context, Routes.productDetail1),
-                              child:  GridItem(productData: subCateProductData!.products!.items![index],));
+                          return GridItem(
+                            skuID: subCateProductData!.products!.items![index].sku!,
+                            productData: subCateProductData!.products!.items![index],);
                         }),
                   ),
                 );})

@@ -18,6 +18,8 @@ class DashboardProvider with ChangeNotifier{
   String name = Strings.refurbished_mobiles;
   String subCateName = Strings.refurbished_mobiles;
   String _uIDInnerSubCate = "";
+  String _skuID = "";
+  int currentPage = 0;
 
 
   List<Children>? get getSubCate => _subCate;
@@ -28,11 +30,20 @@ class DashboardProvider with ChangeNotifier{
   String get getInnerSubCateID => _uIDInnerSubCate;
   String get getCategoryName => name;
   String get getSubCategoryName => subCateName;
+  String get getSkuID => _skuID;
+  int get getCurrentPage =>  currentPage;
 
+  setCurrentPage(int val){
+    currentPage = val;
+    notifyListeners();
+  }
+
+  setSkuId(String valId){
+    _skuID = valId;
+  }
   setInnerSubCateId(String valId){
     _uIDInnerSubCate = valId;
   }
-
   setCategoryID(String val){
     _uID = val;
     notifyListeners();

@@ -10,12 +10,16 @@ import '../../../api/graphql_operation/customer_queries.dart';
 import '../../../common_widgets/dashboard/grid_Item.dart';
 import 'dart:math' as math;
 import '../../../model/categories_model.dart';
+import '../../../model/product_model.dart' as pro;
 
 class HomeScreen extends StatelessWidget {
    HomeScreen({Key? key}) : super(key: key);
+
   final _controller = PageController(
     initialPage: 0,
   );
+  double? currentPage = 0;
+
 
   final List<String> _exploreListText  = ["Refurbished Mobiles","Smart Watches","Tablets/iPads","Laptops","Headphones","Earphones"];
 
@@ -80,6 +84,9 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
             height: getCurrentScreenHeight(context)/3.5,
             child: PageView(
+              onPageChanged: (val){
+                context.read<DashboardProvider>().setCurrentPage(val);
+              },
               controller: _controller,
               children: [
                 Card(
@@ -96,11 +103,13 @@ class HomeScreen extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.center,
-            child: DotsIndicator(
-              decorator: DotsDecorator(activeColor: Utility.getColorFromHex(globalOrangeColor)),
-              dotsCount: 2,
-              position: 0,
-            ),
+            child: Consumer<DashboardProvider>(builder: (_,val,child){
+             return DotsIndicator(
+                decorator: DotsDecorator(activeColor: Utility.getColorFromHex(globalOrangeColor)),
+                dotsCount: 2,
+                position: val.getCurrentPage.toDouble(),
+              );
+            }),
           ),
           verticalSpacing(heightInDouble: 0.01, context: context),
           Text("EXPLORE",style: Theme.of(context).textTheme.bodyText2,),
@@ -116,16 +125,50 @@ class HomeScreen extends StatelessWidget {
           verticalSpacing(heightInDouble: 0.01, context: context),
           Text("TODAY DEALS",style: Theme.of(context).textTheme.bodyText2,),
           verticalSpacing(heightInDouble: 0.01, context: context),
-          SizedBox(
+          Query(
+              options: QueryOptions(
+                  document: gql(products),
+                  variables:  const {
+                    'filter':{
+                      'category_id': {'eq': "87"},
+                    }
+                  }
+              ),
+              builder: (QueryResult result, { VoidCallback? refetch, FetchMore? fetchMore }) {
+                if (result.hasException) {
+                  return Text(result.exception.toString());
+                }
+
+                if (result.isLoading) {
+                  return globalLoader();
+                }
+                debugPrint("products >>>>>>> ${result.data}");
+                var parsedProductData = pro.ProductModel.fromJson(result.data!);
+                return parsedData.categories!.items![0].children!.isEmpty ? SizedBox(
             height: getCurrentScreenHeight(context)/2.5,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: 6,
                 itemBuilder: (context,index)
                 {
-                  return  GridItem();
+                  return  GridItem(
+                    skuID: "",
+                  );
                 }),
-          )
+          ): SizedBox(
+          height: getCurrentScreenHeight(context)/2.5,
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: parsedProductData.products!.items!.length,
+              itemBuilder: (context,index)
+              {
+                return  GridItem(
+                  skuID: parsedProductData!.products!.items![index].sku!,
+                  productData: parsedProductData!.products!.items![index],
+                );
+              }),
+        );
+    })
         ],
       )));
     } );

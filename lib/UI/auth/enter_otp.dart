@@ -75,14 +75,13 @@ class _EnterOtpState extends State<EnterOtp> {
                   Text("Change",style:  Theme.of(context).textTheme.caption!.copyWith(color: Utility.getColorFromHex(globalOrangeColor)),)
                 ],
               ),
-
               SizedBox(height: getCurrentScreenHeight(context)*0.02,),
               TextField(
                 controller: otpController,
                 inputFormatters: [LengthLimitingTextInputFormatter(10),],
                 style: Theme.of(context).textTheme.bodyText2,
                 keyboardType: TextInputType.phone,
-                decoration: CommonStyle.textFieldStyle(context),
+                decoration: CommonStyle.textFieldStyle(context,isLeading: false),
               ),
 
               SizedBox(height: getCurrentScreenHeight(context)*0.03,),

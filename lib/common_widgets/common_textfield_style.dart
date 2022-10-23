@@ -8,8 +8,8 @@ import 'package:mobx/utils/utilities.dart';
 
 class CommonStyle{
   static InputDecoration textFieldStyle(BuildContext context,{Widget? dropDownIcon,String? hintText,
-    String borderSideColor = globalOrangeColor}) {return  InputDecoration(
-      prefixIcon: hintText == null ?  Text(" +91",style: Theme.of(context).textTheme.caption,) : null,
+    String borderSideColor = globalOrangeColor,bool isLeading = true}) {return  InputDecoration(
+      prefixIcon: hintText == null ?  Text(isLeading == true ?" +91" : "",style: Theme.of(context).textTheme.caption,) : null,
       prefixIconConstraints: const BoxConstraints(
         minWidth: 30,
         minHeight: 15,

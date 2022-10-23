@@ -28,7 +28,9 @@ class ProductDetails3 extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: 6,
                   itemBuilder: (context, index) {
-                    return GridItem();
+                    return GridItem(
+                      skuID: "",
+                    );
                   })),
           // Row(
           //   children: [

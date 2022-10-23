@@ -87,3 +87,72 @@ query products(\$filter: ProductAttributeFilterInput){
 }  
 
 ''';
+
+var productDescription = '''
+query products(\$filter: ProductAttributeFilterInput){
+  products(filter: \$filter) {
+    items {
+      name
+      sku
+      brand
+      model_name
+      colour
+      memory_storage_capacity
+      item_weight   
+      product_dimensions
+      display_technology
+      battery_power_rating
+      country_of_manufacture
+      form_factor
+      os
+      other_camera_features
+      connectivity_technologies
+      review_count
+      stock_status
+
+    image {
+        url
+        label
+      }
+      small_image{
+          url
+          label
+      }
+      media_gallery
+      {
+          url
+          label
+      }      
+     
+       description {
+        html
+      }
+      short_description
+      {
+        html
+      }      
+      price_range {
+        minimum_price {
+          regular_price {
+            value
+            currency
+          }
+          final_price {
+            value
+            currency
+          }
+          discount {
+            amount_off
+            percent_off
+          }
+        
+        }
+      }
+    }
+    page_info {
+      page_size
+    }
+  }
+}  
+
+''';

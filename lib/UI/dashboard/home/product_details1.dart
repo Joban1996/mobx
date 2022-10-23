@@ -1,16 +1,18 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/UI/dashboard/home/product_details2.dart';
 import 'package:mobx/UI/dashboard/home/product_details3.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/globally_common/app_button_leading.dart';
+import 'package:mobx/model/product_description_model.dart' as pData;
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
-
-
-
+import 'package:provider/provider.dart';
+import '../../../api/graphql_operation/customer_queries.dart';
+import '../../../provider/dashboard/dashboard_provider.dart';
 
 
 
@@ -25,15 +27,39 @@ class ProductDetails1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarCommon(AppBarTitle("Refurbished Apple iPhone 12 Mini",
+      appBar: AppBarCommon(AppBarTitle(context.read<DashboardProvider>().getCategoryName,
           "Apple  > iPhone 12 Mini > Detail"),
         appbar: AppBar(), onTapCallback: (){},leadingImage: GestureDetector(
-            onTap: ()=> Navigator.pop(context),
+            onTap: (){
+              context.read<DashboardProvider>().setCurrentPage(0);
+              Navigator.pop(context);
+            },
             child: Image.asset("assets/images/back_arrow.png"))
           ,trailingAction: [Icon(Icons.star_border_outlined,color: Colors.black,),
           Image.asset("assets/images/lock.png")],
       ),
-      body: Container(
+      body:
+      Query(
+        options: QueryOptions(
+        document: gql(productDescription),
+    variables:   {
+    'filter':{
+      'sku': {'eq': context.read<DashboardProvider>().getSkuID}
+    }
+    }
+    ),
+    builder: (QueryResult result, { VoidCallback? refetch, FetchMore? fetchMore }) {
+    if (result.hasException) {
+    return Text(result.exception.toString());
+    }
+
+    if (result.isLoading) {
+    return globalLoader();
+    }
+    var parsed = pData.ProductDescriptionModel.fromJson(result.data!);
+    var dataItem = parsed.products!.items![0];
+    return
+      Container(
         padding: EdgeInsets.all(10),
         color: Colors.white.withOpacity(0.8),
         child: Stack(
@@ -44,32 +70,38 @@ class ProductDetails1 extends StatelessWidget {
                   height:MediaQuery.of(context).size.height*0.30,
                   child:
                   PageView(
+                    onPageChanged: (val){
+                      context.read<DashboardProvider>().setCurrentPage(val);
+                    },
                       controller: _controller,
                       children: [
-                        Image.asset("assets/images/iphone_pic.png"),
-                        Image.asset("assets/images/iphone_pic.png"),
-                        Image.asset("assets/images/iphone_pic.png")
+                       Image.network(dataItem.mediaGallery![0].url.toString()),
+                        Image.network(dataItem.mediaGallery![0].url.toString()),
+                        Image.network(dataItem.mediaGallery![0].url.toString()),
                       ],
                   ),
                 ),
                    Padding(
-                     padding:  EdgeInsets.only(top: getCurrentScreenHeight(context)*0.04,
+                     padding: EdgeInsets.only(top: getCurrentScreenHeight(context)*0.04,
                          bottom: getCurrentScreenHeight(context)*0.02),
                      child: Align(
                        alignment: Alignment.center,
-                       child: DotsIndicator(
-                  dotsCount: 3,
-                  position: 0,
-                  ),
+                       child: Consumer<DashboardProvider>(builder: (_,val,child){
+                         return DotsIndicator(
+                           decorator: DotsDecorator(activeColor: Utility.getColorFromHex(globalOrangeColor)),
+                           dotsCount: 3,
+                           position: val.getCurrentPage.toDouble(),
+                         );
+                       }),
                      ),
                    ),
-                Text("Refurbished Apple iPhone 12 Mini White 128 GB ",style: Theme.of(context).textTheme.bodyText2,),
+                Text(dataItem.name??"Refurbished Apple iPhone 12 Mini White 128 GB ",style: Theme.of(context).textTheme.bodyText2,),
                 SizedBox(height: getCurrentScreenHeight(context)*0.01,),
                 Row(
                   children: [
-                    Text("₹55,099",style: Theme.of(context).textTheme.bodyText2,),
+                    Text(dataItem.priceRange!.minimumPrice!.finalPrice!.value.toString(),style: Theme.of(context).textTheme.bodyText2,),
                     SizedBox(width: 3,),
-                    Text("₹70,900",style: Theme.of(context).textTheme.caption!.copyWith(decoration: TextDecoration.lineThrough,),)
+                    Text(dataItem.priceRange!.minimumPrice!.regularPrice!.value.toString(),style: Theme.of(context).textTheme.caption!.copyWith(decoration: TextDecoration.lineThrough,),)
                     ,SizedBox(width: 3,),
                     Text("You Save ₹15,801 (20% OFF)",style: Theme.of(context).textTheme.caption!.copyWith(
                       fontSize: 14,color: Utility.getColorFromHex(globalGreenColor)
@@ -134,7 +166,7 @@ class ProductDetails1 extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      );})
       // floatingActionButton:  Align(
       //   alignment: Alignment.bottomCenter,
       //   child: Row(

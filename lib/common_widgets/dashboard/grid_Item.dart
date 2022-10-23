@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:mobx/provider/dashboard/dashboard_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/utilities.dart';
 import 'package:mobx/model/product_model.dart' as pro;
+import 'package:provider/provider.dart';
+
+import '../../utils/routes.dart';
 
 
 
 
 
 class GridItem extends StatelessWidget {
-   GridItem({this.productData,Key? key}) : super(key: key);
+   GridItem({this.productData,required this.skuID,Key? key}) : super(key: key);
 
 pro.Items? productData;
+String skuID;
 
   Widget _listItem(BuildContext context){
     return Column(
@@ -57,7 +62,13 @@ pro.Items? productData;
     return Container(
       padding: EdgeInsets.all(10),
       child: Center(
-        child: _listItem(context),
+        child: GestureDetector(
+            onTap:(){
+              context.read<DashboardProvider>().setSkuId(skuID);
+              Navigator.pushNamed(
+                  context, Routes.productDetail1);
+            },
+            child: _listItem(context)),
       ),
     );
   }

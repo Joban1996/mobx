@@ -63,7 +63,7 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
       return Scaffold(
         appBar: AppBarCommon(
           AppBarTitle(context.read<DashboardProvider>().getCategoryName,
-              Strings.refurbished_mobiles_subTagLine),
+              context.read<DashboardProvider>().getSubCategoryName),
           appbar: AppBar(),
           onTapCallback: () {},
           leadingImage: GestureDetector(
@@ -311,7 +311,9 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                         onTap: () => Navigator.pushNamed(context, Routes.productDetail1),
-                        child: GridItem(productData: parsedProductData.products!.items![index],));
+                        child: GridItem(
+                          skuID: parsedProductData!.products!.items![index].sku!,
+                          productData: parsedProductData.products!.items![index],));
                   }
               );}),
             ],
