@@ -78,7 +78,7 @@ class ProductListing extends StatelessWidget {
                             context.read<DashboardProvider>().setInnerSubCateId(parsed.categories!.items![0].children![index].uid!);
                           },
                           child: HorizontalCircleBrandList(
-                              brandImage: 'assets/images/iphone_mini.png',
+                              brandImage: parsed.categories!.items![0].children![index].image.toString(),
                               brandName: parsed
                                   .categories!.items![0].children![index].name!,
                               colorName: Colors.grey),

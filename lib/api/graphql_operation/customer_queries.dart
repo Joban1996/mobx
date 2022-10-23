@@ -24,6 +24,7 @@ query categories(\$filters: CategoryFilterInput!){
       level
       name
       path
+      image
       children_count
       children {
         uid

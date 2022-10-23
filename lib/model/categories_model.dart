@@ -56,6 +56,7 @@ class Items {
   int? level;
   String? name;
   String? path;
+  String? image;
   String? childrenCount;
   List<Children>? children;
 
@@ -64,6 +65,7 @@ class Items {
         this.level,
         this.name,
         this.path,
+        this.image,
         this.childrenCount,
         this.children});
 
@@ -72,6 +74,7 @@ class Items {
     level = json['level'];
     name = json['name'];
     path = json['path'];
+    image = json['image'];
     childrenCount = json['children_count'];
     if (json['children'] != null) {
       children = <Children>[];
@@ -87,6 +90,7 @@ class Items {
     data['level'] = this.level;
     data['name'] = this.name;
     data['path'] = this.path;
+    data['image'] =  this.image;
     data['children_count'] = this.childrenCount;
     if (this.children != null) {
       data['children'] = this.children!.map((v) => v.toJson()).toList();
@@ -100,14 +104,16 @@ class Children {
   int? level;
   String? name;
   String? path;
+  String? image;
 
-  Children({this.uid, this.level, this.name, this.path});
+  Children({this.uid, this.level, this.name, this.path,this.image});
 
   Children.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
     level = json['level'];
     name = json['name'];
     path = json['path'];
+    image = json['image'];
   }
 
   Map<String, dynamic> toJson() {
@@ -116,6 +122,7 @@ class Children {
     data['level'] = this.level;
     data['name'] = this.name;
     data['path'] = this.path;
+    data['image'] = this.image;
     return data;
   }
 }

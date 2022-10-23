@@ -22,7 +22,7 @@ class HorizontalCircleBrandList extends StatelessWidget {
             shape: BoxShape.circle,
             color: colorName
           ),
-          child: Image.asset(brandImage),
+          child: brandImage != "null" ? Image.network(brandImage.toString()) : Image.asset("assets/images/iphone_mini.png"),
         ),
         Text(
           brandName,

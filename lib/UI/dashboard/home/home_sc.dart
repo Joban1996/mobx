@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
 
   final List<String> _exploreListText  = ["Refurbished Mobiles","Smart Watches","Tablets/iPads","Laptops","Headphones","Earphones"];
 
-  Widget _exploreItem(BuildContext context,String txt,List<Children> parsedData,String path,String cateId){
+  Widget _exploreItem(BuildContext context,String txt,List<Children> parsedData,String path,String cateId,String? img){
     return GestureDetector(
       onTap: () {
         List<String> split = path.split("/");
@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
             horizontalSpacing(widthInDouble: 0.01, context: context),
             SizedBox(
                 height: 55,width: 30,
-                child: Image.asset("assets/images/iphone_mini.png"))
+                child: img != "null" ? Image.network(img.toString()) : Image.asset("assets/images/iphone_mini.png"))
           ],
         ),
       ),
@@ -118,7 +118,7 @@ class HomeScreen extends StatelessWidget {
               alignment: Alignment.center,
               child: Wrap(
               children: parsedData.categories!.items!.map((element) =>
-                  _exploreItem(context, element.name.toString(),element.children!,element.path!,element.uid!)).toList(),
+                  _exploreItem(context, element.name.toString(),element.children!,element.path!,element.uid!,element.image.toString())).toList(),
           ),
             ),
 
