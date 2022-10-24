@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobx/utils/utilities.dart';
 
 class HorizontalCircleBrandList extends StatelessWidget {
   String brandImage, brandName;
-  Color colorName;
+  Color   colorName;
 
   HorizontalCircleBrandList(
       {Key? key,
@@ -16,17 +17,22 @@ class HorizontalCircleBrandList extends StatelessWidget {
     return Column(
       children: [
         Container(
+          height: getCurrentScreenHeight(context)*0.1,
+          width: getCurrentScreenHeight(context)*0.1,
           margin: EdgeInsets.only(right: 3, left: 3),
           padding: EdgeInsets.all(15),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: colorName
           ),
-          child: brandImage != "null" ? Image.network(brandImage.toString()) : Image.asset("assets/images/iphone_mini.png"),
+          child: brandImage != "null" ? Image.network(brandImage.toString()) : null,
         ),
-        Text(
-          brandName,
-          style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 10),
+        Padding(
+          padding: EdgeInsets.only(right: 2,left: 2,top: 4),
+          child: Text(
+            brandName,
+            style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 10),
+          ),
         )
       ],
     );

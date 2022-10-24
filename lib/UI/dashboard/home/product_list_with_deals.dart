@@ -130,7 +130,7 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                           child: HorizontalCircleBrandList(
                               brandImage: parsed.categories!.items![0].children![index].image.toString(),
                               brandName: parsed.categories!.items![0].children![index].name!,
-                              colorName: Colors.grey),
+                              colorName: Utility.getColorFromHex(globalGreyColor)),
                         );
                       })
               ),
@@ -140,7 +140,7 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                 padding: EdgeInsets.only(
                   left: MediaQuery.of(context).size.width * 0.02,
                   right: MediaQuery.of(context).size.width * 0.02,
-                  bottom: MediaQuery.of(context).size.height * 0.02,
+                  bottom: MediaQuery.of(context).size.height * 0.01,
                 ),
                 child: Text(Strings.today_deal),
               ),
@@ -192,8 +192,8 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                 padding: EdgeInsets.only(
                    left: MediaQuery.of(context).size.width*0.02,
                    right: MediaQuery.of(context).size.width*0.02,
-                  top: MediaQuery.of(context).size.height * 0.02,
-                  bottom: MediaQuery.of(context).size.height * 0.02,
+                  top: MediaQuery.of(context).size.height * 0.01,
+                  bottom: MediaQuery.of(context).size.height * 0.01,
                 ),
                 child: Text(Strings.all_phones),
               ),
@@ -220,10 +220,11 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
               GridView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 4/6,
+                  gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 4/5,
                     crossAxisSpacing: 1,
                     crossAxisCount: 2,
+
                   ),
                   itemCount: parsedProductData.products!.items!.length,
                   itemBuilder: (BuildContext context, int index) {

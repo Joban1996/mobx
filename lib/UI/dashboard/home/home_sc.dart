@@ -1,6 +1,7 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:mobx/model/home_banner_model.dart';
 import 'package:mobx/provider/dashboard/dashboard_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/routes.dart';
@@ -19,6 +20,8 @@ class HomeScreen extends StatelessWidget {
     initialPage: 0,
   );
   double? currentPage = 0;
+  
+  List urls = [];
 
 
   final List<String> _exploreListText  = ["Refurbished Mobiles","Smart Watches","Tablets/iPads","Laptops","Headphones","Earphones"];
@@ -33,11 +36,19 @@ class HomeScreen extends StatelessWidget {
         context.read<DashboardProvider>().setPath(split);
         Navigator.pushNamed(context, Routes.productListWithDeals);},
       child:
-      Padding(
-        padding: const EdgeInsets.only(top: 4 ,bottom: 8),
-        child: SizedBox(
+      img != "null" ? Container(
+        margin: EdgeInsets.all(2),
         height: getCurrentScreenHeight(context)*0.1,width: getCurrentScreenWidth(context)*0.3,
-    child: img != "null" ? Image.network(img.toString()) : Image.asset("assets/images/iphone_mini.png")),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(image: NetworkImage(img.toString()),fit: BoxFit.cover)
+        ),
+          ) :
+      Container(
+        margin: EdgeInsets.all(2),
+        height: getCurrentScreenHeight(context)*0.1,width: getCurrentScreenWidth(context)*0.3,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
+          color: Utility.getColorFromHex(globalGreyColor)
+        ),
       )
       /*Container(
         width: getCurrentScreenWidth(context)/2.3,
@@ -94,16 +105,18 @@ class HomeScreen extends StatelessWidget {
           "identifiers": "homepage-app-banner"
     }
     ),
-    builder: (QueryResult result, { VoidCallback? refetch, FetchMore? fetchMore }) {
-    if (result.hasException) {
+    builder: (QueryResult result1, { VoidCallback? refetch, FetchMore? fetchMore }) {
+    if (result1.hasException) {
     return Text(result.exception.toString());
     }
 
-    if (result.isLoading) {
+    if (result1.isLoading) {
     return globalLoader();
     }
-    var parsedData = CategoriesModel.fromJson(result.data!);
-    debugPrint("home page banner result >>>> ${result.data}");
+    var homeBannerData = HomeBannerModel.fromJson(result1.data!);
+    debugPrint("home page banner result >>>> ${result1.data}");
+    getIndex(homeBannerData.cmsBlocks!.items![0].content);
+    debugPrint("home page banner result >>>> ${urls}");
     return
           Container(
             padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -113,17 +126,21 @@ class HomeScreen extends StatelessWidget {
                 context.read<DashboardProvider>().setCurrentPage(val);
               },
               controller: _controller,
-              children: [
-                Card(
+              children:
+               urls.map((e) => Card(
+                   elevation: 5,
+                   child:  Image.network(e) )).toList()
+                /*Card(
                   elevation: 5,
-                    child: Image.network('https://media.mobex.in/media/wysiwyg/slide-1-sample.jpeg')),
+                    child:urls.isNotEmpty? Image.network(urls[0]) : Image.network('https://media.mobex.in/media/wysiwyg/slide-1-sample.jpeg')),
                 Card(
                     elevation: 5,
-                    child: Image.network('https://media.mobex.in/media/wysiwyg/slide-2-sample.jpeg')),
+                    child: urls.isNotEmpty? Image.network(urls[1]) :
+                    Image.network('https://media.mobex.in/media/wysiwyg/slide-2-sample.jpeg')),*/
                 /*Image.asset("assets/images/slider.png"),
                 Image.asset("assets/images/slider.png"),
                 Image.asset("assets/images/slider.png")*/
-              ],
+              ,
             ),
           );}),
           Align(
@@ -143,7 +160,8 @@ class HomeScreen extends StatelessWidget {
               alignment: Alignment.center,
               child: Wrap(
               children: parsedData.categories!.items!.map((element) =>
-                  _exploreItem(context, element.name.toString(),element.children!,element.path!,element.uid!,element.image.toString())).toList(),
+                  _exploreItem(context, element.name.toString(),element.children!,
+                      element.path!,element.uid!,element.image.toString())).toList(),
           ),
             ),
 
@@ -198,4 +216,13 @@ class HomeScreen extends StatelessWidget {
       )));
     } );
   }
+   void getIndex(htmlData) {
+     final urlRegExp = RegExp(
+         r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%.\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%\+.~#?&\/=]*)?");
+     final urlMatches = urlRegExp.allMatches(htmlData);
+      urls = urlMatches.map(
+             (urlMatch) => htmlData.substring(urlMatch.start, urlMatch.end))
+         .toList();
+     urls.forEach((x) => print("the value extract is $x"));
+   }
 }

@@ -69,7 +69,7 @@ class ProductDetails1 extends StatelessWidget {
                 SizedBox(
                   height:MediaQuery.of(context).size.height*0.30,
                   child:
-                  PageView(
+                  dataItem.mediaGallery!.isNotEmpty ? PageView(
                     onPageChanged: (val){
                       context.read<DashboardProvider>().setCurrentPage(val);
                     },
@@ -79,12 +79,12 @@ class ProductDetails1 extends StatelessWidget {
                         Image.network(dataItem.mediaGallery![0].url.toString()),
                         Image.network(dataItem.mediaGallery![0].url.toString()),
                       ],
-                  ),
+                  ): Image.asset("assets/images/iphone_pic.png"),
                 ),
-                   Padding(
+                  Padding(
                      padding: EdgeInsets.only(top: getCurrentScreenHeight(context)*0.04,
                          bottom: getCurrentScreenHeight(context)*0.02),
-                     child: Align(
+                     child: dataItem.mediaGallery!.isNotEmpty ? Align(
                        alignment: Alignment.center,
                        child: Consumer<DashboardProvider>(builder: (_,val,child){
                          return DotsIndicator(
@@ -93,7 +93,7 @@ class ProductDetails1 extends StatelessWidget {
                            position: val.getCurrentPage.toDouble(),
                          );
                        }),
-                     ),
+                     ): Container(),
                    ),
                 Text(dataItem.name??"Refurbished Apple iPhone 12 Mini White 128 GB ",style: Theme.of(context).textTheme.bodyText2,),
                 SizedBox(height: getCurrentScreenHeight(context)*0.01,),
