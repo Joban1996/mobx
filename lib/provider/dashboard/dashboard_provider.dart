@@ -33,7 +33,8 @@ class DashboardProvider with ChangeNotifier{
   String get getSkuID => _skuID;
   int get getCurrentPage =>  currentPage;
 
-  setCurrentPage(int val){
+  setCurrentPage(int val)
+  {
     currentPage = val;
     notifyListeners();
   }

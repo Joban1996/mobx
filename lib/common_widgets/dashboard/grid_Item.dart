@@ -40,7 +40,7 @@ String skuID;
                     style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 8,color: Colors.white),))
           ],
         ),
-          SizedBox(height: 5,),
+        SizedBox(height: 5,),
           Container(
               width: getCurrentScreenWidth(context)/2,
               child: Text(productData != null ? productData!.name.toString() :

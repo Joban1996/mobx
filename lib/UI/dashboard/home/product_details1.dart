@@ -30,7 +30,8 @@ class ProductDetails1 extends StatelessWidget {
       appBar: AppBarCommon(AppBarTitle(context.read<DashboardProvider>().getCategoryName,
           "Apple  > iPhone 12 Mini > Detail"),
         appbar: AppBar(), onTapCallback: (){},leadingImage: GestureDetector(
-            onTap: (){
+            onTap: ()
+            {
               context.read<DashboardProvider>().setCurrentPage(0);
               Navigator.pop(context);
             },
@@ -60,7 +61,7 @@ class ProductDetails1 extends StatelessWidget {
     var dataItem = parsed.products!.items![0];
     return
       Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         color: Colors.white.withOpacity(0.8),
         child: Stack(
           children: [
@@ -70,7 +71,8 @@ class ProductDetails1 extends StatelessWidget {
                   height:MediaQuery.of(context).size.height*0.30,
                   child:
                   PageView(
-                    onPageChanged: (val){
+                    onPageChanged: (val)
+                    {
                       context.read<DashboardProvider>().setCurrentPage(val);
                     },
                       controller: _controller,
