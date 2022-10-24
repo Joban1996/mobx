@@ -1,9 +1,11 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:mobx/UI/dashboard/home/product_details3.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/globally_common/app_button_leading.dart';
+import 'package:mobx/model/product_description_model.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/utilities.dart';
 
@@ -16,7 +18,8 @@ import '../../../utils/routes.dart';
 
 
 class ProductDetails2 extends StatelessWidget {
-  ProductDetails2({Key? key}) : super(key: key);
+  late Items dataItem;
+  ProductDetails2( this.dataItem,{Key? key}) : super(key: key);
 
   bool _checkbox = false;
 
@@ -56,20 +59,20 @@ Widget titleRow(BuildContext context,String txt){
         titleRow(context,"SPECIFICATIONS"),
         Row(
           children: [
-            Expanded(child: itemColumn("Brand","Apple",context)),
-            Expanded(child: itemColumn("Colour","White",context)),
+            Expanded(child: itemColumn("Brand","${dataItem.modelName}",context)),
+            Expanded(child: itemColumn("Colour",dataItem.colour.toString()??"-",context)),
           ],
         ),
         Row(
           children: [
-            Expanded(child: itemColumn("Weight","0.5 kg",context)),
-            Expanded(child: itemColumn("Dimensions","19 × 12 × 8 cm",context)),
+            Expanded(child: itemColumn("Weight",dataItem.itemWeight??"-",context)),
+            Expanded(child: itemColumn("Dimensions",dataItem.productDimensions??"-",context)),
           ],
         ),
         Row(
           children: [
-            Expanded(child: itemColumn("Memory Storage Capacity","64 GB",context)),
-            Expanded(child: itemColumn("Country of Origin","India",context)),
+            Expanded(child: itemColumn("Memory Storage Capacity","${dataItem.memoryStorageCapacity ?? "-"} GB",context)),
+            Expanded(child: itemColumn("Country of Origin",dataItem.countryOfManufacture??"-",context)),
           ],
         ),
         Row(
@@ -86,6 +89,7 @@ Widget titleRow(BuildContext context,String txt){
     children: [
       titleRow(context,title),
       SizedBox(height: getCurrentScreenHeight(context)*0.01,),
+      dataItem.description!=null?HtmlWidget('''${dataItem.description!.html}''',textStyle: Theme.of(context).textTheme.caption,):
       Text("Phone 11 Pro is the 13th generation premium flagship smartphone developed, manufactured, and marketed by the tech giant Apple Inc.",
       style: Theme.of(context).textTheme.caption,)
     ],

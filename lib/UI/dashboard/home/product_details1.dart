@@ -1,5 +1,6 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/UI/dashboard/home/product_details2.dart';
 import 'package:mobx/UI/dashboard/home/product_details3.dart';
@@ -26,6 +27,7 @@ class ProductDetails1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("the postID is ${context.read<DashboardProvider>().getSkuID}");
     return Scaffold(
       appBar: AppBarCommon(AppBarTitle(context.read<DashboardProvider>().getCategoryName,
           "Apple  > iPhone 12 Mini > Detail"),
@@ -36,7 +38,7 @@ class ProductDetails1 extends StatelessWidget {
               Navigator.pop(context);
             },
             child: Image.asset("assets/images/back_arrow.png"))
-          ,trailingAction: [Icon(Icons.star_border_outlined,color: Colors.black,),
+          ,trailingAction: [const Icon(Icons.star_border_outlined,color: Colors.black,),
           Image.asset("assets/images/lock.png")],
       ),
       body:
@@ -105,7 +107,7 @@ class ProductDetails1 extends StatelessWidget {
                     SizedBox(width: 3,),
                     Text(dataItem.priceRange!.minimumPrice!.regularPrice!.value.toString(),style: Theme.of(context).textTheme.caption!.copyWith(decoration: TextDecoration.lineThrough,),)
                     ,SizedBox(width: 3,),
-                    Text("You Save ₹15,801 (20% OFF)",style: Theme.of(context).textTheme.caption!.copyWith(
+                    Text("You Save ₹${dataItem.priceRange!.minimumPrice!.discount!.amountOff} (${dataItem.priceRange!.minimumPrice!.discount!.percentOff}% OFF)",style: Theme.of(context).textTheme.caption!.copyWith(
                       fontSize: 14,color: Utility.getColorFromHex(globalGreenColor)
                     ),)
                   ],
@@ -113,11 +115,12 @@ class ProductDetails1 extends StatelessWidget {
                 SizedBox(height: getCurrentScreenHeight(context)*0.01,),
                 Text("Inclusive of all taxes",style: Theme.of(context).textTheme.bodySmall,),
                 SizedBox(height: getCurrentScreenHeight(context)*0.01,),
-                Text("65+ Quality Checks",style: Theme.of(context).textTheme.bodySmall),
-                SizedBox(height: 3,),
-                Text("1 Year Warranty",style: Theme.of(context).textTheme.bodySmall),
-                SizedBox(height: 3,),
-                Text("Easy EMI Options Available",style: Theme.of(context).textTheme.bodySmall),
+                HtmlWidget('''${dataItem.shortDescription!.html}''',textStyle: Theme.of(context).textTheme.bodySmall,),
+                // Text("65+ Quality Checks",style: Theme.of(context).textTheme.bodySmall),
+                // SizedBox(height: 3,),
+                // Text("1 Year Warranty",style: Theme.of(context).textTheme.bodySmall),
+                // SizedBox(height: 3,),
+                // Text("Easy EMI Options Available",style: Theme.of(context).textTheme.bodySmall),
                 Divider(height: getCurrentScreenHeight(context)*0.03,),
                 Text("EMI OPTION",style: Theme.of(context).textTheme.bodyText2),
                 Row(
@@ -132,7 +135,7 @@ class ProductDetails1 extends StatelessWidget {
                 Divider(height: getCurrentScreenHeight(context)*0.03,),
                 // Text("SPECIFICATIONS",style: Theme.of(context).textTheme.bodyText2),
                 // SizedBox(height: getCurrentScreenHeight(context)*0.02,),
-                ProductDetails2(),
+                ProductDetails2(dataItem),
                 ProductDetails3(),
                 SizedBox(height: getCurrentScreenHeight(context)*0.05,),
                 // Row(
@@ -157,12 +160,12 @@ class ProductDetails1 extends StatelessWidget {
                 children: [
                   Expanded(child:
                   AppButtonLeading(leadingImage: "assets/images/lock.png", onTap: (){}, text: "ADD TO CART",
-                    btnColor: Utility.getColorFromHex("#E0E0E0"),)),
+                    btnColor: dataItem.stockStatus=="IN_STOCK"?Utility.getColorFromHex("#E0E0E0"):Utility.getColorFromHex("#E0E0E0").withOpacity(0.5),)),
                   SizedBox(width: getCurrentScreenWidth(context)*0.03,),
                   Expanded(child: AppButtonLeading(leadingImage: "assets/images/buy_now.png",
                     onTap: (){
-                      Navigator.pushNamed(context, Routes.shoppingCart);
-                    }, text: "BUY NOW",btnTxtColor: Utility.getColorFromHex(globalWhiteColor),)),
+                      dataItem.stockStatus=="IN_STOCK"?Navigator.pushNamed(context, Routes.shoppingCart):null;
+                    }, text: "BUY NOW",btnTxtColor: Utility.getColorFromHex(globalWhiteColor),btnColor: dataItem.stockStatus=="IN_STOCK"?Utility.getColorFromHex(globalOrangeColor):Utility.getColorFromHex("#E0E0E0").withOpacity(0.5),)),
                 ],
               ),
             ),

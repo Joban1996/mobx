@@ -81,8 +81,8 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
             return MaterialPageRoute(builder: (_) => OrdersHome());
           case productDetail1:
             return MaterialPageRoute(builder: (_) => ProductDetails1());
-          case productDetail2:
-            return MaterialPageRoute(builder: (_) => ProductDetails2());
+          // case productDetail2:
+          //   return MaterialPageRoute(builder: (_) => ProductDetails2());
           case productDetail3:
             return MaterialPageRoute(builder: (_) => ProductDetails3());
           case shoppingCart:
