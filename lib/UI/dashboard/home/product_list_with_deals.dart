@@ -169,7 +169,7 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                     }
                     debugPrint("products >>>>>>> ${result.data}");
                     var parsedProductData = pro.ProductModel.fromJson(result.data!);
-                    return parsed.categories!.items![0].children!.isEmpty ? SizedBox(
+                    return parsedProductData.products!.items!.isEmpty ? SizedBox(
                       height: getCurrentScreenHeight(context)/2.5,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,

@@ -20,6 +20,7 @@ class DashboardProvider with ChangeNotifier{
   String _uIDInnerSubCate = "";
   String _skuID = "";
   int currentPage = 0;
+  int currentPageDetail = 0;
 
 
   List<Children>? get getSubCate => _subCate;
@@ -31,11 +32,17 @@ class DashboardProvider with ChangeNotifier{
   String get getCategoryName => name;
   String get getSubCategoryName => subCateName;
   String get getSkuID => _skuID;
-  int get getCurrentPage =>  currentPage;
+  int get   getCurrentPage =>  currentPage;
+  int get   getCurrentPageDetail =>  currentPageDetail;
 
   setCurrentPage(int val)
   {
     currentPage = val;
+    notifyListeners();
+  }
+  setCurrentPageDetail(int val)
+  {
+    currentPageDetail = val;
     notifyListeners();
   }
 

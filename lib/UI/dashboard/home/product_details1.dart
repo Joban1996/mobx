@@ -34,7 +34,7 @@ class ProductDetails1 extends StatelessWidget {
         appbar: AppBar(), onTapCallback: (){},leadingImage: GestureDetector(
             onTap: ()
             {
-              context.read<DashboardProvider>().setCurrentPage(0);
+              context.read<DashboardProvider>().setCurrentPageDetail(0);
               Navigator.pop(context);
             },
             child: Image.asset("assets/images/back_arrow.png"))
@@ -69,23 +69,20 @@ class ProductDetails1 extends StatelessWidget {
           children: [
             ListView(
               children: [
-                SizedBox(
+                dataItem.mediaGallery!.isNotEmpty ? SizedBox(
                   height:MediaQuery.of(context).size.height*0.30,
                   child:
-                  PageView(
+                   PageView(
                     onPageChanged: (val)
                     {
-                      context.read<DashboardProvider>().setCurrentPage(val);
+                      context.read<DashboardProvider>().setCurrentPageDetail(val);
                     },
                       controller: _controller,
-                      children: [
-                       Image.network(dataItem.mediaGallery![0].url.toString()),
-                        Image.network(dataItem.mediaGallery![0].url.toString()),
-                        Image.network(dataItem.mediaGallery![0].url.toString()),
-                      ],
-                  ),
-                ),
-                   Padding(
+                      children:
+                      dataItem.mediaGallery!.map((e) =>
+                         Image.network(e.url.toString())).toList(),
+                  )) : Container(),
+                dataItem.mediaGallery!.isNotEmpty ?   Padding(
                      padding: EdgeInsets.only(top: getCurrentScreenHeight(context)*0.04,
                          bottom: getCurrentScreenHeight(context)*0.02),
                      child: Align(
@@ -93,12 +90,12 @@ class ProductDetails1 extends StatelessWidget {
                        child: Consumer<DashboardProvider>(builder: (_,val,child){
                          return DotsIndicator(
                            decorator: DotsDecorator(activeColor: Utility.getColorFromHex(globalOrangeColor)),
-                           dotsCount: 3,
-                           position: val.getCurrentPage.toDouble(),
+                           dotsCount: dataItem.mediaGallery!.length,
+                           position: val.getCurrentPageDetail.toDouble(),
                          );
                        }),
                      ),
-                   ),
+                   ) : Container(),
                 Text(dataItem.name??"Refurbished Apple iPhone 12 Mini White 128 GB ",style: Theme.of(context).textTheme.bodyText2,),
                 SizedBox(height: getCurrentScreenHeight(context)*0.01,),
                 Row(

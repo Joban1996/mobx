@@ -148,7 +148,7 @@ class HomeScreen extends StatelessWidget {
             child: Consumer<DashboardProvider>(builder: (_,val,child){
              return DotsIndicator(
                 decorator: DotsDecorator(activeColor: Utility.getColorFromHex(globalOrangeColor)),
-                dotsCount: 2,
+                dotsCount: urls.length,
                 position: val.getCurrentPage.toDouble(),
               );
             }),
