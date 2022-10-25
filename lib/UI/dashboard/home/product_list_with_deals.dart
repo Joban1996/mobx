@@ -105,7 +105,8 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
           child: ListView(
             //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              parsed.categories!.items![0].children!.isEmpty ? Container() : Container(
+              parsed.categories!.items![0].children!.isEmpty ? Container()
+                  : Container(
                 height: MediaQuery.of(context).size.height * 0.16,
                 padding:EdgeInsets.only(
                   left: MediaQuery.of(context).size.width * 0.02,
@@ -118,19 +119,24 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                       scrollDirection: Axis.horizontal,
                       itemCount: parsed.categories!.items![0].children!.length,
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            List<String> split = parsed.categories!.items![0].children![index].path!.split("/");
-                            context.read<DashboardProvider>().setInnerPath(split);
-                            context.read<DashboardProvider>().setSubCategoryName(parsed.categories!.items![0].children![index].name!);
-                            context.read<DashboardProvider>().setSubCategoryID(parsed.categories!.items![0].children![index].uid!);
-                            print("id for sub cate products >>>> ${parsed.categories!.items![0].children![index].uid}");
-                            Navigator.pushNamed(context, Routes.productListing);
-                          },
-                          child: HorizontalCircleBrandList(
-                              brandImage: parsed.categories!.items![0].children![index].image.toString(),
-                              brandName: parsed.categories!.items![0].children![index].name!,
-                              colorName: Utility.getColorFromHex(globalGreyColor)),
+                        return Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                List<String> split = parsed.categories!.items![0].children![index].path!.split("/");
+                                context.read<DashboardProvider>().setInnerPath(split);
+                                context.read<DashboardProvider>().setSubCategoryName(parsed.categories!.items![0].children![index].name!);
+                                context.read<DashboardProvider>().setSubCategoryID(parsed.categories!.items![0].children![index].uid!);
+                                print("id for sub cate products >>>> ${parsed.categories!.items![0].children![index].uid}");
+                                Navigator.pushNamed(context, Routes.productListing);
+                              },
+                              child: HorizontalCircleBrandList(
+                                  brandImage: parsed.categories!.items![0].children![index].image.toString(),
+                                  brandName: parsed.categories!.items![0].children![index].name!,
+                                  colorName: Colors.grey),
+                            ),
+                            verticalSpacing(heightInDouble: 0.02, context: context),
+                          ],
                         );
                       })
               ),

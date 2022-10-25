@@ -93,8 +93,8 @@ class Utility {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: new SingleChildScrollView(
-              child: new ListBody(
+            content: SingleChildScrollView(
+              child: ListBody(
                 children: <Widget>[
                   Expanded(
                     child: GridView.count(
@@ -270,7 +270,8 @@ whiteTextStyle(double _fontSize) {
       fontSize: _fontSize);
 }
 
-bool validateStructure(String value){
+bool validateStructure(String value)
+{
   String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
   RegExp regExp = new RegExp(pattern);
   return regExp.hasMatch(value);

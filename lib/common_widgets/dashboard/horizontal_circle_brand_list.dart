@@ -3,7 +3,7 @@ import 'package:mobx/utils/utilities.dart';
 
 class HorizontalCircleBrandList extends StatelessWidget {
   String brandImage, brandName;
-  Color   colorName;
+  Color colorName;
 
   HorizontalCircleBrandList(
       {Key? key,
@@ -15,6 +15,7 @@ class HorizontalCircleBrandList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
           height: getCurrentScreenHeight(context)*0.1,
@@ -27,12 +28,12 @@ class HorizontalCircleBrandList extends StatelessWidget {
           ),
           child: brandImage != "null" ? Image.network(brandImage.toString()) : null,
         ),
-        Padding(
-          padding: EdgeInsets.only(right: 2,left: 2,top: 4),
-          child: Text(
-            brandName,
-            style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 10),
-          ),
+        Text(
+          brandName,
+          textAlign: TextAlign.center,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 10),
         )
       ],
     );

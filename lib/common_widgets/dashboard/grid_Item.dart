@@ -40,13 +40,13 @@ String skuID;
                     style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 8,color: Colors.white),))
           ],
         ),
-          SizedBox(height: 5,),
+        const SizedBox(height: 5,),
           Container(
               width: getCurrentScreenWidth(context)/2,
               child: Text(productData != null ? productData!.name.toString() :
               "Refurbished Apple iPhone 12 128 GB",
                 style: Theme.of(context).textTheme.caption,maxLines: 2,)),
-          SizedBox(height: 5,),
+          const SizedBox(height: 5,),
           Row(children: [
             Text(productData != null ? productData!.priceRange!.minimumPrice!.finalPrice!.value.toString() :"₹55,099",style: Theme.of(context).textTheme.bodyText2,),
             SizedBox(width: 3,),

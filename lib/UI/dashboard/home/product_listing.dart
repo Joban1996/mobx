@@ -63,7 +63,8 @@ class ProductListing extends StatelessWidget {
             var parsed = CategoriesModel.fromJson(result.data!);
             return Column(
               children: [
-                parsed.categories!.items!.isEmpty ? const Text("No Data Found..") : parsed.categories!.items![0].children!.isEmpty ? Container() : Container(
+                parsed.categories!.items!.isEmpty ? const Text("No Data Found..") : parsed.categories!.items![0].children!.isEmpty ? Container()
+                    : Container(
                   alignment: Alignment.centerLeft,
                   height: getCurrentScreenHeight(context)/7,
                   padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
