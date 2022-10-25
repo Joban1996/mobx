@@ -38,6 +38,7 @@ class ProductDetails1 extends StatelessWidget {
               Navigator.pop(context);
             },
             child: Image.asset("assets/images/back_arrow.png"))
+
           ,trailingAction: [const Icon(Icons.star_border_outlined,color: Colors.black,),
           Image.asset("assets/images/lock.png")],
       ),
