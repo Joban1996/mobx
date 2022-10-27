@@ -30,7 +30,7 @@ class ProductDetails1 extends StatelessWidget {
     print("the postID is ${context.read<DashboardProvider>().getSkuID}");
     return Scaffold(
       appBar: AppBarCommon(AppBarTitle(context.read<DashboardProvider>().getCategoryName,
-          "Apple  > iPhone 12 Mini > Detail"),
+          "${context.read<DashboardProvider>().getSubCategoryName}  > Detail"),
         appbar: AppBar(), onTapCallback: (){},leadingImage: GestureDetector(
             onTap: ()
             {
@@ -135,7 +135,7 @@ class ProductDetails1 extends StatelessWidget {
                 // Text("SPECIFICATIONS",style: Theme.of(context).textTheme.bodyText2),
                 // SizedBox(height: getCurrentScreenHeight(context)*0.02,),
                 ProductDetails2(dataItem),
-                ProductDetails3(),
+                ProductDetails3(sku: context.read<DashboardProvider>().getSkuID ,),
                 SizedBox(height: getCurrentScreenHeight(context)*0.05,),
                 // Row(
                 //   children: [

@@ -6,8 +6,10 @@ import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/globally_common/app_button_leading.dart';
 import 'package:mobx/model/product_description_model.dart';
+import 'package:mobx/provider/dashboard/product_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/utilities.dart';
+import 'package:provider/provider.dart';
 
 import '../../../utils/routes.dart';
 
@@ -32,7 +34,7 @@ Widget itemColumn(String txt1,String txt2,BuildContext context){
     ],
   );
 }
-Widget titleRow(BuildContext context,String txt){
+Widget titleRow(BuildContext context,String txt,bool val,{required VoidCallback onPressed}){
   return Row(
     children: [
       Expanded(child: Text(txt,style: Theme.of(context).textTheme.bodyText2)),
@@ -46,17 +48,17 @@ Widget titleRow(BuildContext context,String txt){
             }
         ),
       ),
-      IconButton(
-          padding: EdgeInsets.zero,
-          constraints: BoxConstraints(),
-          onPressed: (){}, icon: Icon(Icons.keyboard_arrow_down_rounded))
+       IconButton(
+              padding: EdgeInsets.zero,
+              constraints: BoxConstraints(),
+              onPressed: onPressed, icon: val ? Icon(Icons.keyboard_arrow_down_rounded) : Icon(Icons.keyboard_arrow_up_rounded))
     ],
   );
 }
   Widget specifications(BuildContext context){
     return Column(
       children: [
-        titleRow(context,"SPECIFICATIONS"),
+        titleRow(context,"SPECIFICATIONS",false,onPressed: (){}),
         Row(
           children: [
             Expanded(child: itemColumn("Brand","${dataItem.modelName}",context)),
@@ -84,14 +86,13 @@ Widget titleRow(BuildContext context,String txt){
       ],
     );
   }
-  Widget descriptions(BuildContext context,String title){
+  Widget descriptions(BuildContext context,String title,String descData,bool val,VoidCallback onPressed){
   return Column(
     children: [
-      titleRow(context,title),
+      titleRow(context,title,val,onPressed: onPressed),
       SizedBox(height: getCurrentScreenHeight(context)*0.01,),
-      dataItem.description!=null?HtmlWidget('''${dataItem.description!.html}''',textStyle: Theme.of(context).textTheme.caption,):
-      Text("Phone 11 Pro is the 13th generation premium flagship smartphone developed, manufactured, and marketed by the tech giant Apple Inc.",
-      style: Theme.of(context).textTheme.caption,)
+     title == "PRODUCT DESCRIPTION"  ? val ? Container() : HtmlWidget(descData,textStyle: Theme.of(context).textTheme.bodySmall,)  :
+     HtmlWidget(descData,textStyle: Theme.of(context).textTheme.bodySmall,)
     ],
   );
   }
@@ -105,13 +106,24 @@ Widget titleRow(BuildContext context,String txt){
       children: [
         specifications(context),
         dividerCommon(context),
-        descriptions(context,"PRODUCT DESCRIPTION"),
+      Consumer<ProductProvider>(
+      builder: (_,val,child){
+    return descriptions(context,"PRODUCT DESCRIPTION",dataItem.description!.html.toString(),val.getIsExpand,(){
+      context.read<ProductProvider>().setIsExpand();
+    });}),
         dividerCommon(context),
-        descriptions(context,"SHIPPING POLICY"),
+        descriptions(context,
+            "SHIPPING POLICY","Mobex is committed to deliver the best products to its "
+                "users for which we perform 65+ quality checks. Thus, your order will b"
+                "e delivered in 5-7 working days.",false,(){}),                                 //Shipping data
         dividerCommon(context),
-        descriptions(context,"REFUND POLICY"),
+        descriptions(context,"REFUND POLICY","We have 100% refund policy If you change your"
+            " mind before the order is dispatched from our warehouse. Once the order is dispatched an"
+            "d delivered to the customer then we have the Repair",false,(){}),                                   //refund policy data
         dividerCommon(context),
-        descriptions(context,"FAQ"),
+        descriptions(context,"FAQ","What are Refurbished Products? Refurbished products are devices "
+            "restored to full working condition, as new, as they were either pre-owned or used as display models"
+            " by the company or retailers.",false,(){}),
         dividerCommon(context),
         // Padding(
         //   padding: const EdgeInsets.all(10.0),
