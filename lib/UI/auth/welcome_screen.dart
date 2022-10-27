@@ -27,15 +27,18 @@ class WelcomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: EdgeInsets.only(
-                //left: MediaQuery.of(context).size.width*0.02,
-                  right: MediaQuery.of(context).size.width*0.04
+            GestureDetector(
+              onTap: () => Navigator.of(context).pushReplacementNamed(Routes.loginScreen),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  //left: MediaQuery.of(context).size.width*0.02,
+                    right: MediaQuery.of(context).size.width*0.04
+                ),
+                child: const Text("Skip",
+                  style: TextStyle(
+                      color: Colors.white
+                  ),),
               ),
-              child: Text("Skip",
-                style: const TextStyle(
-                    color: Colors.white
-                ),),
             ),
             Align(
               alignment: Alignment.center,
@@ -85,7 +88,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
             GestureDetector(
                 onTap: (){
-                 Navigator.pushNamed(context, Routes.loginScreen);
+                  Navigator.of(context).pushReplacementNamed(Routes.loginScreen);
                 },
                 child: Padding(
                   padding: EdgeInsets.only(

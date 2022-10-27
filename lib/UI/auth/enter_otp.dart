@@ -93,6 +93,7 @@ class _EnterOtpState extends State<EnterOtp> {
                         style:  Theme.of(context).textTheme.caption!.copyWith(color: Utility.getColorFromHex("#5F5F5F")),))),
               SizedBox(height: getCurrentScreenHeight(context)*0.03,),
               AppButton(onTap: () {
+                if(otpController.text.isNotEmpty){
                 context.read<LoginProvider>().setLoadingBool(true);
                 context.read<LoginProvider>().hitOtpVerifyMutation(phone:
                 context.read<LoginProvider>().getMobileNumber,otp: otpController.text).then((value){
@@ -104,7 +105,7 @@ class _EnterOtpState extends State<EnterOtp> {
                   context.read<LoginProvider>().setLoadingBool(false);
                 });
 
-              }, text: "VERIFY OTP")
+              }}, text: "VERIFY OTP")
             ],
           ),
         ),

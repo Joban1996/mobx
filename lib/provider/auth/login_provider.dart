@@ -51,7 +51,6 @@ class LoginProvider with ChangeNotifier{
         mNumber));
     debugPrint("${results.data}");
     if (results.data?['loginOTP']['status'] == true) {
-      debugPrint("enable noti mutation result >>> ${results.data!['loginOTP']}");
       Utility.showSuccessMessage("${results.data!['loginOTP']['message']}");
       return true;
     }else{

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/UI/auth/login_screen.dart';
 import 'package:mobx/UI/auth/splash_screen.dart';
+import 'package:mobx/UI/auth/welcome_screen.dart';
 import 'package:mobx/UI/dashboard/dashboard_screen.dart';
 import 'package:mobx/UI/dashboard/home/addresses_screen.dart';
 import 'package:mobx/UI/dashboard/home/compare_screen.dart';
@@ -62,9 +63,12 @@ class Routes {
   static const faqScreen="FAQScreen";
   static const aboutUs="aboutUs";
   static const orderDetails="oderDetails";
+  static const welcomeScreen = "welcomeScreen";
 
 static Route<dynamic> generatedRoute(RouteSettings settings){
         switch(settings.name){
+          case welcomeScreen:
+            return MaterialPageRoute(builder: (_) => WelcomeScreen());
           case loginScreen:
             return MaterialPageRoute(builder: (_) => LoginScreen());
           case dashboardScreen:
