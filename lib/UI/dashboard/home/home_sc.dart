@@ -185,7 +185,6 @@ class HomeScreen extends StatelessWidget {
                 if (result.isLoading) {
                   return globalLoader();
                 }
-                debugPrint("products >>>>>>> ${result.data}");
                 var parsedProductData = pro.ProductModel.fromJson(result.data!);
                 return parsedData.categories!.items![0].children!.isEmpty ? SizedBox(
             height: getCurrentScreenHeight(context)/2.5,

@@ -7,7 +7,7 @@ import 'package:mobx/utils/constants/strings.dart';
 
 
 
-class DashboardProvider with ChangeNotifier{
+class  DashboardProvider with ChangeNotifier{
 
   int selectedIndex = 0;
   List<Children>?  _subCate;

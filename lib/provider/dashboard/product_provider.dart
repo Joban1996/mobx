@@ -11,8 +11,16 @@ class ProductProvider with ChangeNotifier{
 
 
 bool isExpand = false;
+int _itemIndex = -1;
 
 bool  get getIsExpand => isExpand;
+int get getItemIndex => _itemIndex;
+
+setItemIndex(int val){
+  _itemIndex = val;
+  notifyListeners();
+}
+
 
 setIsExpand(){
   isExpand = !isExpand;

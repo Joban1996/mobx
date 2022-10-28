@@ -22,7 +22,7 @@ class ProductDetails3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //padding: EdgeInsets.all(10),
+      padding: EdgeInsets.only(top: 10),
       color: Colors.white.withOpacity(0.8),
       child:
 

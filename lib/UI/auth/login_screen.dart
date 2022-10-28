@@ -7,12 +7,7 @@ import 'package:mobx/provider/auth/login_provider.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
 import 'package:provider/provider.dart';
-
 import '../../common_widgets/globally_common/common_loader.dart';
-
-
-
-
 
 
 
@@ -22,7 +17,7 @@ static bool checkedValue = false;
 
 
 Widget appBarTitle(BuildContext context,String titleText){
-  return Text(titleText,style:  Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w600),);
+  return Text(titleText,style:  Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600),);
 }
 
 final phoneController = TextEditingController();
@@ -65,9 +60,9 @@ final phoneController = TextEditingController();
                 CheckboxListTile(
                     title: RichText(text: TextSpan(
                         children: [
-                          TextSpan(text: "I agree to the",style: Theme.of(context).textTheme.caption),
+                          TextSpan(text: "I agree to the",style: Theme.of(context).textTheme.bodySmall),
                           TextSpan(text: "Terms & Conditions",style:
-                          Theme.of(context).textTheme.caption!.copyWith(color: Utility.getColorFromHex("#1D4AE7"))),
+                          Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex("#1D4AE7"))),
                         ]
                     )
                     ), //    <-- label
