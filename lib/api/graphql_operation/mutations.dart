@@ -21,4 +21,34 @@ class QueryMutations{
       """;
   }
 
+  String addToCart(String cartId,String skuID) {
+    return """
+mutation {
+  addProductsToCart(
+    cartId: $cartId
+    cartItems: [
+      {
+        quantity: 1
+        sku: $skuID
+      }
+    ]
+  ) {
+    cart {
+      items {
+        product {
+          name
+          sku
+        }
+        quantity
+      }
+    }
+    user_errors {
+      code
+      message
+    }
+  }
+}  
+      """;
+  }
+
 }

@@ -4,7 +4,6 @@ import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
-
 import '../../../common_widgets/dashboard/item_info_arrow_forward.dart';
 import '../../../common_widgets/globally_common/app_button.dart';
 

@@ -168,3 +168,18 @@ var homePageBanner = '''query cmsBlocks(\$identifiers: [String]){
   }
 }
 ''';
+
+var generateCartId =  '''query customerCart{ 
+  customerCart{
+    id
+    items {
+      id
+      product {
+        name
+        sku
+      }
+      quantity
+    }
+  }
+}
+''';

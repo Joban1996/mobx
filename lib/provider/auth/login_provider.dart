@@ -64,7 +64,7 @@ class LoginProvider with ChangeNotifier{
   }
 
 
-  Future hitOtpVerifyMutation({required String phone,required String otp}) async {
+  Future hitOtpVerifyQuery({required String phone,required String otp}) async {
     print("query results >>>> ${phone}");
     QueryOptions otpVerifyQuery = QueryOptions(
         document: gql(loginOtpVerify),

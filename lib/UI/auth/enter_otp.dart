@@ -79,7 +79,7 @@ class _EnterOtpState extends State<EnterOtp> {
               TextField(
                 controller: otpController,
                 inputFormatters: [LengthLimitingTextInputFormatter(10),],
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.bodyMedium,
                 keyboardType: TextInputType.phone,
                 decoration: CommonStyle.textFieldStyle(context,isLeading: false),
               ),
@@ -90,12 +90,12 @@ class _EnterOtpState extends State<EnterOtp> {
                   child: GestureDetector(
                       onTap: () => context.read<LoginProvider>().remainingTime == 0 ? hitWebService(): {},
                       child: Text("Resent OTP | 00:${context.watch<LoginProvider>().getRemainingTime<10 ? "0":""}${context.watch<LoginProvider>().getRemainingTime}",
-                        style:  Theme.of(context).textTheme.caption!.copyWith(color: Utility.getColorFromHex("#5F5F5F")),))),
+                        style:  Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex("#5F5F5F")),))),
               SizedBox(height: getCurrentScreenHeight(context)*0.03,),
               AppButton(onTap: () {
                 if(otpController.text.isNotEmpty){
                 context.read<LoginProvider>().setLoadingBool(true);
-                context.read<LoginProvider>().hitOtpVerifyMutation(phone:
+                context.read<LoginProvider>().hitOtpVerifyQuery(phone:
                 context.read<LoginProvider>().getMobileNumber,otp: otpController.text).then((value){
                   if(value){
                     timer?.cancel();

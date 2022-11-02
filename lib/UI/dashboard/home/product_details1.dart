@@ -7,7 +7,11 @@ import 'package:mobx/UI/dashboard/home/product_details3.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/globally_common/app_button_leading.dart';
+import 'package:mobx/common_widgets/globally_common/common_loader.dart';
 import 'package:mobx/model/product_description_model.dart' as pData;
+import 'package:mobx/provider/auth/login_provider.dart';
+import 'package:mobx/provider/dashboard/product_provider.dart';
+import 'package:mobx/utils/app.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
@@ -45,9 +49,10 @@ class ProductDetails1 extends StatelessWidget {
             Image.asset("assets/images/lock.png")
           ],
         ),
-        body: Query(
+        body: CommonLoader(
+            screenUI: Query(
             options:
-                QueryOptions(document: gql(productDescription), variables: {
+            QueryOptions(document: gql(productDescription), variables: {
               'filter': {
                 'sku': {'eq': context.read<DashboardProvider>().getSkuID}
               }
@@ -57,7 +62,6 @@ class ProductDetails1 extends StatelessWidget {
               if (result.hasException) {
                 return Text(result.exception.toString());
               }
-
               if (result.isLoading) {
                 return globalLoader();
               }
@@ -72,10 +76,10 @@ class ProductDetails1 extends StatelessWidget {
                       children: [
                         dataItem.mediaGallery!.isNotEmpty
                             ? SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.30,
-                                child: Consumer<DashboardProvider>(
-                                    builder: (_, value, child) {
+                            height:
+                            MediaQuery.of(context).size.height * 0.30,
+                            child: Consumer<DashboardProvider>(
+                                builder: (_, value, child) {
                                   return PageView(
                                     onPageChanged: (val) {
                                       value.setCurrentPageDetail(val);
@@ -83,32 +87,32 @@ class ProductDetails1 extends StatelessWidget {
                                     controller: _controller,
                                     children: dataItem.mediaGallery!
                                         .map((e) =>
-                                            Image.network(e.url.toString()))
+                                        Image.network(e.url.toString()))
                                         .toList(),
                                   );
                                 }))
                             : Container(),
                         dataItem.mediaGallery!.isNotEmpty
                             ? Padding(
-                                padding: EdgeInsets.only(
-                                    top: getCurrentScreenHeight(context) * 0.04,
-                                    bottom:
-                                        getCurrentScreenHeight(context) * 0.02),
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Consumer<DashboardProvider>(
-                                      builder: (_, val, child) {
-                                    return DotsIndicator(
-                                      decorator: DotsDecorator(
-                                          activeColor: Utility.getColorFromHex(
-                                              globalOrangeColor)),
-                                      dotsCount: dataItem.mediaGallery!.length,
-                                      position:
-                                          val.getCurrentPageDetail.toDouble(),
-                                    );
-                                  }),
-                                ),
-                              )
+                          padding: EdgeInsets.only(
+                              top: getCurrentScreenHeight(context) * 0.04,
+                              bottom:
+                              getCurrentScreenHeight(context) * 0.02),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Consumer<DashboardProvider>(
+                                builder: (_, val, child) {
+                                  return DotsIndicator(
+                                    decorator: DotsDecorator(
+                                        activeColor: Utility.getColorFromHex(
+                                            globalOrangeColor)),
+                                    dotsCount: dataItem.mediaGallery!.length,
+                                    position:
+                                    val.getCurrentPageDetail.toDouble(),
+                                  );
+                                }),
+                          ),
+                        )
                             : Container(),
                         Text(
                           dataItem.name ??
@@ -134,9 +138,9 @@ class ProductDetails1 extends StatelessWidget {
                                   .priceRange!.minimumPrice!.regularPrice!.value
                                   .toString(),
                               style:
-                                  Theme.of(context).textTheme.caption!.copyWith(
-                                        decoration: TextDecoration.lineThrough,
-                                      ),
+                              Theme.of(context).textTheme.caption!.copyWith(
+                                decoration: TextDecoration.lineThrough,
+                              ),
                             ),
                             SizedBox(
                               width: 3,
@@ -147,9 +151,9 @@ class ProductDetails1 extends StatelessWidget {
                                   .textTheme
                                   .caption!
                                   .copyWith(
-                                      fontSize: 14,
-                                      color: Utility.getColorFromHex(
-                                          globalGreenColor)),
+                                  fontSize: 14,
+                                  color: Utility.getColorFromHex(
+                                      globalGreenColor)),
                             )
                           ],
                         ),
@@ -167,11 +171,6 @@ class ProductDetails1 extends StatelessWidget {
                           '''${dataItem.shortDescription!.html}''',
                           textStyle: Theme.of(context).textTheme.bodySmall,
                         ),
-                        // Text("65+ Quality Checks",style: Theme.of(context).textTheme.bodySmall),
-                        // SizedBox(height: 3,),
-                        // Text("1 Year Warranty",style: Theme.of(context).textTheme.bodySmall),
-                        // SizedBox(height: 3,),
-                        // Text("Easy EMI Options Available",style: Theme.of(context).textTheme.bodySmall),
                         Divider(
                           height: getCurrentScreenHeight(context) * 0.03,
                         ),
@@ -188,17 +187,15 @@ class ProductDetails1 extends StatelessWidget {
                             Image.asset("assets/images/zest_brand.png"),
                             Expanded(
                                 child: Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              color: Utility.getColorFromHex(
-                                  globalSubTextGreyColor),
-                            ))
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: Utility.getColorFromHex(
+                                      globalSubTextGreyColor),
+                                ))
                           ],
                         ),
                         Divider(
                           height: getCurrentScreenHeight(context) * 0.03,
                         ),
-                        // Text("SPECIFICATIONS",style: Theme.of(context).textTheme.bodyText2),
-                        // SizedBox(height: getCurrentScreenHeight(context)*0.02,),
                         ProductDetails2(dataItem),
                         dividerCommon(context),
                         ProductDetails3(
@@ -207,80 +204,42 @@ class ProductDetails1 extends StatelessWidget {
                         SizedBox(
                           height: getCurrentScreenHeight(context) * 0.05,
                         ),
-                        // Row(
-                        //   children: [
-                        //     Expanded(child: AppButtonLeading(leadingImage: "assets/images/lock.png", onTap: (){}, text: "ADD TO CART",
-                        //       btnColor: Utility.getColorFromHex("#E0E0E0"),)),
-                        //     SizedBox(width: getCurrentScreenWidth(context)*0.03,),
-                        //     Expanded(child: AppButtonLeading(leadingImage: "assets/images/buy_now.png",
-                        //         onTap: (){
-                        //           Navigator.pushNamed(context, Routes.productDetail2);
-                        //         }, text: "BUY NOW",btnTxtColor: Utility.getColorFromHex(globalWhiteColor),)),
-                        //   ],
-                        // ),
-                        //SizedBox(height: getCurrentScreenHeight(context)*0.02,),
                       ],
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                              child: AppButtonLeading(
+                      child: Consumer3<ProductProvider,LoginProvider,DashboardProvider>(
+                        builder: (_,val1,val2,val3,child){
+                          return AppButtonLeading(
                             leadingImage: "assets/images/lock.png",
-                            onTap: () {},
+                            onTap: () async{
+                              val2.setLoadingBool(true);
+                              if(App.localStorage.getString(PREF_CARD_ID) == null){
+                             await val1.hitCreateCartID().then((value) {
+                                val2.setLoadingBool(false);
+                              });}
+                              val1.hitAddToCartMutation(cartId: App.localStorage.getString(PREF_CARD_ID)!,
+                                  skuId: val3.getSkuID).then((value) {
+                                val2.setLoadingBool(false);
+                                    if(value){
+                                      Utility.showSuccessMessage("Item added!");
+                                      Navigator.pushNamed(context, Routes.shoppingCart);
+                                    }
+                              });
+                            },
                             text: "ADD TO CART",
                             btnColor: dataItem.stockStatus == "IN_STOCK"
                                 ? Utility.getColorFromHex("#E0E0E0")
                                 : Utility.getColorFromHex("#E0E0E0")
-                                    .withOpacity(0.5),
-                          )),
-                          SizedBox(
-                            width: getCurrentScreenWidth(context) * 0.03,
-                          ),
-                          Expanded(
-                              child: AppButtonLeading(
-                            leadingImage: "assets/images/buy_now.png",
-                            onTap: () {
-                              dataItem.stockStatus == "IN_STOCK"
-                                  ? Navigator.pushNamed(
-                                      context, Routes.shoppingCart)
-                                  : null;
-                            },
-                            text: "BUY NOW",
-                            btnTxtColor:
-                                Utility.getColorFromHex(globalWhiteColor),
-                            btnColor: dataItem.stockStatus == "IN_STOCK"
-                                ? Utility.getColorFromHex(globalOrangeColor)
-                                : Utility.getColorFromHex("#E0E0E0")
-                                    .withOpacity(0.5),
-                          )),
-                        ],
+                                .withOpacity(0.5),
+                          );
+                        },
                       ),
                     ),
                   ],
                 ),
               );
-            })
-        // floatingActionButton:  Align(
-        //   alignment: Alignment.bottomCenter,
-        //   child: Row(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     children: [
-        //       Expanded(child:
-        //       AppButtonLeading(leadingImage: "assets/images/lock.png", onTap: (){}, text: "ADD TO CART",
-        //         btnColor: Utility.getColorFromHex("#E0E0E0"),)),
-        //       SizedBox(width: getCurrentScreenWidth(context)*0.03,),
-        //       Expanded(child: AppButtonLeading(leadingImage: "assets/images/buy_now.png",
-        //         onTap: (){
-        //           Navigator.pushNamed(context, Routes.shoppingCart);
-        //         }, text: "BUY NOW",btnTxtColor: Utility.getColorFromHex(globalWhiteColor),)),
-        //     ],
-        //   ),
-        // ),
+            }))
         );
   }
 }

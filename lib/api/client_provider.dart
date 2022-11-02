@@ -27,6 +27,7 @@ class GraphQLClientAPI {
       mutate: policies,
     ),
   );
+
   static client() => ValueNotifier<GraphQLClient>(
     GraphQLClient(
       cache: GraphQLCache(store: HiveStore()),

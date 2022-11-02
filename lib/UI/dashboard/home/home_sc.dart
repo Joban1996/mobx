@@ -107,7 +107,7 @@ class HomeScreen extends StatelessWidget {
     ),
     builder: (QueryResult result1, { VoidCallback? refetch, FetchMore? fetchMore }) {
     if (result1.hasException) {
-    return Text(result.exception.toString());
+        return Text(result.exception.toString());
     }
 
     if (result1.isLoading) {

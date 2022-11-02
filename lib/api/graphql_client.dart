@@ -63,6 +63,19 @@ class GraphQlClient {
       },
     );
   }
+
+  static addToCart(String mutation,String cartId,String skuId) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'cartId': cartId,
+        'quantity': 1,
+        'sku':skuId
+      },
+    );
+  }
+
   static loginOTPVerify(String query, String mobileNo,String otp) {
     print(query);
     return QueryOptions(
