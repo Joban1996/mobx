@@ -28,26 +28,6 @@ class ProductListWithDeals extends StatefulWidget {
 }
 
 class _ProductListWithDealsState extends State<ProductListWithDeals> {
-  List<Map> todaysDealList = [
-    {
-      'image': 'assets/images/iphone_pic.png',
-      'title': 'Refurbished Apple iPhone 12 128 GB',
-      'price': '₹55,099',
-      'actual_price': '₹70,099'
-    },
-    {
-      'image': 'assets/images/iphone_pic.png',
-      'title': 'Refurbished Apple iPhone 12 128 GB',
-      'price': '₹55,099',
-      'actual_price': '₹70,099'
-    },
-    {
-      'image': 'assets/images/iphone_pic.png',
-      'title': 'Refurbished Apple iPhone 12 128 GB',
-      'price': '₹55,099',
-      'actual_price': '₹70,099'
-    }
-  ];
 
   final PageController _pageController = PageController(
     initialPage: 0,

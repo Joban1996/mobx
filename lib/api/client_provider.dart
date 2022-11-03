@@ -6,7 +6,7 @@ import '../utils/app.dart';
 import '../utils/constants/constants_colors.dart';
 
 final policies = Policies(
-  fetch: FetchPolicy.noCache,
+  fetch: FetchPolicy.networkOnly,
 );
 
 class GraphQLClientAPI {
@@ -35,6 +35,11 @@ class GraphQLClientAPI {
         getToken: () async =>
         'Bearer ${App.localStorage.getString(PREF_TOKEN)}',
       ).concat(HttpLink(GraphQlClient.GRAPH_URL)),
+      // defaultPolicies: DefaultPolicies(
+      //   watchQuery: policies,
+      //   query: policies,
+      //   mutate: policies,
+      // ),
     ),
   );
 

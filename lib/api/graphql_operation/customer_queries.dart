@@ -1,11 +1,5 @@
 
 
-
-
-
-
-
-
 var loginOtpVerify = '''query loginOTPVerify(\$mobileNumber: String!,\$otp: String!,\$websiteId: Int!){ 
 loginOTPVerify(mobileNumber: \$mobileNumber,otp: \$otp,websiteId: \$websiteId){
     message
@@ -183,3 +177,135 @@ var generateCartId =  '''query customerCart{
   }
 }
 ''';
+
+var cartList =  '''query cart(\$cart_id: String!){ 
+  cart(cart_id: \$cart_id) {
+    id
+    email
+    billing_address {
+      city
+      country {
+        code
+        label
+      }
+      firstname
+      lastname
+      postcode
+      region {
+        code
+        label
+      }
+      street
+      telephone
+    }
+    shipping_addresses {
+      firstname
+      lastname
+      street
+      city
+      region {
+        code
+        label
+      }
+      country {
+        code
+        label
+      }
+      telephone
+      available_shipping_methods {
+        amount {
+          currency
+          value
+        }
+        available
+        carrier_code
+        carrier_title
+        error_message
+        method_code
+        method_title
+        price_excl_tax {
+          value
+          currency
+        }
+        price_incl_tax {
+          value
+          currency
+        }
+      }
+      selected_shipping_method {
+        amount {
+          value
+          currency
+        }
+        carrier_code
+        carrier_title
+        method_code
+        method_title
+      }
+    }
+    items {
+    uid
+      id
+      product {
+      uid
+        name
+        brand
+        sku
+        small_image{
+          url
+          label
+      }
+price_range {
+        minimum_price {
+          regular_price {
+            value
+            currency
+          }
+          final_price {
+            value
+            currency
+          }
+          discount {
+            amount_off
+            percent_off
+          }
+        
+        }
+      }
+      }
+      quantity
+      errors {
+        code
+        message
+      }
+    }
+    available_payment_methods {
+      code
+      title
+    }
+    selected_payment_method {
+      code
+      title
+    }
+    applied_coupons {
+      code
+    }
+    prices {
+       subtotal_excluding_tax {
+        value
+      }
+      discounts {
+        amount {
+          value
+        }
+        label
+      }
+      grand_total {
+        value
+        currency
+      }
+    }
+  }  
+}
+''';
+

@@ -26,7 +26,6 @@ class ItemInfoArrowForward extends StatelessWidget {
         GestureDetector(
           onTap: onTap,
           child: Row(
-
             children: [
               Expanded(
                 child: Text(description,

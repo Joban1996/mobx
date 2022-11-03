@@ -19,10 +19,8 @@ import '../../utils/utilities.dart';
 class ProductProvider with ChangeNotifier{
 
 
-bool isExpand = false;
 int _itemIndex = -1;
 
-bool  get getIsExpand => isExpand;
 int get getItemIndex => _itemIndex;
 
 setItemIndex(int val){
@@ -30,11 +28,6 @@ setItemIndex(int val){
   notifyListeners();
 }
 
-
-setIsExpand(){
-  isExpand = !isExpand;
-  notifyListeners();
-}
 
 Future hitCreateCartID() async {
   debugPrint("auth token >>>> ${App.localStorage.getString(PREF_TOKEN)}");
@@ -58,11 +51,28 @@ Future hitCreateCartID() async {
 }
 
 Future hitAddToCartMutation({required String cartId,required String skuId}) async {
+  debugPrint("auth token >>>> ${App.localStorage.getString(PREF_TOKEN)}");
   QueryMutations queryMutation = QueryMutations();
   QueryResult results = await GraphQLClientAPI().mClient
       .mutate(GraphQlClient.addToCart(queryMutation.addToCart(cartId,skuId),
       cartId,skuId));
   debugPrint(" add to cart mutation result >>> ${results.data}");
+  if (results.data != null) {
+    return true;
+  }else{
+    if(results.exception != null){
+      Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
+      debugPrint(results.exception!.graphqlErrors[0].message.toString());
+    }
+    return false;
+  }
+}
+Future hitUpdateCartMutation({required String cartId,required String cartUID,required int quantity}) async {
+  QueryMutations queryMutation = QueryMutations();
+  QueryResult results = await GraphQLClientAPI().mClient
+      .mutate(GraphQlClient.updateCartMutation(queryMutation.updateCart(cartId,cartUID,quantity),
+      cartId,cartUID,quantity));
+  debugPrint(" update to cart mutation result >>> ${results.data}");
   if (results.data != null) {
     return true;
   }else{

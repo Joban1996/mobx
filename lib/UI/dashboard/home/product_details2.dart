@@ -25,37 +25,7 @@ Widget itemColumn(String txt1,String txt2,BuildContext context){
     ],
   );
 }
-Widget titleRow(BuildContext context,String txt,int itemIndex){
-  return Row(
-    children: [
-      Expanded(child: Text(txt,style: Theme.of(context).textTheme.bodyMedium)),
-      Visibility(
-        visible: txt=="SPECIFICATIONS",
-        child: Checkbox(
-            value: _checkbox,
-            onChanged: (value){
-              _checkbox=value!;
-              Navigator.pushNamed(context, Routes.compare);
-            }
-        ),
-      ),
-       Consumer<ProductProvider>(
-         builder: (_,val,child){
-           return IconButton(
-               padding: EdgeInsets.zero,
-               constraints: BoxConstraints(),
-               onPressed: (){
-                 val.setItemIndex(itemIndex);
-                 if(val.getItemIndex == itemIndex){
-                   val.setIsExpand();
-                 }
-               }, icon: val.getIsExpand ? const Icon(Icons.keyboard_arrow_down_rounded)
-               : const Icon(Icons.keyboard_arrow_up_rounded));
-         },
-       )
-    ],
-  );
-}
+
   Widget specifications(BuildContext context){
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent,unselectedWidgetColor: Colors.black),

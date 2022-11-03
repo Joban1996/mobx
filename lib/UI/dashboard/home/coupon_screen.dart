@@ -29,8 +29,9 @@ class CouponScreen extends StatelessWidget {
       body: Container(
         padding: const EdgeInsets.all(8.0),
         child:  TextField(
-
           decoration: InputDecoration(
+            hintText: "Enter your coupon code",
+            hintStyle: Theme.of(context).textTheme.bodySmall,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
               borderSide: BorderSide(width: 1, color: Utility.getColorFromHex(globalGreyColor)),
