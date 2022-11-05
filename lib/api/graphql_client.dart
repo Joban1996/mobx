@@ -88,6 +88,27 @@ class GraphQlClient {
     );
   }
 
+  static applyCouponMutation(String mutation,String cartId,String couponCode) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'cart_id ': cartId,
+        'coupon_code': couponCode,
+      },
+    );
+  }
+
+  static removeCoupon(String mutation,String cartId) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'cart_id ': cartId,
+      },
+    );
+  }
+
   static loginOTPVerify(String query, String mobileNo,String otp) {
     print(query);
     return QueryOptions(

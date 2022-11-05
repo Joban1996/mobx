@@ -26,55 +26,59 @@ class ProductDetails3 extends StatelessWidget {
       color: Colors.white.withOpacity(0.8),
       child:
 
-      Query(
-        options: QueryOptions(
-        document: gql(products),
-    variables:  {
-    'filter':{
-    'category_uid': {'eq': context.read<DashboardProvider>().getSubCategoryID},
-    }
-    }
-    ),
-    builder: (QueryResult result, { VoidCallback? refetch, FetchMore? fetchMore }) {
-    if (result.hasException) {
-    return Text(result.exception.toString());
-    }
+      Consumer<DashboardProvider>(
+        builder: (_,val,child){
+          return Query(
+              options: QueryOptions(
+                  document: gql(products),
+                  variables:  {
+                    'filter':{
+                      'category_uid': {'eq': val.getSubCategoryID},
+                    }
+                  }
+              ),
+              builder: (QueryResult result, { VoidCallback? refetch, FetchMore? fetchMore }) {
+                if (result.hasException) {
+                  return Text(result.exception.toString());
+                }
 
-    if (result.isLoading) {
-    return globalLoader();
-    }
-    debugPrint("products >>>>>>> ${result.data}");
-    var subCateProductData = ProductModel.fromJson(result.data!);
-    return
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("RELATED PRODUCTS",
-              style: Theme.of(context).textTheme.bodyText2),
-          SizedBox(
-            height: MediaQuery.of(context).size.height*0.40,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: subCateProductData!.products!.items!.length,
-                  itemBuilder: (context, index) {
-                    return subCateProductData!.products!.items![index].sku! != sku  ? GridItem(
-                      skuID: subCateProductData!.products!.items![index].sku!,
-                      productData: subCateProductData!.products!.items![index],
-                    ): Container();
-                  })),
-          // Row(
-          //   children: [
-          //     Expanded(child: AppButtonLeading(leadingImage: "assets/images/lock.png", onTap: (){}, text: "ADD TO CART",
-          //       btnColor: Utility.getColorFromHex("#E0E0E0"),)),
-          //     SizedBox(width: getCurrentScreenWidth(context)*0.03,),
-          //     Expanded(child: AppButtonLeading(leadingImage: "assets/images/buy_now.png",
-          //       onTap: (){Navigator.pushNamed(context, Routes.shoppingCart);}, text: "BUY NOW",btnTxtColor: Utility.getColorFromHex(globalWhiteColor),)),
-          //   ],
-          // ),
-          // SizedBox(height: getCurrentScreenHeight(context)*0.02,),
-        ],
-      );})
+                if (result.isLoading) {
+                  return globalLoader();
+                }
+                debugPrint("products >>>>>>> ${result.data}");
+                var subCateProductData = ProductModel.fromJson(result.data!);
+                return
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("RELATED PRODUCTS",
+                          style: Theme.of(context).textTheme.bodyText2),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height*0.40,
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: subCateProductData!.products!.items!.length,
+                              itemBuilder: (context, index) {
+                                return subCateProductData!.products!.items![index].sku! != sku  ? GridItem(
+                                  skuID: subCateProductData!.products!.items![index].sku!,
+                                  productData: subCateProductData!.products!.items![index],
+                                ): Container();
+                              })),
+                      // Row(
+                      //   children: [
+                      //     Expanded(child: AppButtonLeading(leadingImage: "assets/images/lock.png", onTap: (){}, text: "ADD TO CART",
+                      //       btnColor: Utility.getColorFromHex("#E0E0E0"),)),
+                      //     SizedBox(width: getCurrentScreenWidth(context)*0.03,),
+                      //     Expanded(child: AppButtonLeading(leadingImage: "assets/images/buy_now.png",
+                      //       onTap: (){Navigator.pushNamed(context, Routes.shoppingCart);}, text: "BUY NOW",btnTxtColor: Utility.getColorFromHex(globalWhiteColor),)),
+                      //   ],
+                      // ),
+                      // SizedBox(height: getCurrentScreenHeight(context)*0.02,),
+                    ],
+                  );});
+        },
+      )
     );
     // return Scaffold(
     //   appBar: AppBarCommon(AppBarTitle("Refurbished Apple iPhone 12 Mini",

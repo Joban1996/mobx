@@ -17,8 +17,8 @@ class CartListModel {
 }
 
 class Cart {
-  String? id;
   String? email;
+  String? id;
   Null? billingAddress;
   List<ShippingAddresses>? shippingAddresses;
   List<Items>? items;
@@ -28,7 +28,8 @@ class Cart {
   Prices? prices;
 
   Cart(
-      {this.id,this.email,
+      {this.email,
+        this.id,
         this.billingAddress,
         this.shippingAddresses,
         this.items,
@@ -38,8 +39,8 @@ class Cart {
         this.prices});
 
   Cart.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
     email = json['email'];
+    id = json['id'];
     billingAddress = json['billing_address'];
     if (json['shipping_addresses'] != null) {
       shippingAddresses = <ShippingAddresses>[];
@@ -75,6 +76,7 @@ class Cart {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['email'] = this.email;
+    data['id'] = this.id;
     data['billing_address'] = this.billingAddress;
     if (this.shippingAddresses != null) {
       data['shipping_addresses'] =
@@ -263,16 +265,16 @@ class Amount {
 }
 
 class Items {
-  String? uId;
+  String? uid;
   String? id;
   Product? product;
   int? quantity;
   Null? errors;
 
-  Items({this.id, this.product, this.quantity, this.errors,this.uId});
+  Items({this.uid, this.id, this.product, this.quantity, this.errors});
 
   Items.fromJson(Map<String, dynamic> json) {
-    uId =json['uid'];
+    uid = json['uid'];
     id = json['id'];
     product =
     json['product'] != null ? new Product.fromJson(json['product']) : null;
@@ -282,6 +284,7 @@ class Items {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['uid'] = this.uid;
     data['id'] = this.id;
     if (this.product != null) {
       data['product'] = this.product!.toJson();
@@ -293,19 +296,17 @@ class Items {
 }
 
 class Product {
-  String? uID;
+  String? uid;
   String? name;
-  int? brand;
   String? sku;
   SmallImage? smallImage;
   PriceRange? priceRange;
 
-  Product({this.name, this.sku, this.smallImage, this.priceRange,this.brand,this.uID});
+  Product({this.uid, this.name, this.sku, this.smallImage, this.priceRange});
 
   Product.fromJson(Map<String, dynamic> json) {
-    uID = json['uid'];
+    uid = json['uid'];
     name = json['name'];
-    brand = json['brand'];
     sku = json['sku'];
     smallImage = json['small_image'] != null
         ? new SmallImage.fromJson(json['small_image'])
@@ -317,9 +318,9 @@ class Product {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['uid'] = this.uid;
     data['name'] = this.name;
     data['sku'] = this.sku;
-    data['brand'] = this.brand;
     if (this.smallImage != null) {
       data['small_image'] = this.smallImage!.toJson();
     }
@@ -459,8 +460,8 @@ class AppliedCoupons {
 
 class Prices {
   SubtotalExcludingTax? subtotalExcludingTax;
-  Null? discounts;
-  Amount? grandTotal;
+  List<Discounts>? discounts;
+  GrandTotal? grandTotal;
 
   Prices({this.subtotalExcludingTax, this.discounts, this.grandTotal});
 
@@ -468,9 +469,14 @@ class Prices {
     subtotalExcludingTax = json['subtotal_excluding_tax'] != null
         ? new SubtotalExcludingTax.fromJson(json['subtotal_excluding_tax'])
         : null;
-    discounts = json['discounts'];
+    if (json['discounts'] != null) {
+      discounts = <Discounts>[];
+      json['discounts'].forEach((v) {
+        discounts!.add(new Discounts.fromJson(v));
+      });
+    }
     grandTotal = json['grand_total'] != null
-        ? new Amount.fromJson(json['grand_total'])
+        ? new GrandTotal.fromJson(json['grand_total'])
         : null;
   }
 
@@ -479,7 +485,9 @@ class Prices {
     if (this.subtotalExcludingTax != null) {
       data['subtotal_excluding_tax'] = this.subtotalExcludingTax!.toJson();
     }
-    data['discounts'] = this.discounts;
+    if (this.discounts != null) {
+      data['discounts'] = this.discounts!.map((v) => v.toJson()).toList();
+    }
     if (this.grandTotal != null) {
       data['grand_total'] = this.grandTotal!.toJson();
     }
@@ -499,6 +507,63 @@ class SubtotalExcludingTax {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['value'] = this.value;
+    return data;
+  }
+}
+
+class Discounts {
+  Amount1? amount;
+  String? label;
+
+  Discounts({this.amount, this.label});
+
+  Discounts.fromJson(Map<String, dynamic> json) {
+    amount =
+    json['amount'] != null ? new Amount1.fromJson(json['amount']) : null;
+    label = json['label'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.amount != null) {
+      data['amount'] = this.amount!.toJson();
+    }
+    data['label'] = this.label;
+    return data;
+  }
+}
+
+class Amount1 {
+  double? value;
+
+  Amount1({this.value});
+
+  Amount1.fromJson(Map<String, dynamic> json) {
+    value = json['value'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['value'] = this.value;
+    return data;
+  }
+}
+
+class GrandTotal {
+  num? value;
+  String? currency;
+
+  GrandTotal({this.value, this.currency});
+
+  GrandTotal.fromJson(Map<String, dynamic> json) {
+    value = json['value'];
+    currency = json['currency'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['value'] = this.value;
+    data['currency'] = this.currency;
     return data;
   }
 }

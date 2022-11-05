@@ -147,9 +147,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               padding: const EdgeInsets.all(10.0),
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: Expanded(
-                    child: AppButton(onTap: (){}, text: Strings.save,isTrailing: false,)
-                ),
+                child: AppButton(onTap: (){}, text: Strings.save,isTrailing: false,),
               ),
             ),
           ],

@@ -86,4 +86,54 @@ mutation {
   
       """;
   }
+
+  String applyCoupon(String cartId, String couponCode) {
+    return """
+mutation {
+  applyCouponToCart(
+    input: {
+      cart_id: $cartId
+      coupon_code: $couponCode
+    }
+  ) {
+    cart {
+      applied_coupons {
+        code
+      }
+    }
+  }
+}
+      """;
+  }
+
+  String removeCoupon(String cartId) {
+    return """
+mutation {
+  removeCouponFromCart(
+    input:
+      { cart_id: $cartId }
+    ) {
+    cart {
+      items {
+        product {
+          name
+        }
+        quantity
+      }
+      applied_coupons {
+        code
+      }
+      prices {
+        grand_total{
+          value
+          currency
+        }
+      }
+    }
+  }
+}
+      """;
+  }
+
+
 }

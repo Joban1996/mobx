@@ -37,8 +37,8 @@ class AddressesScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(addressTitle, style: Theme.of(context).textTheme.bodyText2,),
-                    Text(addressSubtitle,style: Theme.of(context).textTheme.caption,),
+                    Text(addressTitle, style: Theme.of(context).textTheme.bodyMedium,),
+                    Text(addressSubtitle,style: Theme.of(context).textTheme.bodySmall,),
                   ],
                 ),
               ),
@@ -95,14 +95,13 @@ class AddressesScreen extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: Expanded(child:
-                AppButton(
+                child: AppButton(
                   onTap: () {
                     Navigator.pushNamed(context, Routes.addAdressScreen);
                   },
                   text: Strings.addNewAddressButton,
                   isTrailing: false,
-                )),
+                ),
               ),
             ),
           ],

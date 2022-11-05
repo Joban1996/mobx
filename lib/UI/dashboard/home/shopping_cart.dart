@@ -104,12 +104,12 @@ Widget _column(BuildContext context,CartListModel data){
     child: Column(
       crossAxisAlignment:CrossAxisAlignment.start,
       children: [
-        Text("PRICE DETAILS ( ${data.cart!.items!.length} Items)",style: Theme.of(context).textTheme.bodyText2,),
+        Text("PRICE DETAILS ( ${data.cart!.items!.length} Items)",style: Theme.of(context).textTheme.bodyMedium,),
         verticalSpacing(heightInDouble: 0.01, context: context),
         _priceDesRow("Sub Total", "₹${data.cart!.prices!.subtotalExcludingTax!.value}", context, globalBlackColor),
-        _priceDesRow("Discount", data.cart!.prices!.discounts??"₹-0", context, globalGreenColor),
+        _priceDesRow("Discount", data.cart!.prices!.discounts!=null ?
+        "₹${data.cart!.prices!.discounts![0].amount!.value}": "₹0", context, globalGreenColor),
         _priceDesRow("Delivery Fee", "₹0", context, globalBlackColor),
-        _priceDesRow("Coupon", "₹0", context, globalBlackColor),
         dividerCommon(context),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -130,8 +130,12 @@ Widget _column(BuildContext context,CartListModel data){
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarCommon(const AppBarTitle("SHOPPING CART",
-          "2 items added "),
+      appBar: AppBarCommon(Consumer<ProductProvider>(
+        builder: (_,val,child){
+          return  AppBarTitle("SHOPPING CART",
+              "2 items added ");
+        },
+      ),
         appbar: AppBar(), onTapCallback: (){},leadingImage: GestureDetector(
             onTap: ()=> Navigator.pop(context),
             child: Image.asset("assets/images/back_arrow.png"))
@@ -146,7 +150,7 @@ Widget _column(BuildContext context,CartListModel data){
           QueryOptions(
               fetchPolicy: FetchPolicy.networkOnly,
               document: gql(cartList), variables: {
-            'cart_id': App.localStorage.getString(PREF_CARD_ID)!
+            'cart_id': App.localStorage.getString(PREF_CART_ID)!
           }),
           builder: (QueryResult result,
               {VoidCallback? refetch, FetchMore? fetchMore}) {
@@ -179,10 +183,32 @@ Widget _column(BuildContext context,CartListModel data){
                       dividerCommon(context),
                       ItemInfoArrowForward(onTap: (){}, title: "EMI OPTION", description: "3 interest-free payments of ₹ 15500 with"),
                       dividerCommon(context),
-                      ItemInfoArrowForward(onTap: (){
-                        Navigator.pushNamed(context, Routes.coupon);
+                      ItemInfoArrowForward(
+                          trailingIcon: parsed.cart!.appliedCoupons!=null ?
+                          Consumer2<LoginProvider,ProductProvider>(
+                            builder: (_,val,val1,child){
+                              return GestureDetector(
+                                onTap: () {
+                                  val.setLoadingBool(true);
+                                  val1.hitRemoveCouponMutation(cartId: App.localStorage.getString(PREF_CART_ID).toString()).then((value) =>{
+                                  val.setLoadingBool(false),
+                                    reFresh.call()
+                                  });
+                                },
+                                child: Icon(Icons.close ,
+                                  color: Utility.getColorFromHex(globalSubTextGreyColor),
+                                ),
+                              );
+                            },
+                          ): null,
+                          onTap: (){
+                              Navigator.pushNamed(context, Routes.coupon).then((value) => {
+                                if(value != null){
+                                  reFresh.call()
+                                }
+                              });
                       }, title: "COUPONS", description: parsed.cart!.appliedCoupons!=null ?
-                      parsed.cart!.appliedCoupons![0].code! : "Apply coupons"),
+                      "Applied coupon: ${parsed.cart!.appliedCoupons![0].code!}" : "Apply coupons"),
                       dividerCommon(context),
                       ItemInfoArrowForward(onTap: (){
                         Navigator.pushNamed(context, Routes.address);

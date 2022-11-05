@@ -7,12 +7,13 @@ class ItemInfoArrowForward extends StatelessWidget {
   const ItemInfoArrowForward(
       {required this.onTap,
       required this.title,
-      required this.description,
+      required this.description,this.trailingIcon,
       Key? key})
       : super(key: key);
   final String title;
   final String description;
   final VoidCallback onTap;
+  final Widget? trailingIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +30,10 @@ class ItemInfoArrowForward extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(description,
-                    style: Theme.of(context).textTheme.caption),
+                    style: Theme.of(context).textTheme.bodySmall,maxLines: 1,overflow: TextOverflow.ellipsis,),
               ),
               title == "EMI OPTION" ? Image.asset("assets/images/zest_brand.png") : Container(),
-              Icon(
+              trailingIcon ?? Icon(
                 Icons.arrow_forward_ios_rounded,
                 color: Utility.getColorFromHex(globalSubTextGreyColor),
               )

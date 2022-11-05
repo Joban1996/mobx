@@ -6,7 +6,7 @@ import '../utils/app.dart';
 import '../utils/constants/constants_colors.dart';
 
 final policies = Policies(
-  fetch: FetchPolicy.networkOnly,
+  fetch: FetchPolicy.cacheAndNetwork,
 );
 
 class GraphQLClientAPI {

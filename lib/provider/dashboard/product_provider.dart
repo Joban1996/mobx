@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/model/categories_model.dart';
@@ -20,8 +22,15 @@ class ProductProvider with ChangeNotifier{
 
 
 int _itemIndex = -1;
+String _cartItemsLength = "";
 
 int get getItemIndex => _itemIndex;
+String get getCartItemLength => _cartItemsLength;
+
+setItemLength(String val){
+  _cartItemsLength = val;
+  notifyListeners();
+}
 
 setItemIndex(int val){
   _itemIndex = val;
@@ -38,7 +47,7 @@ Future hitCreateCartID() async {
       .query(generateCartIdQuery);
   debugPrint("enable noti mutation result >>> ${results.data}");
   if(results.data != null){
-    App.localStorage.setString(PREF_CARD_ID, results.data!['customerCart']['id']);
+    App.localStorage.setString(PREF_CART_ID, results.data!['customerCart']['id']);
     return true;
   }else{
     if(results.exception != null){
@@ -56,7 +65,7 @@ Future hitAddToCartMutation({required String cartId,required String skuId}) asyn
   QueryResult results = await GraphQLClientAPI().mClient
       .mutate(GraphQlClient.addToCart(queryMutation.addToCart(cartId,skuId),
       cartId,skuId));
-  debugPrint(" add to cart mutation result >>> ${results.data}");
+  debugPrint(" add to cart mutation result >>> ${results.data!}");
   if (results.data != null) {
     return true;
   }else{
@@ -74,6 +83,40 @@ Future hitUpdateCartMutation({required String cartId,required String cartUID,req
       cartId,cartUID,quantity));
   debugPrint(" update to cart mutation result >>> ${results.data}");
   if (results.data != null) {
+    return true;
+  }else{
+    if(results.exception != null){
+      Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
+      debugPrint(results.exception!.graphqlErrors[0].message.toString());
+    }
+    return false;
+  }
+}
+Future hitApplyCouponMutation({required String cartId,required String couponCode}) async {
+  QueryMutations queryMutation = QueryMutations();
+  QueryResult results = await GraphQLClientAPI().mClient
+      .mutate(GraphQlClient.applyCouponMutation(queryMutation.applyCoupon(cartId,couponCode),
+      cartId,couponCode));
+  debugPrint(" apply coupon result >>> ${results.data}");
+  if (results.data != null) {
+    Utility.showSuccessMessage("Successfully Applied!");
+    return true;
+  }else{
+    if(results.exception != null){
+      Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
+      debugPrint(results.exception!.graphqlErrors[0].message.toString());
+    }
+    return false;
+  }
+}
+Future hitRemoveCouponMutation({required String cartId}) async {
+  QueryMutations queryMutation = QueryMutations();
+  QueryResult results = await GraphQLClientAPI().mClient
+      .mutate(GraphQlClient.removeCoupon(queryMutation.removeCoupon(cartId),
+      cartId));
+  debugPrint(" remove coupon result >>> ${results.data}");
+  if (results.data != null) {
+    Utility.showSuccessMessage("Coupon Removed!");
     return true;
   }else{
     if(results.exception != null){
