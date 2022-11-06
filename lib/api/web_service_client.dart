@@ -60,7 +60,8 @@ class WebServiceClient {
   }
 
   /// verify email api
-  static Future<dynamic> verifyEmail(Map<String, dynamic> fieldMap) async {
+  static Future<dynamic> verifyEmail(Map<String, dynamic> fieldMap) async
+  {
     var url = BASE_URL + "api/customer/verify";
     var response;
     await _hitService(url, HttpMethod.HTTP_POST, RequestBodyType.TYPE_JSON,

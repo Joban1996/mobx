@@ -114,7 +114,8 @@ class ProfileAddressesScreen extends StatelessWidget {
                   child: Expanded(
                       child: AppButton(
                     onTap: () {
-                      Navigator.pushNamed(context, Routes.addAdressScreen);
+                      // Navigator.pushNamed(context, Routes.addAdressScreen);
+                      Navigator.pushNamed(context, Routes.googleMapScreen);
                     },
                     text: Strings.addNewAddressButton,
                     isTrailing: false,

@@ -52,7 +52,8 @@ class GraphQlClient {
     );
   }
 
-  static loginOTP(String mutation, String mobileNo) {
+  static loginOTP(String mutation, String mobileNo)
+  {
     print(mutation);
     return MutationOptions(
       document: gql(mutation),
