@@ -47,6 +47,7 @@ dependencies:
   graphql_flutter: ^5.1.0
   flutter_hooks: ^0.18.5+1
   flutter_widget_from_html: ^0.8.5
+  google_maps_flutter: ^2.2.1
 
 dev_dependencies:
   flutter_test:

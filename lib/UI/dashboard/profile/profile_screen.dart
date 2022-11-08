@@ -70,8 +70,17 @@ class ProfileScreen extends StatelessWidget {
         children: [
           Text(Strings.aboutLegal,style: Theme.of(context).textTheme.bodyText2,),
           verticalSpacing(heightInDouble: 0.01, context: context),
-          _row("About Us",context),
-          _row("Term & Conditions", context),
+          GestureDetector(
+              onTap: (){
+                Navigator.pushNamed(context, Routes.aboutUs);
+              },
+              child: _row("About Us",context)
+          ),
+          GestureDetector(
+              onTap: (){
+                //Navigator.pushNamed(context, Routes.wishListScreeen);
+              },
+              child: _row("Term & Conditions", context)),
           _row("Privacy Policy", context),
           _row("Refund Policy", context)
         ],
@@ -92,26 +101,36 @@ class ProfileScreen extends StatelessWidget {
             color: Colors.white.withOpacity(0.8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              accountInfo(context),
-              dividerCommon(context),
-              ItemInfoArrowForward(onTap: (){}, title: "WISH LISTS", description: "Buy Later, Quick Buy, Delete Wish lists"),
-              dividerCommon(context),
-              ItemInfoArrowForward(onTap: (){}, title: "ADDRESSES", description: "Add, Edit & Delete Addresses"),
-              dividerCommon(context),
-              ItemInfoArrowForward(onTap: (){}, title: "INSURANCES", description: "Purchase Insurance for products"),
-              dividerCommon(context),
-              aboutAndLegal(context),
-              dividerCommon(context),
-              ItemInfoArrowForward(onTap: (){}, title: "FAQs", description: "View all Frequency Asked Questions"),
-              dividerCommon(context),
-              ItemInfoArrowForward(onTap: (){}, title: "LOGOUT", description: "Logout From All Devices"),
-              dividerCommon(context),
-              Align(
-                  alignment: Alignment.center,
-                  child: Text("Version 1.12",style: Theme.of(context).textTheme.caption,))
-            ],
-          ),),
+              children: [
+                accountInfo(context),
+                dividerCommon(context),
+                ItemInfoArrowForward(onTap: (){
+                  Navigator.pushNamed(context, Routes.wishListScreeen);
+                }, title: "WISH LISTS", description: "Buy Later, Quick Buy, Delete Wish lists"),
+                dividerCommon(context),
+                ItemInfoArrowForward(onTap: (){
+                  Navigator.pushNamed(context, Routes.profileAddressesScreen);
+                }, title: "ADDRESSES", description: "Add, Edit & Delete Addresses"),
+                dividerCommon(context),
+                ItemInfoArrowForward(onTap: (){
+                  //Navigator.pushNamed(context, Routes.wishListScreeen);
+                }, title: "INSURANCES", description: "Purchase Insurance for products"),
+                dividerCommon(context),
+                aboutAndLegal(context),
+                dividerCommon(context),
+                ItemInfoArrowForward(onTap: (){
+                  Navigator.pushNamed(context, Routes.faqScreen);
+                }, title: "FAQs", description: "View all Frequency Asked Questions"),
+                dividerCommon(context),
+                ItemInfoArrowForward(onTap: (){
+                  // Navigator.pushNamed(context, Routes.wishListScreeen);
+                }, title: "LOGOUT", description: "Logout From All Devices"),
+                dividerCommon(context),
+                Align(
+                    alignment: Alignment.center,
+                    child: Text("Version 1.12",style: Theme.of(context).textTheme.caption,))
+              ],
+            ),),
         ));
   }
 }
