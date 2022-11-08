@@ -136,4 +136,45 @@ mutation {
   }
 
 
+  String addNewAddress(String firstName, String lastName,String city, String state, String pinCode, String  phonNumber,bool isBillingAddress)
+  {
+    return """
+    
+mutation {
+  createCustomerAddress(
+  input: {
+    region: {
+      region: "Punjab"
+      region_code: "PB"
+      region_id: "578"
+    }
+    country_code: IN
+    street: ["123 Main Street"]
+    postcode: $pinCode
+    city: $city
+    firstname: $firstName
+    lastname: $lastName
+  telephone: $phonNumber
+    default_shipping: true
+    default_billing: $isBillingAddress
+  }) {
+    id
+    region {
+      region
+      region_code
+    }
+    country_code
+    street
+    telephone
+    postcode
+    city
+    default_shipping
+    default_billing
+  }
+}
+
+    """;
+  }
+
+
 }

@@ -77,6 +77,24 @@ class GraphQlClient {
     );
   }
 
+
+  static addNewAddress(String mutation,String firstName, String lastName,String city, String state, String pinCode, String  phonNumber,bool isBillingAddress) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'postcode':pinCode,
+        'city':city,
+        'firstname': firstName,
+        'lastname': lastName,
+        'telephone': phonNumber,
+        'default_billing': isBillingAddress
+      },
+    );
+  }
+
+
+
   static updateCartMutation(String mutation,String cartId,String cartUID,int quantity) {
     print(mutation);
     return MutationOptions(

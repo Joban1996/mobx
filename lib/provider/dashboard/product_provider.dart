@@ -109,6 +109,7 @@ Future hitApplyCouponMutation({required String cartId,required String couponCode
     return false;
   }
 }
+
 Future hitRemoveCouponMutation({required String cartId}) async {
   QueryMutations queryMutation = QueryMutations();
   QueryResult results = await GraphQLClientAPI().mClient

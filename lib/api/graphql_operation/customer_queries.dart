@@ -43,6 +43,7 @@ query categories(\$filters: CategoryFilterInput!){
 }  
 
 ''';
+
 var products = '''
 query products(\$filter: ProductAttributeFilterInput){
   products(filter: \$filter) {

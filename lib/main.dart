@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:mobx/provider/dashboard/address_provider.dart';
 import 'package:mobx/provider/dashboard/dashboard_provider.dart';
 import 'package:mobx/provider/dashboard/product_provider.dart';
 import 'package:mobx/utils/app.dart';
@@ -20,11 +21,13 @@ void main()async{
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Color(0x00FFFFFF), // transparent status bar
   ));
-  runApp(MultiProvider(
+  runApp(
+      MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => DashboardProvider()),
       ChangeNotifierProvider(create: (_) => LoginProvider()),
       ChangeNotifierProvider(create: (_) => ProductProvider()),
+      ChangeNotifierProvider(create: (_) => AddressProvider()),
     ],
     child: GraphQLProvider(
       client: GraphQLClientAPI.client(),
