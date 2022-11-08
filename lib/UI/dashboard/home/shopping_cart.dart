@@ -132,7 +132,7 @@ Widget _column(BuildContext context,CartListModel data){
     return Scaffold(
       appBar: AppBarCommon(Consumer<ProductProvider>(
         builder: (_,val,child){
-          return  AppBarTitle("SHOPPING CART",
+          return  const AppBarTitle("SHOPPING CART",
               "2 items added ");
         },
       ),

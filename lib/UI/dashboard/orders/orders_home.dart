@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
-import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/globally_common/outline_button.dart';
 import 'package:mobx/utils/constants/strings.dart';
 import 'package:mobx/utils/routes.dart';

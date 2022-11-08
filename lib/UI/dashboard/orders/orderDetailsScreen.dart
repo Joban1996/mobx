@@ -188,7 +188,7 @@ class OrderDetailsScreen extends StatelessWidget {
           PriceView(context),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Flexible(child: OutLineButtonWidget(text: "Download Invoice", onTap: (){})),
+            child: OutLineButtonWidget(text: "Download Invoice", onTap: (){}),
           )
         ],
       ),

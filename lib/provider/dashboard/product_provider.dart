@@ -65,7 +65,7 @@ Future hitAddToCartMutation({required String cartId,required String skuId}) asyn
   QueryResult results = await GraphQLClientAPI().mClient
       .mutate(GraphQlClient.addToCart(queryMutation.addToCart(cartId,skuId),
       cartId,skuId));
-  debugPrint(" add to cart mutation result >>> ${results.data!}");
+  debugPrint(" add to cart mutation result >>> ${results.exception!}");
   if (results.data != null) {
     return true;
   }else{
