@@ -122,7 +122,8 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
           case aboutUs:
             return MaterialPageRoute(builder: (_) =>AboutUsScreen());
           case orderDetails:
-            return MaterialPageRoute(builder: (_) =>OrderDetailsScreen());
+            final argument = settings.arguments as String;
+            return MaterialPageRoute(builder: (_) =>OrderDetailsScreen(number: argument));
           case accountInformation:
             return MaterialPageRoute(builder: (_) => AccountInformation());
           default:

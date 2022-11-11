@@ -45,7 +45,7 @@ Future hitCreateCartID() async {
   final QueryResult results = await GraphQLClientAPI()
       .mClient
       .query(generateCartIdQuery);
-  debugPrint("enable noti mutation result >>> ${results.data}");
+  debugPrint("enable noti mutation result >>> ${results.exception}");
   if(results.data != null){
     App.localStorage.setString(PREF_CART_ID, results.data!['customerCart']['id']);
     return true;
@@ -60,12 +60,12 @@ Future hitCreateCartID() async {
 }
 
 Future hitAddToCartMutation({required String cartId,required String skuId}) async {
-  debugPrint("auth token >>>> ${App.localStorage.getString(PREF_TOKEN)}");
+  debugPrint("auth token >>>> ${cartId}");
   QueryMutations queryMutation = QueryMutations();
   QueryResult results = await GraphQLClientAPI().mClient
       .mutate(GraphQlClient.addToCart(queryMutation.addToCart(cartId,skuId),
       cartId,skuId));
-  debugPrint(" add to cart mutation result >>> ${results.exception!}");
+  debugPrint(" add to cart mutation result >>> ${results.data}");
   if (results.data != null) {
     return true;
   }else{

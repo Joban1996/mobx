@@ -67,7 +67,8 @@ class ProductDetails1 extends StatelessWidget {
                         return globalLoader();
                       }
                       var parsed = pData.ProductDescriptionModel.fromJson(result.data!);
-                      var dataItem = parsed.products!.items![0];
+                      var
+                        dataItem = parsed.products!.items![0];
                       return Container(
                         padding: const EdgeInsets.all(10),
                         color: Colors.white.withOpacity(0.8),

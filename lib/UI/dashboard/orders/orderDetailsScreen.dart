@@ -1,36 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/globally_common/outline_button.dart';
+import 'package:mobx/model/product/order_detail_model.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/constants/strings.dart';
 import 'package:mobx/utils/utilities.dart';
+
+import '../../../api/graphql_operation/customer_queries.dart';
 class OrderDetailsScreen extends StatelessWidget {
-  OrderDetailsScreen({Key? key}) : super(key: key);
+  OrderDetailsScreen({Key? key, required this.number}) : super(key: key);
+
+  final String number;
 
   Widget cartItemView(BuildContext context,String id, String status, String image, String title, String subTitle,String salePrice, String actualPrice)
   {
     return Column(
       children: [
         ListTile(
-          leading: Container(
-            padding: EdgeInsets.all(8.0),
-            // width: getCurrentScreenWidth(context)/4,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Utility.getColorFromHex(globalGreyColor))),
-            //height: getCurrentScreenHeight(context)/5.5,
-            child: Image.asset(image,fit: BoxFit.cover,),),
           title:  Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RichText(text: TextSpan(children: [
                 TextSpan(
-                  text: "ID:",
+                    text: "ID:",
                     style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 12,height: 1.3)
                 ),
                 TextSpan(
-                    text: id,
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 12,height: 1.3),
+                  text: id,
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 12,height: 1.3),
                 ),
               ])),
               RichText(text: TextSpan(children: [
@@ -41,8 +39,8 @@ class OrderDetailsScreen extends StatelessWidget {
                 TextSpan(
                   text: status,
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Utility.getColorFromHex(globalGreenColor)
+                      fontWeight: FontWeight.bold,
+                      color: Utility.getColorFromHex(globalGreenColor)
                   ),
                 ),
               ])),
@@ -53,6 +51,7 @@ class OrderDetailsScreen extends StatelessWidget {
             children: [
               Text(subTitle,
                   style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 13)),
+              const SizedBox(height: 5,),
               Text(salePrice,style: Theme.of(context).textTheme.caption,),
               Text('11th Aug 2022 / 09.40AM',style: Theme.of(context).textTheme.caption,),
             ],
@@ -177,7 +176,32 @@ class OrderDetailsScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: ListView(
+      body:
+      Query(
+      options:
+      QueryOptions(
+      fetchPolicy: FetchPolicy.networkOnly,
+      document: gql(getOrders),
+      variables: {
+        'filter': {
+          'number': {'eq': number}
+        }
+      }
+      ),
+    builder: (QueryResult result,
+    {VoidCallback? refetch, FetchMore? fetchMore}) {
+    debugPrint("cart exception >>> ${result.exception}");
+    if (result.hasException) {
+    return Text(result.exception.toString());
+    }
+    if (result.isLoading) {
+    return globalLoader();
+    }
+    var parsed = OrderDetailModel.fromJson(result.data!);
+    var productItems = parsed.customer!.orders!.items!;
+    debugPrint("get orders data >>> ${result.data!}");
+    return
+      ListView(
         //crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           cartItemView(context,"#123121213","DELIVERED", 'assets/images/iphone_pic.png', 'APPLE', 'Refurbished Apple iPhone 12 Mini White 128 GB ', '₹55,099', '₹70,099'),
@@ -191,7 +215,7 @@ class OrderDetailsScreen extends StatelessWidget {
             child: OutLineButtonWidget(text: "Download Invoice", onTap: (){}),
           )
         ],
-      ),
+      );})
     );
   }
 }

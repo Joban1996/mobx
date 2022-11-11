@@ -25,7 +25,7 @@ class QueryMutations {
     return """
 mutation {
   addProductsToCart(
-    cartId: $cartId
+    cartId: "$cartId"
     cartItems: [
       {
         quantity: 1
@@ -47,7 +47,7 @@ mutation {
       message
     }
   }
-}  
+}
       """;
   }
 
