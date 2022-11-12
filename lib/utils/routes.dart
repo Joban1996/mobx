@@ -18,6 +18,7 @@ import 'package:mobx/UI/dashboard/profile/aboutUs_screen.dart';
 import 'package:mobx/UI/dashboard/profile/account_information.dart';
 import 'package:mobx/UI/dashboard/profile/add_address_screen.dart';
 import 'package:mobx/UI/dashboard/profile/faq_screen.dart';
+import 'package:mobx/UI/dashboard/profile/google_map_screen.dart';
 import 'package:mobx/UI/dashboard/profile/profile_addresses_screen.dart';
 import 'package:mobx/UI/dashboard/profile/profile_screen.dart';
 import 'package:mobx/UI/dashboard/profile/wishlist_screen.dart';
@@ -64,6 +65,7 @@ class Routes {
   static const aboutUs="aboutUs";
   static const orderDetails="oderDetails";
   static const welcomeScreen = "welcomeScreen";
+  static const googleMapScreen="googleMapScreen";
 
 static Route<dynamic> generatedRoute(RouteSettings settings){
         switch(settings.name){
@@ -125,6 +127,8 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
             return MaterialPageRoute(builder: (_) =>OrderDetailsScreen());
           case accountInformation:
             return MaterialPageRoute(builder: (_) => AccountInformation());
+          case googleMapScreen:
+            return MaterialPageRoute(builder: (_) => GoogleMapScreen());
           default:
             return MaterialPageRoute(
                 builder: (_) => Scaffold(
