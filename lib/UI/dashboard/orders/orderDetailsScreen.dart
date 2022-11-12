@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/globally_common/outline_button.dart';
+import 'package:mobx/common_widgets/orders/item_info_common.dart';
 import 'package:mobx/model/product/order_detail_model.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/constants/strings.dart';
@@ -12,55 +13,6 @@ class OrderDetailsScreen extends StatelessWidget {
   OrderDetailsScreen({Key? key, required this.number}) : super(key: key);
 
   final String number;
-
-  Widget cartItemView(BuildContext context,String id, String status, String image, String title, String subTitle,String salePrice, String actualPrice)
-  {
-    return Column(
-      children: [
-        ListTile(
-          title:  Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              RichText(text: TextSpan(children: [
-                TextSpan(
-                    text: "ID:",
-                    style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 12,height: 1.3)
-                ),
-                TextSpan(
-                  text: id,
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 12,height: 1.3),
-                ),
-              ])),
-              RichText(text: TextSpan(children: [
-                TextSpan(
-                    text: "STATUS:",
-                    style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 12,height: 1.3)
-                ),
-                TextSpan(
-                  text: status,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Utility.getColorFromHex(globalGreenColor)
-                  ),
-                ),
-              ])),
-            ],
-          ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(subTitle,
-                  style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 13)),
-              const SizedBox(height: 5,),
-              Text(salePrice,style: Theme.of(context).textTheme.caption,),
-              Text('11th Aug 2022 / 09.40AM',style: Theme.of(context).textTheme.caption,),
-            ],
-          ),
-        ),
-        dividerCommon(context),
-      ],
-    );
-  }
 
   Widget detailView(BuildContext context,String title, String subTitle, String subTitle2, String subTitle3)
   {
@@ -75,6 +27,7 @@ class OrderDetailsScreen extends StatelessWidget {
              Text(title,
                  style: Theme.of(context).textTheme.bodyText2
              ),
+             SizedBox(height: 7,),
              Visibility(
                visible: subTitle.isNotEmpty,
                child: Text(subTitle,
@@ -118,7 +71,7 @@ class OrderDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget PriceView(BuildContext context)
+  Widget PriceView(BuildContext context,Items data )
   {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -130,10 +83,10 @@ class OrderDetailsScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText2,
           ),
           verticalSpacing(heightInDouble: 0.01, context: context),
-          _priceDesRow("Sub Total", "₹110,198", context, globalBlackColor),
-          _priceDesRow("Discount", "₹-31,602", context, globalGreenColor),
-          _priceDesRow("Delivery Fee", "₹100", context, globalBlackColor),
-          _priceDesRow("Coupon", "₹0", context, globalBlackColor),
+          _priceDesRow("Sub Total", data.total!.subtotal!.value.toString(), context, globalBlackColor),
+          _priceDesRow("Discount", data!.total!.discounts==null ?
+          "₹${data.total!.discounts![0].amount!.value}": "₹0", context, globalGreenColor),
+          _priceDesRow("Delivery Fee", data.total!.shippingHandling!.amountIncludingTax!.value.toString(), context, globalBlackColor),
           dividerCommon(context),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,7 +134,7 @@ class OrderDetailsScreen extends StatelessWidget {
       options:
       QueryOptions(
       fetchPolicy: FetchPolicy.networkOnly,
-      document: gql(getOrders),
+      document: gql(getOrderDetail),
       variables: {
         'filter': {
           'number': {'eq': number}
@@ -202,14 +155,17 @@ class OrderDetailsScreen extends StatelessWidget {
     debugPrint("get orders data >>> ${result.data!}");
     return
       ListView(
-        //crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          cartItemView(context,"#123121213","DELIVERED", 'assets/images/iphone_pic.png', 'APPLE', 'Refurbished Apple iPhone 12 Mini White 128 GB ', '₹55,099', '₹70,099'),
-          detailView(context, "BASIC DETAIL", "John Smith", "9090909090 / john@example.com",""),
-          detailView(context, "PICKUP DATE & TIME", "2nd 3rd 4th  Floor, Shashwat Business Park,Opp. Soma Textiles,Rakhial, Ahmedabad – 380023, Gujarat, India.", "",""),
-          detailView(context, "PAYMENT DETAILS", "Paid by: Card",
-            "Transaction ID: 923222090909090","Order ID:  #123123123"),
-          PriceView(context),
+          ItemInfoCommon(productName: productItems[0].items![0].productName!,
+            status: productItems[0].status.toString(),orderDate: productItems[0].orderDate.toString(),
+            grandTotal: productItems[0].total!.grandTotal!.value.toString(),
+            number: productItems[0].number.toString(),),
+          detailView(context, "BASIC DETAIL", "${productItems[0].shippingAddress!.firstname!} ${productItems[0].shippingAddress!.lastname!}",
+              productItems[0].shippingAddress!.telephone??"9090909090 / john@example.com",""),
+          detailView(context, "SHIPPING ADDRESS", "2nd 3rd 4th  Floor, Shashwat Business Park,Opp. Soma Textiles,Rakhial, Ahmedabad – 380023, Gujarat, India.", "",""),
+          detailView(context, "PAYMENT DETAILS", "Payment Mode: ${productItems[0].paymentMethods![0].name} ",
+            "Transaction ID: 923222090909090",""),
+          PriceView(context,productItems[0]),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: OutLineButtonWidget(text: "Download Invoice", onTap: (){}),

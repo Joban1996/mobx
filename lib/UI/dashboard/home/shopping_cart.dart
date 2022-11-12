@@ -211,7 +211,7 @@ Widget _column(BuildContext context,CartListModel data){
                       dividerCommon(context),
                       ItemInfoArrowForward(onTap: (){
                         Navigator.pushNamed(context, Routes.address);
-                      }, title: "DELIVERY ADDRESS", description: "John Smith, 2nd 3rd 4th  Floor, Shashwat Business Park,Opp....."),
+                      }, title: "DELIVERY ADDRESS", description: "Click here to add address"),
                       dividerCommon(context),
                       _column(context,parsed)
                     ],

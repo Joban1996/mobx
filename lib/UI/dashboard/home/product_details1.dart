@@ -219,6 +219,9 @@ class ProductDetails1 extends StatelessWidget {
                                       if(App.localStorage.getString(PREF_CART_ID) == null){
                                         await val1.hitCreateCartID().then((value) {
                                           val2.setLoadingBool(false);
+                                          if(value == false){
+                                            Navigator.pushReplacementNamed(context, Routes.loginScreen);
+                                          }
                                         });}
                                       val1.hitAddToCartMutation(cartId: App.localStorage.getString(PREF_CART_ID)!,
                                           skuId: val3.getSkuID).then((value) {
@@ -226,6 +229,9 @@ class ProductDetails1 extends StatelessWidget {
                                         if(value){
                                           Utility.showSuccessMessage("Item added!");
                                           Navigator.pushNamed(context, Routes.shoppingCart);
+                                        }
+                                        if(value == false){
+                                          Navigator.pushReplacementNamed(context, Routes.loginScreen);
                                         }
                                       });
                                     },

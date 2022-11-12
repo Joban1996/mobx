@@ -39,16 +39,16 @@ class Customer {
 
 class Orders {
   int? totalCount;
-  List<Items1>? items;
+  List<Items>? items;
 
   Orders({this.totalCount, this.items});
 
   Orders.fromJson(Map<String, dynamic> json) {
     totalCount = json['total_count'];
     if (json['items'] != null) {
-      items = <Items1>[];
+      items = <Items>[];
       json['items'].forEach((v) {
-        items!.add(new Items1.fromJson(v));
+        items!.add(new Items.fromJson(v));
       });
     }
   }
@@ -235,7 +235,7 @@ class Items1 {
 }
 
 class ProductSalePrice {
-  int? value;
+  num? value;
   String? currency;
 
   ProductSalePrice({this.value, this.currency});
@@ -326,7 +326,7 @@ class Total {
 }
 
 class BaseGrandTotal {
-  double? value;
+  num? value;
   String? currency;
 
   BaseGrandTotal({this.value, this.currency});
@@ -345,7 +345,7 @@ class BaseGrandTotal {
 }
 
 class TotalTax {
-  int? value;
+  num? value;
 
   TotalTax({this.value});
 

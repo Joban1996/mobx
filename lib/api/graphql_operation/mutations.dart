@@ -57,7 +57,7 @@ mutation {
 mutation {
   updateCartItems(
     input: {
-      cart_id: $cartId,
+      cart_id: "$cartId",
       cart_items: [
         {
           cart_item_id: $cartUID
@@ -92,8 +92,8 @@ mutation {
 mutation {
   applyCouponToCart(
     input: {
-      cart_id: $cartId
-      coupon_code: $couponCode
+      cart_id: "$cartId"
+      coupon_code: "$couponCode"
     }
   ) {
     cart {

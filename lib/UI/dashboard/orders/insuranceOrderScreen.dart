@@ -67,9 +67,7 @@ class InsuranceOrderScreen extends StatelessWidget {
           itemCount: 1,
           itemBuilder: (context,index)
           {
-            return Text('Insurance Screen');
-              //cartItemView(context,"#123121213","DELIVERED", 'assets/images/iphone_pic.png', 'APPLE', 'Refurbished Apple iPhone 12 Mini White 128 GB ', '₹55,099', '₹70,099');
-
+            return const Center(child: Text('Insurance Screen'));
           }
       ),
     );
