@@ -5,7 +5,6 @@ import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/globally_common/common_loader.dart';
 import 'package:mobx/model/product/CartListModel.dart';
 import 'package:mobx/provider/auth/login_provider.dart';
-import 'package:mobx/provider/dashboard/dashboard_provider.dart';
 import 'package:mobx/provider/dashboard/product_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/routes.dart';
@@ -120,7 +119,7 @@ Widget _column(BuildContext context,CartListModel data){
         ),
         SizedBox(height: getCurrentScreenHeight(context)*0.03,),
         AppButton(onTap: (){
-          Navigator.pushNamed(context, Routes.payment);
+          //Navigator.pushNamed(context, Routes.payment);
         }, text: "PROCEED")
       ],
     ),
@@ -132,7 +131,7 @@ Widget _column(BuildContext context,CartListModel data){
     return Scaffold(
       appBar: AppBarCommon(Consumer<ProductProvider>(
         builder: (_,val,child){
-          return  AppBarTitle("SHOPPING CART",
+          return  const AppBarTitle("SHOPPING CART",
               "2 items added ");
         },
       ),
@@ -212,7 +211,7 @@ Widget _column(BuildContext context,CartListModel data){
                       dividerCommon(context),
                       ItemInfoArrowForward(onTap: (){
                         Navigator.pushNamed(context, Routes.address);
-                      }, title: "DELIVERY ADDRESS", description: "John Smith, 2nd 3rd 4th  Floor, Shashwat Business Park,Opp....."),
+                      }, title: "DELIVERY ADDRESS", description: "Click here to add address"),
                       dividerCommon(context),
                       _column(context,parsed)
                     ],

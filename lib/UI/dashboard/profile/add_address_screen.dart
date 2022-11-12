@@ -136,7 +136,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                       {
                         return AppButton(
                           onTap: (){
-                            val1.setLoadingBool(true);
+                           // val1.setLoadingBool(true);
                             val2.hitAddAddressMutation(
                                 firstName: firstNameController.text,
                                 lastName: lastNameController.text,
@@ -144,7 +144,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 state: stateController.text,
                                 pinCode: pinCodeController.text,
                                 phonNumber: '1234567890', isBillingAddress: checkedValue).then((value){
-                              val1.setLoadingBool(false);
+                              //val1.setLoadingBool(false);
                               if(value){
                                 print("the value of added address is $value");
                                 Utility.showSuccessMessage("Address added!");

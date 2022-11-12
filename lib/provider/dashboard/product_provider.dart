@@ -5,6 +5,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/model/categories_model.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/constants/strings.dart';
+import 'package:mobx/utils/routes.dart';
 
 import '../../api/client_provider.dart';
 import '../../api/graphql_client.dart';
@@ -45,7 +46,7 @@ Future hitCreateCartID() async {
   final QueryResult results = await GraphQLClientAPI()
       .mClient
       .query(generateCartIdQuery);
-  debugPrint("enable noti mutation result >>> ${results.data}");
+  debugPrint("enable noti mutation result >>> ${results.exception}");
   if(results.data != null){
     App.localStorage.setString(PREF_CART_ID, results.data!['customerCart']['id']);
     return true;
@@ -55,17 +56,17 @@ Future hitCreateCartID() async {
       debugPrint(results.exception!.graphqlErrors[0].message.toString());
 
       // session expired,login again code pending
-    }
+    }return false;
   }
 }
 
 Future hitAddToCartMutation({required String cartId,required String skuId}) async {
-  debugPrint("auth token >>>> ${App.localStorage.getString(PREF_TOKEN)}");
+  debugPrint("auth token >>>> ${cartId}");
   QueryMutations queryMutation = QueryMutations();
   QueryResult results = await GraphQLClientAPI().mClient
       .mutate(GraphQlClient.addToCart(queryMutation.addToCart(cartId,skuId),
       cartId,skuId));
-  debugPrint(" add to cart mutation result >>> ${results.data!}");
+  debugPrint(" add to cart mutation result >>> ${results.data}");
   if (results.data != null) {
     return true;
   }else{

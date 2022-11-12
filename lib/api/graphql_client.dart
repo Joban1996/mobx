@@ -29,7 +29,7 @@ enum WebError {
 
 ///this class handles api calls
 class GraphQlClient {
-  static const GRAPH_URL = "https://stagem2r.mobex.in/graphql";
+  static const GRAPH_URL = /*"https://stagem2r.mobex.in/graphql"*/"https://www.mobex.in/graphql";
   static var GRAPH_TOKEN = "";
   static var CUSTOMER_ID = "";
 

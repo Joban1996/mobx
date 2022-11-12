@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/utilities.dart';
+
 class RepairScreen extends StatelessWidget {
   const RepairScreen({Key? key}) : super(key: key);
 
@@ -67,8 +68,7 @@ class RepairScreen extends StatelessWidget {
           itemCount: 1,
           itemBuilder: (context,index)
           {
-            return Text('Repair');
-              //cartItemView(context,"#123121213","DELIVERED", 'assets/images/iphone_pic.png', 'APPLE', 'Refurbished Apple iPhone 12 Mini White 128 GB ', '₹55,099', '₹70,099');
+            return const Center(child: Text('Repair'));
 
           }
       ),

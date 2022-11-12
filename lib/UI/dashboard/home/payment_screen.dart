@@ -16,7 +16,7 @@ class PaymentScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title, style: Theme.of(context).textTheme.caption),
+        Text(title, style: Theme.of(context).textTheme.bodySmall),
         Text(
           value,
           style: Theme.of(context)

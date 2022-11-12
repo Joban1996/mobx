@@ -19,7 +19,7 @@ class CartListModel {
 class Cart {
   String? email;
   String? id;
-  Null? billingAddress;
+  //Null? billingAddress;
   List<ShippingAddresses>? shippingAddresses;
   List<Items>? items;
   List<AvailablePaymentMethods>? availablePaymentMethods;
@@ -30,7 +30,7 @@ class Cart {
   Cart(
       {this.email,
         this.id,
-        this.billingAddress,
+        //this.billingAddress,
         this.shippingAddresses,
         this.items,
         this.availablePaymentMethods,
@@ -41,7 +41,7 @@ class Cart {
   Cart.fromJson(Map<String, dynamic> json) {
     email = json['email'];
     id = json['id'];
-    billingAddress = json['billing_address'];
+    //billingAddress = json['billing_address'];
     if (json['shipping_addresses'] != null) {
       shippingAddresses = <ShippingAddresses>[];
       json['shipping_addresses'].forEach((v) {
@@ -77,7 +77,7 @@ class Cart {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['email'] = this.email;
     data['id'] = this.id;
-    data['billing_address'] = this.billingAddress;
+    //data['billing_address'] = this.billingAddress;
     if (this.shippingAddresses != null) {
       data['shipping_addresses'] =
           this.shippingAddresses!.map((v) => v.toJson()).toList();
