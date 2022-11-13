@@ -24,9 +24,23 @@ class ProductProvider with ChangeNotifier{
 
 int _itemIndex = -1;
 String _cartItemsLength = "";
+String _dropDownValue = "1";
+String _tokenExpireMsg = '';
 
 int get getItemIndex => _itemIndex;
 String get getCartItemLength => _cartItemsLength;
+String get getDropDownValue => _dropDownValue;
+String get getTokenExpireMsg => _tokenExpireMsg;
+
+setTokenExpireMsg(String msg){
+  _tokenExpireMsg = msg;
+  notifyListeners();
+}
+
+setDropDownValue(String item){
+  _dropDownValue = item;
+  notifyListeners();
+}
 
 setItemLength(String val){
   _cartItemsLength = val;
@@ -54,8 +68,7 @@ Future hitCreateCartID() async {
     if(results.exception != null){
       Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
       debugPrint(results.exception!.graphqlErrors[0].message.toString());
-
-      // session expired,login again code pending
+      setTokenExpireMsg(results.exception!.graphqlErrors[0].extensions!['category'].toString());
     }return false;
   }
 }
@@ -72,7 +85,8 @@ Future hitAddToCartMutation({required String cartId,required String skuId}) asyn
   }else{
     if(results.exception != null){
       Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
-      debugPrint(results.exception!.graphqlErrors[0].message.toString());
+        debugPrint(results.exception!.graphqlErrors[0].message.toString());
+        setTokenExpireMsg(results.exception!.graphqlErrors[0].extensions!['category'].toString());
     }
     return false;
   }

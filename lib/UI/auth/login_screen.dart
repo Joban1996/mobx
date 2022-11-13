@@ -53,7 +53,7 @@ final phoneController = TextEditingController();
                 TextField(
                   controller: phoneController,
                   inputFormatters: [LengthLimitingTextInputFormatter(10),],
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyMedium,
                   keyboardType: TextInputType.phone,
                   decoration: CommonStyle.textFieldStyle(context),
                 ),

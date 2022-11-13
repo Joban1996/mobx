@@ -26,7 +26,11 @@ class PurchasedScreen extends StatelessWidget {
     {VoidCallback? refetch, FetchMore? fetchMore}) {
     debugPrint("cart exception >>> ${result.exception}");
     if (result.hasException) {
-      Navigator.pushReplacementNamed(context, Routes.loginScreen);
+      if(result.exception!.graphqlErrors[0].extensions!['category'].toString() == "graphql-authorization"){
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          App.localStorage.clear();
+          Navigator.pushReplacementNamed(context, Routes.loginScreen);});
+      }
     return Text(result.exception.toString());
     }
     if (result.isLoading) {

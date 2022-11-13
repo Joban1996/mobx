@@ -20,6 +20,8 @@ import '../../../utils/app.dart';
 class ShoppingCart extends StatelessWidget {
    ShoppingCart({Key? key}) : super(key: key);
 
+   List<String> quantitySelect = ['1', '2', '3', '4','5','6','7','8','9','10'];
+
  late VoidCallback reFresh;
 Widget cartItemView(BuildContext context,Items productItems,int index,String cartId){
   //Items productItems = data.cart!.items![index];
@@ -47,14 +49,39 @@ Widget cartItemView(BuildContext context,Items productItems,int index,String car
                 SizedBox(height: 3,),
                 Text(productItems.product!.name??"Refurbished Apple iPhone 12 Mini White 128 GB",
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 13)),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0,3,3,3),
-                  child: Row(children: [
-                    Text("Qty",style: Theme.of(context).textTheme.bodySmall),
-                    SizedBox(width: 3,),
-                    Text("1",style: Theme.of(context).textTheme.bodyMedium),
-                    Icon(Icons.keyboard_arrow_down_rounded)
-                  ],),
+                Row(
+                  children: [
+                     Text("Qty ",style: Theme.of(context).textTheme.bodySmall),
+                    Consumer2<ProductProvider,LoginProvider>(
+                      builder: (_,productProviderValue,loginProviderValue,child){
+                        return DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            icon: const Icon(Icons.keyboard_arrow_down),
+                            isDense: true,
+                            onTap: (){
+                              productProviderValue.setItemIndex(index);
+                            },
+                            value: productItems.quantity.toString(),
+                            items: quantitySelect.map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value,style: Theme.of(context).textTheme.bodyMedium,),
+                              );
+                            }).toList(), onChanged: (String? value) {
+                              productProviderValue.getItemIndex == index ? productProviderValue.setDropDownValue(value!): null;
+                              loginProviderValue.setLoadingBool(true);
+                              productProviderValue.hitUpdateCartMutation(cartId: cartId,
+                                cartUID: productItems.id.toString(),
+                                quantity: int.parse(value!)).then((value) {
+                              loginProviderValue.setLoadingBool(false);
+                              reFresh.call();
+                            });
+                          },
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
                 Row(children: [
                   Text(productItems!.product!.priceRange!.minimumPrice!.finalPrice!.value.toString(),style: Theme.of(context).textTheme.bodyMedium,),
@@ -113,8 +140,8 @@ Widget _column(BuildContext context,CartListModel data){
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Total Amount",style: Theme.of(context).textTheme.bodyText2),
-            Text("₹${data.cart!.prices!.grandTotal!.value}", style: Theme.of(context).textTheme.bodyText2,)
+            Text("Total Amount",style: Theme.of(context).textTheme.bodyMedium),
+            Text("₹${data.cart!.prices!.grandTotal!.value}", style: Theme.of(context).textTheme.bodyMedium,)
           ],
         ),
         SizedBox(height: getCurrentScreenHeight(context)*0.03,),
@@ -156,6 +183,11 @@ Widget _column(BuildContext context,CartListModel data){
             reFresh = refetch!;
             debugPrint("cart exception >>> ${result.exception}");
             if (result.hasException) {
+              if(result.exception!.graphqlErrors[0].extensions!['category'].toString() == "graphql-authorization"){
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                App.localStorage.clear();
+                Navigator.pushReplacementNamed(context, Routes.loginScreen);});
+              }
               return Text(result.exception.toString());
             }
             if (result.isLoading) {

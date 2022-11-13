@@ -220,7 +220,10 @@ class ProductDetails1 extends StatelessWidget {
                                         await val1.hitCreateCartID().then((value) {
                                           val2.setLoadingBool(false);
                                           if(value == false){
-                                            Navigator.pushReplacementNamed(context, Routes.loginScreen);
+                                            if(val1.getTokenExpireMsg == "graphql-authorization"){
+                                                App.localStorage.clear();
+                                                Navigator.pushReplacementNamed(context, Routes.loginScreen);
+                                            }
                                           }
                                         });}
                                       val1.hitAddToCartMutation(cartId: App.localStorage.getString(PREF_CART_ID)!,
@@ -231,7 +234,10 @@ class ProductDetails1 extends StatelessWidget {
                                           Navigator.pushNamed(context, Routes.shoppingCart);
                                         }
                                         if(value == false){
-                                          Navigator.pushReplacementNamed(context, Routes.loginScreen);
+                                          if(val1.getTokenExpireMsg == "graphql-authorization"){
+                                            App.localStorage.clear();
+                                            Navigator.pushReplacementNamed(context, Routes.loginScreen);
+                                          }
                                         }
                                       });
                                     },

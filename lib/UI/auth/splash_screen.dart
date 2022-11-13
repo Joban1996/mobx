@@ -33,8 +33,8 @@ class _SplashScreenState extends State<SplashScreen> {
             () =>
         {
           getToken().then((token) => {
+            debugPrint("token>>>>>>> $token"),
             if(token == null || token.toString().isEmpty){
-              debugPrint("token>>>>>>> $token"),
               Navigator.of(context).pushReplacementNamed(Routes.welcomeScreen)
               //Navigator.of(context).pushReplacementNamed(Routes.dashboardScreen)
             }else{
