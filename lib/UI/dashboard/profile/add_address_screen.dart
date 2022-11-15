@@ -155,8 +155,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                           text: Strings.save,isTrailing: false,);
                       }
                   ),
-
-
                 ),
               ],
             ),

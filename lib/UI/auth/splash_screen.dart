@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:mobx/UI/auth/welcome_screen.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/constants/strings.dart';
 import 'package:mobx/utils/routes.dart';
@@ -33,8 +31,8 @@ class _SplashScreenState extends State<SplashScreen> {
             () =>
         {
           getToken().then((token) => {
+            debugPrint("token>>>>>>> $token"),
             if(token == null || token.toString().isEmpty){
-              debugPrint("token>>>>>>> $token"),
               Navigator.of(context).pushReplacementNamed(Routes.welcomeScreen)
               //Navigator.of(context).pushReplacementNamed(Routes.dashboardScreen)
             }else{
