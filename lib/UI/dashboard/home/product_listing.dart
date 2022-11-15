@@ -121,7 +121,8 @@ class ProductListing extends StatelessWidget {
                           return GridItem(
                             skuID: subCateProductData!.products!.items![index].sku!,
                             productData: subCateProductData!.products!.items![index],);
-                        }),
+                        }
+                        ),
                   ),
                 );})
               ],

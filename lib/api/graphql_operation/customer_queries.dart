@@ -163,7 +163,7 @@ var homePageBanner = '''query cmsBlocks(\$identifiers: [String]){
 }
 ''';
 
-var  generateCartId =  '''query customerCart{ 
+var generateCartId =  '''query customerCart{ 
   customerCart{
     id
     items {
@@ -444,3 +444,4 @@ query orders(\$filter: CustomerOrdersFilterInput){
   }
 }
 ''';
+
