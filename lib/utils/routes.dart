@@ -22,14 +22,10 @@ import 'package:mobx/UI/dashboard/profile/profile_addresses_screen.dart';
 import 'package:mobx/UI/dashboard/profile/profile_screen.dart';
 import 'package:mobx/UI/dashboard/profile/wishlist_screen.dart';
 import 'package:mobx/UI/dashboard/sell/sell_home.dart';
-import '../UI/dashboard/home/product_details2.dart';
 import '../UI/dashboard/home/product_details3.dart';
 import '../UI/dashboard/home/shopping_cart.dart';
 import '../UI/dashboard/repair/repair_home.dart';
 import 'package:mobx/UI/auth/enter_otp.dart';
-
-
-
 
 
 
