@@ -309,3 +309,139 @@ price_range {
 }
 ''';
 
+var getOrders =  ''' 
+query {
+  customer {
+    orders(
+      pageSize: 20
+    ) {
+      items {
+        id
+         items{
+           product_name
+           product_url_key
+         }
+        number
+        order_date
+        total {
+          grand_total {
+            value
+            currency
+          }
+        }
+        status
+      }
+    }
+  }
+}
+''';
+
+var getOrderDetail =  ''' 
+query orders(\$filter: CustomerOrdersFilterInput){
+  customer {
+    orders(filter: \$filter) {
+      total_count
+      items {
+        id
+        shipping_address{
+          firstname
+          lastname
+          street
+          city
+          postcode
+          country_code
+          telephone
+        }
+        number
+        order_date
+        status
+        payment_methods{
+          name
+          type
+          additional_data{
+            name
+            value
+          }
+        }
+        items {
+          product_name
+          product_sku
+          product_sale_price {
+            value
+          }
+          product_sale_price {
+            value
+            currency
+          }
+          quantity_ordered
+          quantity_invoiced
+          quantity_shipped
+        }
+        carrier
+        shipments {
+          id
+          number
+          items {
+            product_name
+            quantity_shipped
+          }
+        }
+        total {
+          base_grand_total {
+            value
+            currency
+          }
+          grand_total {
+            value
+            currency
+          }
+          total_tax {
+            value
+          }
+          subtotal {
+            value
+            currency
+          }
+          taxes {
+            amount {
+              value
+              currency
+            }
+            title
+            rate
+          }
+          total_shipping {
+            value
+          }
+          shipping_handling {
+            amount_including_tax {
+              value
+            }
+            amount_excluding_tax {
+              value
+            }
+            total_amount {
+              value
+            }
+            taxes {
+              amount {
+                value
+              }
+              title
+              rate
+            }
+          }
+          discounts {
+            amount {
+              value
+              currency
+            }
+            label
+          }
+        }
+      }
+    }
+  }
+}
+''';
+
