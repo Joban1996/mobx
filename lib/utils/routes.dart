@@ -35,7 +35,6 @@ import 'package:mobx/UI/auth/enter_otp.dart';
 
 class Routes {
 
-
   static const loginScreen = "loginScreen";
   static const dashboardScreen = "dashboardScreen";
   static const homeScreen = "homeScreen";
