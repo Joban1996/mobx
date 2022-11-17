@@ -17,9 +17,11 @@ class BrandModelScreen extends StatelessWidget {
         const AppBarTitle("Model", "Select Model of your Phone"),
         appbar: AppBar(),
         onTapCallback: () {
-          Navigator.of(context).pop();
+
         },
-        leadingImage: Image.asset("assets/images/back_arrow.png"),
+        leadingImage: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Image.asset("assets/images/back_arrow.png")),
       ),
       body:  GridView.builder(
           gridDelegate:

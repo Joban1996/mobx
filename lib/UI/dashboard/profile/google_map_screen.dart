@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
@@ -10,18 +11,54 @@ import 'package:mobx/utils/constants/strings.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
 
-class GoogleMapScreen extends StatelessWidget {
-  GoogleMapScreen({Key? key}) : super(key: key);
+class GoogleMapScreen extends StatefulWidget {
+  const GoogleMapScreen({Key? key}) : super(key: key);
+
+  @override
+  State<GoogleMapScreen> createState() => _GoogleMapScreenState();
+}
+
+class _GoogleMapScreenState extends State<GoogleMapScreen> {
 
   LatLng currentLocation = LatLng(30.7333, 76.7794);
   var addressText='';
 
-  Completer<GoogleMapController> _controller = Completer();
+  late GoogleMapController _controller;
+  Set<Marker> markers = {};
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(30.7333, 76.7794),
     zoom: 14.4746,
   );
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled');
+    }
+
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+
+      if (permission == LocationPermission.denied) {
+        return Future.error("Location permission denied");
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location permissions are permanently denied');
+    }
+
+    Position position = await Geolocator.getCurrentPosition();
+
+    return position;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +70,6 @@ class GoogleMapScreen extends StatelessWidget {
         leadingImage: GestureDetector(
             onTap: () => Navigator.pop(context),
             child: Image.asset("assets/images/back_arrow.png")),
-        // trailingAction: const [
-        //   Padding(
-        //     padding: EdgeInsets.only(right: 10),
-        //     child: Icon(
-        //       Icons.star_border_outlined,
-        //       color: Colors.black,
-        //     ),
-        //   ),
-        // ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,20 +80,14 @@ class GoogleMapScreen extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.70,
                 child:
                 GoogleMap(
-                  //mapType: MapType.hybrid,
                   initialCameraPosition: _kGooglePlex,
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
+                  myLocationEnabled: true,
+                  markers: markers,
+                  mapType: MapType.normal,
+                  onMapCreated: (GoogleMapController controller){
+                    _controller = controller;
                   },
                 ),
-                // GoogleMap(
-                //   initialCameraPosition: CameraPosition(
-                //     target: currentLocation,
-                //     zoom: 14.0,
-                //   ),
-                //   myLocationEnabled: true,
-                //   mapType: MapType.hybrid,
-                // ),
               ),
               Positioned.fill(
                 child: Align(
@@ -73,7 +95,23 @@ class GoogleMapScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: OutlinedButton.icon(
-                      onPressed: () {},
+                      onPressed: () async {
+
+                        Position position = await _determinePosition();
+
+                        _controller
+                            .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 14)));
+
+
+                        markers.clear();
+
+                        markers.add(Marker(markerId: const MarkerId('currentLocation'),position: LatLng(position.latitude, position.longitude),infoWindow: InfoWindow(
+                          title: 'Your Order will be delivered here.',
+                        )));
+                        setState(() {
+
+                        });
+                      },
                       icon: Icon(
                         Icons.my_location_sharp,
                         color: Utility.getColorFromHex(globalOrangeColor),
@@ -102,12 +140,12 @@ class GoogleMapScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 RichText(text: TextSpan(
-                  children: [
-                    WidgetSpan(child: Icon(Icons.location_pin, color: Utility.getColorFromHex(globalOrangeColor),)),
-                    TextSpan(
-                      text: addressText,
-                    )
-                  ]
+                    children: [
+                      WidgetSpan(child: Icon(Icons.location_pin, color: Utility.getColorFromHex(globalOrangeColor),)),
+                      TextSpan(
+                        text: addressText,
+                      )
+                    ]
                 ),
 
                 ),
@@ -164,4 +202,6 @@ class GoogleMapScreen extends StatelessWidget {
       // ),
     );
   }
+
 }
+
