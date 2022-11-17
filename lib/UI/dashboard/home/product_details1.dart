@@ -8,6 +8,7 @@ import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/globally_common/app_button_leading.dart';
 import 'package:mobx/common_widgets/globally_common/common_loader.dart';
+import 'package:mobx/model/categories_model.dart';
 import 'package:mobx/model/product_description_model.dart' as pData;
 import 'package:mobx/provider/auth/login_provider.dart';
 import 'package:mobx/provider/dashboard/product_provider.dart';
@@ -25,6 +26,8 @@ class ProductDetails1 extends StatelessWidget {
   final _controller = PageController(
     initialPage: 0,
   );
+
+  late pData.Items dataItem;
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +70,10 @@ class ProductDetails1 extends StatelessWidget {
                         return globalLoader();
                       }
                       var parsed = pData.ProductDescriptionModel.fromJson(result.data!);
-                      var
-                        dataItem = parsed.products!.items![0];
-                      return Container(
+                      if(parsed.products!.items!.isNotEmpty){
+                       dataItem = parsed.products!.items![0];
+                      }
+                      return parsed.products!.items!.isNotEmpty ? Container(
                         padding: const EdgeInsets.all(10),
                         color: Colors.white.withOpacity(0.8),
                         child: Stack(
@@ -252,7 +256,7 @@ class ProductDetails1 extends StatelessWidget {
                             ),
                           ],
                         ),
-                      );
+                      ): const Center(child: Text("No Data Found.."));
                     }));
           },
 
