@@ -445,3 +445,43 @@ query orders(\$filter: CustomerOrdersFilterInput){
 }
 ''';
 
+var getRegionData =  ''' 
+query {
+    country(id: "IN") {
+        id
+        two_letter_abbreviation
+        three_letter_abbreviation
+        full_name_locale
+        full_name_english
+        available_regions {
+            id
+            code
+            name
+        }
+    }
+}
+''';
+
+var getListOfAddress =  ''' 
+query {
+    customer {
+    firstname
+    lastname
+    suffix
+    email
+    addresses {
+      firstname
+      lastname
+      street
+      city
+      region {
+        region_code
+        region
+      }
+      postcode
+      country_code
+      telephone
+    }
+  }
+}
+''';

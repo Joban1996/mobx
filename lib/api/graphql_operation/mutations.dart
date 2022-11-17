@@ -138,7 +138,6 @@ mutation {
   String addNewAddress(String firstName, String lastName,String city, String state, String pinCode, String  phonNumber,bool isBillingAddress)
   {
     return """
-    
 mutation {
   createCustomerAddress(
   input: {

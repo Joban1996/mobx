@@ -129,32 +129,28 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     ),
                   ],
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Consumer2<LoginProvider,AddressProvider>(
-                      builder: (_,val1,val2,child)
-                      {
-                        return AppButton(
-                          onTap: (){
-                           // val1.setLoadingBool(true);
-                            val2.hitAddAddressMutation(
-                                firstName: firstNameController.text,
-                                lastName: lastNameController.text,
-                                city: cityController.text,
-                                state: stateController.text,
-                                pinCode: pinCodeController.text,
-                                phonNumber: '1234567890', isBillingAddress: checkedValue).then((value){
-                              //val1.setLoadingBool(false);
-                              if(value){
-                                print("the value of added address is $value");
-                                Utility.showSuccessMessage("Address added!");
-                                //Navigator.pushNamed(context, Routes.shoppingCart);
-                              }
-                            });
-                          },
-                          text: Strings.save,isTrailing: false,);
-                      }
-                  ),
+                Consumer2<LoginProvider,AddressProvider>(
+                    builder: (_,val1,val2,child)
+                    {
+                      return AppButton(
+                        onTap: (){
+                          val2.hitAddAddressMutation(
+                              firstName: firstNameController.text,
+                              lastName: lastNameController.text,
+                              city: cityController.text,
+                              state: stateController.text,
+                              pinCode: pinCodeController.text,
+                              phonNumber: '1234567890', isBillingAddress: checkedValue).then((value){
+                            //val1.setLoadingBool(false);
+                            if(value){
+                              print("the value of added address is $value");
+                              Utility.showSuccessMessage("Address added!");
+                              //Navigator.pushNamed(context, Routes.shoppingCart);
+                            }
+                          });
+                        },
+                        text: Strings.save,isTrailing: false,);
+                    }
                 ),
               ],
             ),
