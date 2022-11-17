@@ -30,7 +30,9 @@ class SellHome extends StatelessWidget {
           AppBarTitle("BRAND", "Sell Your Phone- Select brand of your phone"),
           appbar: AppBar(),
           onTapCallback: () {},
-          leadingImage: Image.asset("assets/images/back_arrow.png"),
+          leadingImage: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Image.asset("assets/images/back_arrow.png")),
         ),
         body: GridView.builder(
             gridDelegate:
