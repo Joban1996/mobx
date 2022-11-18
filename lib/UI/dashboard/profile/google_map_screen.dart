@@ -96,18 +96,15 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: OutlinedButton.icon(
                       onPressed: () async {
-
                         Position position = await _determinePosition();
 
                         _controller
                             .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 14)));
-
-
                         markers.clear();
-
                         markers.add(Marker(markerId: const MarkerId('currentLocation'),position: LatLng(position.latitude, position.longitude),infoWindow: InfoWindow(
                           title: 'Your Order will be delivered here.',
                         )));
+                        debugPrint("current location >>>>$position");
                         setState(() {
 
                         });
