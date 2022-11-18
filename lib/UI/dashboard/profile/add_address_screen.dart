@@ -13,7 +13,8 @@ import 'package:provider/provider.dart';
 
 import '../../../common_widgets/globally_common/app_button.dart';
 class AddAddressScreen extends StatefulWidget {
-  const AddAddressScreen({Key? key}) : super(key: key);
+  String flatAddress,city,state,pinCode,country;
+  AddAddressScreen({Key? key,required this.flatAddress,required this.city,required this.state, required this.pinCode, required this.country}) : super(key: key);
 
   @override
   State<AddAddressScreen> createState() => _AddAddressScreenState();
@@ -32,6 +33,14 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   var landmarkController=TextEditingController();
   var stateController=TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+   flatController.text=widget.flatAddress;
+   cityController.text=widget.city;
+   pinCodeController.text=widget.pinCode;
+   stateController.text=widget.state;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
