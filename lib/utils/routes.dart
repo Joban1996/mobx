@@ -117,8 +117,8 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
             return MaterialPageRoute(builder: (_) =>WishListScreeen());
           case profileAddressesScreen:
             return MaterialPageRoute(builder: (_) =>ProfileAddressesScreen());
-          case addAdressScreen:
-            return MaterialPageRoute(builder: (_) =>AddAddressScreen());
+          // case addAdressScreen:
+          //   return MaterialPageRoute(builder: (_) =>AddAddressScreen());
           case faqScreen:
             return MaterialPageRoute(builder: (_) =>FAQScreen());
           case aboutUs:

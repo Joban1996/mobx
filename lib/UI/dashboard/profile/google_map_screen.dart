@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mobx/UI/dashboard/profile/add_address_screen.dart';
 import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/globally_common/app_button.dart';
@@ -19,9 +22,18 @@ class GoogleMapScreen extends StatefulWidget {
 }
 
 class _GoogleMapScreenState extends State<GoogleMapScreen> {
-
+  List<Placemark> _userLocation = [];
   LatLng currentLocation = LatLng(30.7333, 76.7794);
   var addressText='';
+  String? currentLatLng = "";
+  String Address = 'search';
+  String city='';
+  String state='';
+  String flatAddress='';
+  String pinCode='';
+  String country='';
+  var addressController=TextEditingController();
+  late String latitudeValue, longitudeValue;
 
   late GoogleMapController _controller;
   Set<Marker> markers = {};
@@ -38,6 +50,10 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      await Geolocator.openLocationSettings();
       return Future.error('Location services are disabled');
     }
 
@@ -55,7 +71,9 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
       return Future.error('Location permissions are permanently denied');
     }
 
-    Position position = await Geolocator.getCurrentPosition();
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+    );
 
     return position;
   }
@@ -106,7 +124,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                         )));
                         debugPrint("current location >>>>$position");
                         setState(() {
-
+                          GetAddressFromLatLong(position);
                         });
                       },
                       icon: Icon(
@@ -136,24 +154,41 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RichText(text: TextSpan(
-                    children: [
-                      WidgetSpan(child: Icon(Icons.location_pin, color: Utility.getColorFromHex(globalOrangeColor),)),
-                      TextSpan(
-                        text: addressText,
-                      )
-                    ]
-                ),
+                TextFormField(
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(top: 18),
+                    border: InputBorder.none,
+                    prefixIcon: Icon(Icons.location_pin, color: Utility.getColorFromHex(globalOrangeColor),)
+                  ),
+                  maxLines: 2,
+
+                  keyboardType: TextInputType.multiline,
+                  enabled: false,
+                  controller: addressController,
 
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height*0.04,
-                ),
+                // RichText(text: TextSpan(
+                //     children: [
+                //       WidgetSpan(child: Icon(Icons.location_pin, color: Utility.getColorFromHex(globalOrangeColor),)),
+                //       TextSpan(
+                //         text: addressText,
+                //         style: TextStyle(
+                //           color: Colors.black
+                //         )
+                //       )
+                //     ]
+                // ),
+                //
+                // ),
+                // SizedBox(
+                //   height: MediaQuery.of(context).size.height*0.04,
+                // ),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: AppButton(
                     onTap: () {
-                      Navigator.pushNamed(context, Routes.addAdressScreen);
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=>AddAddressScreen(flatAddress: flatAddress, city: city, state: state, pinCode: pinCode, country: country)));
+                      //Navigator.pushNamed(context, Routes.addAdressScreen);
                     },
                     text: Strings.addcompleteAddressButton,
                     isTrailing: false,
@@ -198,6 +233,35 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
       //   ),
       // ),
     );
+  }
+
+  Future<void> GetAddressFromLatLong(
+      Position position) async {
+    if (kDebugMode) {
+      print("inside the GetAddressFromLatLong");
+    }
+    _userLocation =
+    await placemarkFromCoordinates(position.latitude, position.longitude);
+    if (kDebugMode) {
+      print("the address get is $_userLocation");
+    }
+
+    Placemark place = _userLocation[0];
+    //Placemark place1 = _userLocation[1];
+    Address =
+    '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+    addressController.text="${place.name},${place.subLocality},${place.locality},${place.postalCode},${place.administrativeArea},${place.country}";
+    flatAddress='${place.name},${place.subLocality}';
+    state='${place.administrativeArea}';
+    city='${place.locality}';
+    country='${place.country}';
+    pinCode='${place.postalCode}';
+    print("the address is $addressText");
+    // if (!mounted) return;
+    // setState(() {
+    //
+    //
+    // });
   }
 
 }
