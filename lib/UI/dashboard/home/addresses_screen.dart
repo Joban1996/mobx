@@ -5,6 +5,7 @@ import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/globally_common/app_button.dart';
 import 'package:mobx/common_widgets/globally_common/app_button_leading.dart';
+import 'package:mobx/model/product/address_listing_model.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
@@ -27,7 +28,7 @@ class AddressesScreen extends StatelessWidget {
     },
   ];
 
-  Widget AddressWidget(BuildContext context,String addressTitle, String addressSubtitle)
+  Widget AddressWidget(BuildContext context, String addressSubtitle)
   {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,13 +38,7 @@ class AddressesScreen extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(addressTitle, style: Theme.of(context).textTheme.bodyMedium,),
-                    Text(addressSubtitle,style: Theme.of(context).textTheme.bodySmall,),
-                  ],
-                ),
+                child: Text(addressSubtitle,style: Theme.of(context).textTheme.bodySmall,),
               ),
               Radio(
                 value: '',
@@ -88,23 +83,22 @@ class AddressesScreen extends StatelessWidget {
     if (result.isLoading) {
     return globalLoader();
     }
-    //var parsed = GetOrdersModel.fromJson(result.data!);
-    //var productItems = parsed.customer!.orders!.items!;
-    debugPrint("get addresses data >>> ${result.data!}");
+    var parsed = AddressListingModel.fromJson(result.data!);
+    var addressesList = parsed.customer!.addresses!;
+    debugPrint("get addresses data >>> ${result.data!.length}");
     //debugPrint("get orders data >>> ${App.localStorage.getString(PREF_TOKEN)}");
     return
-
       Container(
         color: Colors.white.withOpacity(0.8),
         child: Stack(
           children: [
             ListView.builder(
                 shrinkWrap: true,
-                itemCount: addressList.length,
+                itemCount: addressesList.length,
                 itemBuilder: (context, index)
                 {
-                  var model=addressList[index];
-                  return AddressWidget(context, model['title'], model['subtitle']);
+                  var model=addressesList[index];
+                  return AddressWidget(context,"${model.street![0]!}, ${model.city}, ${model.region!.region!}, India.");
                 }
             ),
             Padding(

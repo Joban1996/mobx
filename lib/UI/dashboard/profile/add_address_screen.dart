@@ -143,21 +143,28 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     {
                       return AppButton(
                         onTap: (){
-                          Navigator.pushNamed(context, Routes.address);
-                          // val2.hitAddAddressMutation(
-                          //     firstName: firstNameController.text,
-                          //     lastName: lastNameController.text,
-                          //     city: cityController.text,
-                          //     state: stateController.text,
-                          //     pinCode: pinCodeController.text,
-                          //     phonNumber: '1234567890', isBillingAddress: checkedValue).then((value){
-                          //   //val1.setLoadingBool(false);
-                          //   if(value){
-                          //     print("the value of added address is $value");
-                          //     Utility.showSuccessMessage("Address added!");
-                          //     //Navigator.pushNamed(context, Routes.shoppingCart);
-                          //   }
-                          // });
+                         if(firstNameController.text.isNotEmpty && lastNameController.text.isNotEmpty){
+                          val2.hitAddAddressMutation(
+                              firstName: firstNameController.text,
+                              lastName: lastNameController.text,
+                              city: cityController.text,
+                              state: stateController.text,
+                              pinCode: pinCodeController.text,
+                              phonNumber: '1234567890', isBillingAddress: checkedValue).then((value){
+                            //val1.setLoadingBool(false);
+                            if(value){
+                              print("the value of added address is $value");
+                              Utility.showSuccessMessage("Address added!");
+                              Navigator.pushNamed(context, Routes.address);
+                            }else{
+                              Utility.showSuccessMessage("Something went wrong!");
+                            }
+                          }
+
+                          );}
+                         else{
+                           Utility.showNormalMessage("Please Fill required fields");
+                         }
                         },
                         text: Strings.save,isTrailing: false,);
                     }

@@ -9,10 +9,12 @@ import 'package:mobx/UI/dashboard/profile/add_address_screen.dart';
 import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/globally_common/app_button.dart';
+import 'package:mobx/provider/dashboard/address_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/constants/strings.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
+import 'package:provider/provider.dart';
 
 class GoogleMapScreen extends StatefulWidget {
   const GoogleMapScreen({Key? key}) : super(key: key);
@@ -120,7 +122,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                             .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 14)));
                         markers.clear();
                         markers.add(Marker(markerId: const MarkerId('currentLocation'),position: LatLng(position.latitude, position.longitude),infoWindow: InfoWindow(
-                          title: 'Your Order will be delivered here.',
+                          title: 'Your location',
                         )));
                         debugPrint("current location >>>>$position");
                         setState(() {
@@ -183,16 +185,30 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                 // SizedBox(
                 //   height: MediaQuery.of(context).size.height*0.04,
                 // ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: AppButton(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=>AddAddressScreen(flatAddress: flatAddress, city: city, state: state, pinCode: pinCode, country: country)));
-                      //Navigator.pushNamed(context, Routes.addAdressScreen);
-                    },
-                    text: Strings.addcompleteAddressButton,
-                    isTrailing: false,
-                  ),
+                Consumer<AddressProvider>(
+                  builder: (_,val,child){
+                    return Align(
+                      alignment: Alignment.bottomCenter,
+                      child: AppButton(
+                        onTap: () {
+                          if(state.isNotEmpty){
+                            print("your state >>> $state");
+                            val.setStateName(state);
+                            val.hitGetRegionData().then((value) {
+                            });
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=>
+                                AddAddressScreen(flatAddress: flatAddress, city: city, state: state, pinCode: pinCode,
+                                    country: country)));
+                          }else{
+                            Utility.showNormalMessage("Please select current location");
+                          }
+
+                        },
+                        text: Strings.addcompleteAddressButton,
+                        isTrailing: false,
+                      ),
+                    );
+                  },
                 )
               ],
             ),
@@ -257,6 +273,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
     country='${place.country}';
     pinCode='${place.postalCode}';
     print("the address is $addressText");
+
     // if (!mounted) return;
     // setState(() {
     //

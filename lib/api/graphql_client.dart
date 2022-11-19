@@ -135,6 +135,10 @@ class GraphQlClient {
     return MutationOptions(
       document: gql(mutation),
       variables: {
+        'region':"Delhi",
+        'region_code':"DL",
+        'region_id':"578",
+        'country_code': 'IN',
         'postcode':pinCode,
         'city':city,
         'firstname': firstName,
