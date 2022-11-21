@@ -40,24 +40,24 @@ class AddressProvider with ChangeNotifier
     debugPrint("enable noti mutation result >>> ${results.data!}");
     if(results.data != null){
        var data =  GetRegionsModel.fromJson(results.data!);
+       print("region state selected >>> $getStateName");
        for(int i=0;i<data.country!.availableRegions!.length;i++){
-            if(data.country!.availableRegions![i].toString() == getStateName){
+            if(data.country!.availableRegions![i].name.toString() == getStateName){
               //set available region object
-              print("region state selected >>> $getStateName");
               setAvailableRegions(data.country!.availableRegions![i]);
             }
        }
     }
   }
 
-  Future hitAddAddressMutation({required String firstName,required String lastName,required String city,required
+  Future hitAddAddressMutation({required String street,required String firstName,required String lastName,required String city,required
   String state,required String pinCode,required String  phonNumber,required bool isBillingAddress}) async {
     debugPrint("auth token >>>> ${App.localStorage.getString(PREF_TOKEN)}");
     QueryMutations queryMutation = QueryMutations();
     QueryResult results = await GraphQLClientAPI().mClient
-        .mutate(GraphQlClient.addNewAddress(queryMutation.addNewAddress(getAvailableRegions,firstName,
-        lastName, city, state, pinCode, phonNumber, isBillingAddress),
-        firstName, lastName, city, state, pinCode, phonNumber, isBillingAddress));
+        .mutate(GraphQlClient.addNewAddress(queryMutation.addNewAddress(street,getAvailableRegions,firstName,
+        lastName, city, state, pinCode, phonNumber, isBillingAddress),street,
+        firstName, lastName, city, state, pinCode, phonNumber, isBillingAddress,getAvailableRegions));
     debugPrint(" addNew Address mutation result >>> ${results.data!}");
     if (results.data != null) {
       return true;

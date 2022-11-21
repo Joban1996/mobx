@@ -34,6 +34,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
   String flatAddress='';
   String pinCode='';
   String country='';
+  String street ='';
   var addressController=TextEditingController();
   late String latitudeValue, longitudeValue;
 
@@ -163,28 +164,10 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                     prefixIcon: Icon(Icons.location_pin, color: Utility.getColorFromHex(globalOrangeColor),)
                   ),
                   maxLines: 2,
-
                   keyboardType: TextInputType.multiline,
                   enabled: false,
                   controller: addressController,
-
                 ),
-                // RichText(text: TextSpan(
-                //     children: [
-                //       WidgetSpan(child: Icon(Icons.location_pin, color: Utility.getColorFromHex(globalOrangeColor),)),
-                //       TextSpan(
-                //         text: addressText,
-                //         style: TextStyle(
-                //           color: Colors.black
-                //         )
-                //       )
-                //     ]
-                // ),
-                //
-                // ),
-                // SizedBox(
-                //   height: MediaQuery.of(context).size.height*0.04,
-                // ),
                 Consumer<AddressProvider>(
                   builder: (_,val,child){
                     return Align(
@@ -192,12 +175,12 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                       child: AppButton(
                         onTap: () {
                           if(state.isNotEmpty){
-                            print("your state >>> $state");
+                            print("your state >>> $flatAddress");
                             val.setStateName(state);
                             val.hitGetRegionData().then((value) {
                             });
                             Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=>
-                                AddAddressScreen(flatAddress: flatAddress, city: city, state: state, pinCode: pinCode,
+                                AddAddressScreen(street: street,flatAddress: flatAddress, city: city, state: state, pinCode: pinCode,
                                     country: country)));
                           }else{
                             Utility.showNormalMessage("Please select current location");
@@ -272,6 +255,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
     city='${place.locality}';
     country='${place.country}';
     pinCode='${place.postalCode}';
+    street = '${place.street}';
     print("the address is $addressText");
 
     // if (!mounted) return;

@@ -136,7 +136,7 @@ mutation {
       """;
   }
 
-  String addNewAddress(AvailableRegions regions,String firstName, String lastName,String city, String state, String pinCode, String  phonNumber,bool isBillingAddress)
+  String addNewAddress(String street,AvailableRegions regions,String firstName, String lastName,String city, String state, String pinCode, String  phonNumber,bool isBillingAddress)
   {
     return """
 mutation {
@@ -148,7 +148,7 @@ mutation {
       region_id: "${regions.id}"
     }
     country_code: IN
-    street: ["123 Main Street"]
+    street: ["$street"]     
     postcode: "$pinCode"
     city: "$city"
     firstname: "$firstName"

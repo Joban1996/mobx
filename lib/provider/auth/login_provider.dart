@@ -54,7 +54,6 @@ class LoginProvider with ChangeNotifier{
       Utility.showSuccessMessage("${results.data!['loginOTP']['message']}");
       return true;
     }else{
-      Utility.showErrorMessage("${results.data!['loginOTP']['message']}");
       if(results.exception != null){
         Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
         debugPrint(results.exception!.graphqlErrors[0].message.toString());

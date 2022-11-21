@@ -167,7 +167,7 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                                     );
                                   }),
                             ): SizedBox(
-                              height: getCurrentScreenHeight(context)/2.5,
+                              height: getCurrentScreenHeight(context)/3,
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: parsedProductData.products!.items!.length,
@@ -213,7 +213,7 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 4/5,
+                                    childAspectRatio: 3/4,
                                     crossAxisSpacing: 1,
                                     crossAxisCount: 2,
 

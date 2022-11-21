@@ -29,8 +29,9 @@ String skuID;
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Utility.getColorFromHex(globalGreyColor))),
-              height: getCurrentScreenHeight(context)/4,
-              child: productData != null ? Image.network(productData!.image!.url.toString(),) : Image.asset("assets/images/iphone_pic.png"),),
+              height: getCurrentScreenHeight(context)/5,
+              child: productData != null ? Image.network(productData!.image!.url.toString(),) :
+              Image.asset("assets/images/iphone_pic.png"),),
               Container(
                 margin: EdgeInsets.only(top: 10),
                 padding: EdgeInsets.fromLTRB(8,4,8,4),
@@ -45,7 +46,7 @@ String skuID;
               width: getCurrentScreenWidth(context)/2,
               child: Text(productData != null ? productData!.name.toString() :
               "Refurbished Apple iPhone 12 128 GB",
-                style: Theme.of(context).textTheme.caption,maxLines: 2,)),
+                style: Theme.of(context).textTheme.caption,maxLines: 2,overflow: TextOverflow.ellipsis,)),
           const SizedBox(height: 5,),
           Row(children: [
             Text(productData != null ? productData!.priceRange!.minimumPrice!.finalPrice!.value.toString() :"₹55,099",style: Theme.of(context).textTheme.bodyText2,),
