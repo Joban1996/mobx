@@ -13,8 +13,9 @@ import 'package:provider/provider.dart';
 
 import '../../../common_widgets/globally_common/app_button.dart';
 class AddAddressScreen extends StatefulWidget {
-  String flatAddress,city,state,pinCode,country;
-  AddAddressScreen({Key? key,required this.flatAddress,required this.city,required this.state, required this.pinCode, required this.country}) : super(key: key);
+  String flatAddress,city,state,pinCode,country,street;
+  AddAddressScreen({Key? key,
+    required this.street,required this.flatAddress,required this.city,required this.state, required this.pinCode, required this.country}) : super(key: key);
 
   @override
   State<AddAddressScreen> createState() => _AddAddressScreenState();
@@ -32,6 +33,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   var flatController=TextEditingController();
   var landmarkController=TextEditingController();
   var stateController=TextEditingController();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -138,32 +140,36 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     ),
                   ],
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Consumer2<LoginProvider,AddressProvider>(
-                      builder: (_,val1,val2,child)
-                      {
-                        return AppButton(
-                          onTap: (){
-                           // val1.setLoadingBool(true);
-                            val2.hitAddAddressMutation(
-                                firstName: firstNameController.text,
-                                lastName: lastNameController.text,
-                                city: cityController.text,
-                                state: stateController.text,
-                                pinCode: pinCodeController.text,
-                                phonNumber: '1234567890', isBillingAddress: checkedValue).then((value){
-                              //val1.setLoadingBool(false);
-                              if(value){
-                                print("the value of added address is $value");
-                                Utility.showSuccessMessage("Address added!");
-                                //Navigator.pushNamed(context, Routes.shoppingCart);
-                              }
-                            });
-                          },
-                          text: Strings.save,isTrailing: false,);
-                      }
-                  ),
+                Consumer2<LoginProvider,AddressProvider>(
+                    builder: (_,val1,val2,child)
+                    {
+                      return AppButton(
+                        onTap: (){
+                         if(firstNameController.text.isNotEmpty && lastNameController.text.isNotEmpty){
+                          val2.hitAddAddressMutation(
+                              street: widget.street,
+                              firstName: firstNameController.text,
+                              lastName: lastNameController.text,
+                              city: cityController.text,
+                              state: stateController.text,
+                              pinCode: pinCodeController.text,
+                              phonNumber: '1234567890', isBillingAddress: checkedValue).then((value){
+                            //val1.setLoadingBool(false);
+                            if(value){
+                              print("the value of added address is $value");
+                              Utility.showSuccessMessage("Address added!");
+                              Navigator.pushNamed(context, Routes.address);
+                            }else{
+                              Utility.showSuccessMessage("Something went wrong!");
+                            }
+                          }
+                          );}
+                         else{
+                           Utility.showNormalMessage("Please Fill required fields");
+                         }
+                        },
+                        text: Strings.save,isTrailing: false,);
+                    }
                 ),
               ],
             ),

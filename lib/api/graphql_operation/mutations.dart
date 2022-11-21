@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' ;
+import 'package:mobx/model/product/getRegionModel.dart';
 
 
 
@@ -135,25 +136,24 @@ mutation {
       """;
   }
 
-  String addNewAddress(String firstName, String lastName,String city, String state, String pinCode, String  phonNumber,bool isBillingAddress)
+  String addNewAddress(String street,AvailableRegions regions,String firstName, String lastName,String city, String state, String pinCode, String  phonNumber,bool isBillingAddress)
   {
     return """
-    
 mutation {
   createCustomerAddress(
   input: {
     region: {
-      region: "Punjab"
-      region_code: "PB"
-      region_id: "578"
+      region: "${regions.name}"
+      region_code: "${regions.code}"
+      region_id: "${regions.id}"
     }
     country_code: IN
-    street: ["123 Main Street"]
-    postcode: $pinCode
-    city: $city
-    firstname: $firstName
-    lastname: $lastName
-  telephone: $phonNumber
+    street: ["$street"]     
+    postcode: "$pinCode"
+    city: "$city"
+    firstname: "$firstName"
+    lastname: "$lastName"
+    telephone: "$phonNumber"
     default_shipping: true
     default_billing: $isBillingAddress
   }) {

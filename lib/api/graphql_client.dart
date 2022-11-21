@@ -2,6 +2,7 @@ import 'dart:convert' as convert;
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:mobx/model/product/getRegionModel.dart';
 
 import '../provider/auth/login_provider.dart';
 
@@ -130,11 +131,17 @@ class GraphQlClient {
   }
 
 
-  static addNewAddress(String mutation,String firstName, String lastName,String city, String state, String pinCode, String  phonNumber,bool isBillingAddress) {
+  static addNewAddress(String street,String mutation,String firstName, String lastName,String city, String state,
+      String pinCode, String  phonNumber,bool isBillingAddress,AvailableRegions regionsAvalable) {
     print(mutation);
     return MutationOptions(
       document: gql(mutation),
       variables: {
+        'street': street,
+        'region':regionsAvalable.name,
+        'region_code':regionsAvalable.code,
+        'region_id':regionsAvalable.id,
+        'country_code': 'IN',
         'postcode':pinCode,
         'city':city,
         'firstname': firstName,
