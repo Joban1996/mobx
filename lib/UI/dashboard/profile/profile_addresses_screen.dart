@@ -111,14 +111,13 @@ class ProfileAddressesScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Align(
                   alignment: Alignment.bottomCenter,
-                  child: Expanded(
-                      child: AppButton(
+                  child: AppButton(
                     onTap: () {
-                      Navigator.pushNamed(context, Routes.googleMapScreen);
+                  Navigator.pushNamed(context, Routes.googleMapScreen);
                     },
                     text: Strings.addNewAddressButton,
                     isTrailing: false,
-                  )),
+                  ),
                 ),
               ),
             ],
