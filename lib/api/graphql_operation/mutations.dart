@@ -23,6 +23,7 @@ class QueryMutations {
   }
 
   String addToCart(String cartId, String skuID) {
+
     return """
 mutation {
   addProductsToCart(
