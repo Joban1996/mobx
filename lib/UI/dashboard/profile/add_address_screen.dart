@@ -159,7 +159,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                               print("the value of added address is $value");
                               Utility.showSuccessMessage("Address added!");
                               Navigator.pushNamed(context, Routes.address);
-                            }else{
+                            }
+                            else{
                               Utility.showSuccessMessage("Something went wrong!");
                             }
                           }
