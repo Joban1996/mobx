@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobx/UI/dashboard/home/addresses_screen.dart';
 import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/dashboard/common_textfield.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
@@ -158,7 +159,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                             if(value){
                               print("the value of added address is $value");
                               Utility.showSuccessMessage("Address added!");
-                              Navigator.pushNamed(context, Routes.address);
+                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>AddressesScreen()),
+                                      (Route<dynamic>route) => false);
+                             // Navigator.pushNamed(context, Routes.address);
                             }else{
                               Utility.showSuccessMessage("Something went wrong!");
                             }
