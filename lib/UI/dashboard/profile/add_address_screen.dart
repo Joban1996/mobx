@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mobx/UI/dashboard/home/addresses_screen.dart';
+import 'package:mobx/UI/dashboard/profile/profile_addresses_screen.dart';
 import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/dashboard/common_textfield.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/globally_common/app_button_leading.dart';
+import 'package:mobx/model/product/address_listing_model.dart';
 import 'package:mobx/provider/auth/login_provider.dart';
 import 'package:mobx/provider/dashboard/address_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
@@ -147,7 +150,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                         onTap: (){
                          if(firstNameController.text.isNotEmpty && lastNameController.text.isNotEmpty){
                           val2.hitAddAddressMutation(
-                              street: widget.street,
+                              street: widget.flatAddress.toString(),
                               firstName: firstNameController.text,
                               lastName: lastNameController.text,
                               city: cityController.text,
@@ -158,7 +161,15 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                             if(value){
                               print("the value of added address is $value");
                               Utility.showSuccessMessage("Address added!");
-                              Navigator.pushNamed(context, Routes.address);
+
+                              //Navigator.pushNamedAndRemoveUntil(context, Routes.address,ModalRoute.withName(Routes.shoppingCart));
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddressesScreen()
+                                  ),
+                                  ModalRoute.withName(Routes.shoppingCart)
+                              );
                             }else{
                               Utility.showSuccessMessage("Something went wrong!");
                             }

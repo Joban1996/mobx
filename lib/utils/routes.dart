@@ -48,7 +48,7 @@ class Routes {
   static const shoppingCart = "shoppingCart";
   static const productListing = "productListing";
   static const enterOtp = "enterOtp";
-  static const splashScreen = "splashScreen";
+  static const splashScreen = "/";
   static const productListWithDeals="productListWithDeals";
   static const orderConfirmed="orderConfirmed";
   static const payment="payment";

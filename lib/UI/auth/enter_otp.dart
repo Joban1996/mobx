@@ -40,6 +40,7 @@ class _EnterOtpState extends State<EnterOtp> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    context.read<LoginProvider>().setInitialTime();
     timer = Timer.periodic(Duration(seconds: 1), (_) {
      context.read<LoginProvider>().setRemainingTime();
     });
@@ -87,39 +88,52 @@ class _EnterOtpState extends State<EnterOtp> {
               SizedBox(height: getCurrentScreenHeight(context)*0.03,),
               Align(
                   alignment: Alignment.center,
-                  child: GestureDetector(
-                      onTap: () => context.read<LoginProvider>().remainingTime == 0 ? hitWebService(): {},
-                      child: Text("Resent OTP | 00:${context.watch<LoginProvider>().getRemainingTime<10 ? "0":""}${context.watch<LoginProvider>().getRemainingTime}",
-                        style:  Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex("#5F5F5F")),))),
+                  child: Consumer<LoginProvider>(
+                    builder: (_,val,child){
+                      return GestureDetector(
+                          onTap: () => val.remainingTime == 0 ? hitWebService(val): {},
+                          child: Text("Resent OTP | 00:${val.getRemainingTime<10 ? "0":""}${val.getRemainingTime}",
+                            style:  Theme.of(context).textTheme.bodySmall!.copyWith(color:
+                            Utility.getColorFromHex("#5F5F5F")),));
+                    },
+                  )),
               SizedBox(height: getCurrentScreenHeight(context)*0.03,),
-              AppButton(onTap: () {
-                if(otpController.text.isNotEmpty){
-                context.read<LoginProvider>().setLoadingBool(true);
-                context.read<LoginProvider>().hitOtpVerifyQuery(phone:
-                context.read<LoginProvider>().getMobileNumber,otp: otpController.text).then((value){
-                  if(value){
-                    timer?.cancel();
-                    //Navigator.pushReplacementNamed(context, Routes.dashboardScreen);
-                    Navigator.pushNamedAndRemoveUntil(context,Routes.dashboardScreen, (route) => false);
-                  }
-                  context.read<LoginProvider>().setLoadingBool(false);
-                });
+              Consumer<LoginProvider>(
+                builder: (_,val,child){
+                  return AppButton(onTap: () {
+                    if(otpController.text.isNotEmpty){
+                      val.setLoadingBool(true);
+                      val.hitOtpVerifyQuery(phone:
+                      val.getMobileNumber,otp: otpController.text).then((value){
+                        if(value){
+                          timer?.cancel();
+                          //Navigator.pushReplacementNamed(context, Routes.dashboardScreen);
+                          Navigator.pushNamedAndRemoveUntil(context,Routes.dashboardScreen, (route) => false);
+                        }
+                        val.setLoadingBool(false);
+                      });
 
-              }}, text: "VERIFY OTP")
+                    }}, text: "VERIFY OTP");
+                },
+              )
             ],
           ),
         ),
       )),
     );
   }
-  hitWebService(){
-    context.read<LoginProvider>().setLoadingBool(true);
-    context.read<LoginProvider>().hitLoginMutation
-      (mNumber: "91${context.read<LoginProvider>().getMobileNumber}", webSiteId: 1).then((value) {
+  hitWebService(LoginProvider val){
+    timer?.cancel();
+    val.setLoadingBool(true);
+   val.hitLoginMutation
+      (mNumber: "91${val.getMobileNumber}", webSiteId: 1).then((value) {
       if(value){
-        Navigator.pushNamed(context, Routes.enterOtp);
+        val.setInitialTime();
+        timer = Timer.periodic(const Duration(seconds: 1), (_) {
+          val.setRemainingTime();
+        });
       }
-      context.read<LoginProvider>().setLoadingBool(false);
+      val.setLoadingBool(false);
     });
   }
 }

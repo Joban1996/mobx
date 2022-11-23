@@ -55,9 +55,9 @@ class AddressProvider with ChangeNotifier
     debugPrint("auth token >>>> ${App.localStorage.getString(PREF_TOKEN)}");
     QueryMutations queryMutation = QueryMutations();
     QueryResult results = await GraphQLClientAPI().mClient
-        .mutate(GraphQlClient.addNewAddress(queryMutation.addNewAddress(street,getAvailableRegions,firstName,
-        lastName, city, state, pinCode, phonNumber, isBillingAddress),street,
-        firstName, lastName, city, state, pinCode, phonNumber, isBillingAddress,getAvailableRegions));
+        .mutate(GraphQlClient.addNewAddress(queryMutation.addNewAddress(getAvailableRegions,firstName,
+        lastName, city, state, pinCode, phonNumber, isBillingAddress,street),
+        firstName, lastName, city, state, pinCode, phonNumber, isBillingAddress,getAvailableRegions,street));
     debugPrint(" addNew Address mutation result >>> ${results.data!}");
     if (results.data != null) {
       return true;

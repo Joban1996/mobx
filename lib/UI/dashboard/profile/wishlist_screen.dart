@@ -73,7 +73,7 @@ class WishListScreeen extends StatelessWidget {
                       ),
                       Row(children: [
                         Text(salePrice,style: Theme.of(context).textTheme.bodyText2,),
-                        SizedBox(width: 3,),
+                        const SizedBox(width: 3,),
                         Text(actualPrice,style: Theme.of(context).textTheme.caption!.copyWith(decoration: TextDecoration.lineThrough,),)
                       ],),
                       Row(

@@ -131,13 +131,13 @@ class GraphQlClient {
   }
 
 
-  static addNewAddress(String street,String mutation,String firstName, String lastName,String city, String state,
-      String pinCode, String  phonNumber,bool isBillingAddress,AvailableRegions regionsAvalable) {
+  static addNewAddress(String mutation,String firstName, String lastName,String city, String state,
+      String pinCode, String  phonNumber,bool isBillingAddress,AvailableRegions regionsAvalable,String street) {
     print(mutation);
     return MutationOptions(
       document: gql(mutation),
       variables: {
-        'street': street,
+        'street': [street],
         'region':regionsAvalable.name,
         'region_code':regionsAvalable.code,
         'region_id':regionsAvalable.id,
