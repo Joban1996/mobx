@@ -31,10 +31,14 @@ class LoginProvider with ChangeNotifier{
     isLoading = val;
     notifyListeners();
   }
+  setInitialTime(){
+    remainingTime = 59;
+  }
   setMobileNumber(String number){
     mobileNumber = number;
     notifyListeners();
   }
+
   setRemainingTime(){
     if(remainingTime != 0){
       remainingTime--;

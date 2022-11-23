@@ -242,7 +242,7 @@ Widget _column(BuildContext context,CartListModel data){
                       "Applied coupon: ${parsed.cart!.appliedCoupons![0].code!}" : "Apply coupons"),
                       dividerCommon(context),
                       ItemInfoArrowForward(onTap: (){
-                        Navigator.pushNamed(context, Routes.googleMapScreen);
+                        Navigator.pushNamed(context, Routes.address);
                       }, title: "DELIVERY ADDRESS", description: "Click here to add address"),
                       dividerCommon(context),
                       _column(context,parsed)

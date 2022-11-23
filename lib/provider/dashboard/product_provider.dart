@@ -74,7 +74,7 @@ Future hitCreateCartID() async {
 }
 
 Future hitAddToCartMutation({required String cartId,required String skuId}) async {
-  debugPrint("auth token >>>> ${cartId}");
+  debugPrint("auth token >>>> $cartId");
   QueryMutations queryMutation = QueryMutations();
   QueryResult results = await GraphQLClientAPI().mClient
       .mutate(GraphQlClient.addToCart(queryMutation.addToCart(cartId,skuId),

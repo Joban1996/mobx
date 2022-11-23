@@ -23,6 +23,7 @@ class QueryMutations {
   }
 
   String addToCart(String cartId, String skuID) {
+
     return """
 mutation {
   addProductsToCart(
@@ -30,7 +31,7 @@ mutation {
     cartItems: [
       {
         quantity: 1
-        sku: $skuID
+        sku: "$skuID"
       }
     ]
   ) {
@@ -136,7 +137,8 @@ mutation {
       """;
   }
 
-  String addNewAddress(String street,AvailableRegions regions,String firstName, String lastName,String city, String state, String pinCode, String  phonNumber,bool isBillingAddress)
+  String addNewAddress(AvailableRegions regions,String firstName, String lastName,String city, String state,
+      String pinCode, String  phonNumber,bool isBillingAddress,String street)
   {
     return """
 mutation {
