@@ -122,12 +122,25 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                         _controller
                             .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 14)));
                         markers.clear();
-                        markers.add(Marker(markerId: const MarkerId('currentLocation'),position: LatLng(position.latitude, position.longitude),infoWindow: InfoWindow(
+                        markers.add(
+                            Marker(
+                                draggable: true,
+                                markerId: const MarkerId('currentLocation'),
+                                position: LatLng(position.latitude, position.longitude),
+                              onDragEnd: ((newPosition) {
+                               //position=newPosition.latitude
+                                print('the newLat is ${newPosition.latitude}');
+                                print('the newLng is ${newPosition.longitude}');
+                                setState(() {
+                                  GetAddressFromLatLong(newPosition.latitude,newPosition.longitude);
+                                });
+                              }),
+                                infoWindow: InfoWindow(
                           title: 'Your location',
                         )));
                         debugPrint("current location >>>>$position");
                         setState(() {
-                          GetAddressFromLatLong(position);
+                          GetAddressFromLatLong(position.latitude,position.longitude);
                         });
                       },
                       icon: Icon(
@@ -234,13 +247,13 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
     );
   }
 
-  Future<void> GetAddressFromLatLong(
-      Position position) async {
+  Future<void> GetAddressFromLatLong(double latitude, double longitude
+      ) async {
     if (kDebugMode) {
       print("inside the GetAddressFromLatLong");
     }
     _userLocation =
-    await placemarkFromCoordinates(position.latitude, position.longitude);
+    await placemarkFromCoordinates(latitude, longitude);
     if (kDebugMode) {
       print("the address get is $_userLocation");
     }
