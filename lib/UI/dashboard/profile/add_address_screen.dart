@@ -4,6 +4,7 @@ import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/dashboard/common_textfield.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/globally_common/app_button_leading.dart';
+import 'package:mobx/common_widgets/globally_common/common_loader.dart';
 import 'package:mobx/provider/auth/login_provider.dart';
 import 'package:mobx/provider/dashboard/address_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
@@ -65,7 +66,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         //   ),
         // ],
       ),
-      body: SingleChildScrollView(
+      body: CommonLoader(screenUI: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Form(
@@ -146,31 +147,32 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     {
                       return AppButton(
                         onTap: (){
-                         if(firstNameController.text.isNotEmpty && lastNameController.text.isNotEmpty){
-                          val2.hitAddAddressMutation(
-                              street: widget.flatAddress.toString(),
-                              firstName: firstNameController.text,
-                              lastName: lastNameController.text,
-                              city: cityController.text,
-                              state: stateController.text,
-                              pinCode: pinCodeController.text,
-                              phonNumber: '1234567890', isBillingAddress: checkedValue).then((value){
-                            //val1.setLoadingBool(false);
-                            if(value){
-                              print("the value of added address is $value");
-                              Utility.showSuccessMessage("Address added!");
-                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>AddressesScreen()),
-                                      (Route<dynamic>route) => false);
-                             // Navigator.pushNamed(context, Routes.address);
+                          if(firstNameController.text.isNotEmpty && lastNameController.text.isNotEmpty){
+                            val1.setLoadingBool(true);
+                            val2.hitAddAddressMutation(
+                                street: widget.flatAddress.toString(),
+                                firstName: firstNameController.text,
+                                lastName: lastNameController.text,
+                                city: cityController.text,
+                                state: stateController.text,
+                                pinCode: pinCodeController.text,
+                                phonNumber: '1234567890', isBillingAddress: checkedValue).then((value){
+                              val1.setLoadingBool(false);
+                              if(value){
+                                print("the value of added address is $value");
+                                Utility.showSuccessMessage("Address added!");
+                                // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>AddressesScreen()),
+                                //         (Route<dynamic>route) => false);
+                                 Navigator.pushNamed(context, Routes.address);
+                              }
+                              else{
+                                Utility.showSuccessMessage("Something went wrong!");
+                              }
                             }
-                            else{
-                              Utility.showSuccessMessage("Something went wrong!");
-                            }
+                            );}
+                          else{
+                            Utility.showNormalMessage("Please Fill required fields");
                           }
-                          );}
-                         else{
-                           Utility.showNormalMessage("Please Fill required fields");
-                         }
                         },
                         text: Strings.save,isTrailing: false,);
                     }
@@ -179,7 +181,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }
