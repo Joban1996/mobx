@@ -146,7 +146,11 @@ Widget _column(BuildContext context,CartListModel data){
         ),
         SizedBox(height: getCurrentScreenHeight(context)*0.03,),
         AppButton(onTap: (){
-          //Navigator.pushNamed(context, Routes.payment);
+          if(data.cart!.shippingAddresses != null) {
+            Navigator.pushNamed(context, Routes.payment);
+          }else{
+            Utility.showNormalMessage("Please select delivery address");
+          }
         }, text: "PROCEED")
       ],
     ),
@@ -181,7 +185,7 @@ Widget _column(BuildContext context,CartListModel data){
           builder: (QueryResult result,
               {VoidCallback? refetch, FetchMore? fetchMore}) {
             reFresh = refetch!;
-            debugPrint("cart exception >>> ${result.exception}");
+            debugPrint("cart exception get shopping cart >>> ${result}");
             if (result.hasException) {
               if(result.exception!.graphqlErrors[0].extensions!['category'].toString() == "graphql-authorization"){
               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -242,8 +246,12 @@ Widget _column(BuildContext context,CartListModel data){
                       "Applied coupon: ${parsed.cart!.appliedCoupons![0].code!}" : "Apply coupons"),
                       dividerCommon(context),
                       ItemInfoArrowForward(onTap: (){
-                        Navigator.pushNamed(context, Routes.address);
-                      }, title: "DELIVERY ADDRESS", description: "Click here to add address"),
+                        Navigator.pushNamed(context, Routes.address).then((value) {
+                          reFresh.call();
+                        });
+                      }, title: "DELIVERY ADDRESS", description: parsed.cart!.shippingAddresses != null
+                          ? parsed.cart!.shippingAddresses![0].street![0].toString() + parsed.cart!.shippingAddresses![0].city.toString()+parsed.cart!.shippingAddresses![0].region!.label.toString()
+                          : "Click here to add address"),
                       dividerCommon(context),
                       _column(context,parsed)
                     ],

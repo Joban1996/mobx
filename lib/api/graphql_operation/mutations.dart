@@ -178,4 +178,62 @@ mutation {
   }
 
 
+  String addShippingAddress(AvailableRegions regions,String firstName, String lastName,String city,
+      String pinCode, String phonNumber,bool isBillingAddress,String street,String cartId)
+  {
+    return """
+mutation {
+  setShippingAddressesOnCart(
+    input: {
+      cart_id: "$cartId"
+      shipping_addresses: [
+        {
+          address: {
+            firstname: "$firstName"
+            lastname: "$lastName"
+            company: ""
+            street: ["$street"]
+            city: "$city"
+            region: "${regions.code}"
+            region_id: "${regions.id}"
+            postcode: "$pinCode"
+            country_code: "IN"
+            telephone: "$phonNumber"
+            save_in_address_book: true
+          }
+        }
+      ]
+    }
+  ) {
+    cart {
+      shipping_addresses {
+        firstname
+        lastname
+        company
+        street
+        city
+        region {
+          code
+          label
+        }
+        postcode
+        telephone
+        country {
+          code
+          label
+        }
+        available_shipping_methods{
+          carrier_code
+          carrier_title
+          method_code
+          method_title
+        }
+      }
+    }
+  }
+}
+    """;
+  }
+
+
 }

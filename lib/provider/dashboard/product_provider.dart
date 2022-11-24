@@ -26,6 +26,7 @@ int _itemIndex = -1;
 String _cartItemsLength = "";
 String _dropDownValue = "1";
 String _tokenExpireMsg = '';
+String userErrorMsg ="";
 
 int get getItemIndex => _itemIndex;
 String get getCartItemLength => _cartItemsLength;
@@ -34,6 +35,10 @@ String get getTokenExpireMsg => _tokenExpireMsg;
 
 setTokenExpireMsg(String msg){
   _tokenExpireMsg = msg;
+  notifyListeners();
+}
+setUserError(String msg){
+  userErrorMsg = msg;
   notifyListeners();
 }
 
@@ -60,7 +65,8 @@ Future hitCreateCartID() async {
   final QueryResult results = await GraphQLClientAPI()
       .mClient
       .query(generateCartIdQuery);
-  debugPrint("enable noti mutation result >>> ${results.exception}");
+  //debugPrint("create cart id >>> ${results.exception}");
+  debugPrint("create cart id >>> ${results.data}");
   if(results.data != null){
     App.localStorage.setString(PREF_CART_ID, results.data!['customerCart']['id']);
     return true;
@@ -74,13 +80,14 @@ Future hitCreateCartID() async {
 }
 
 Future hitAddToCartMutation({required String cartId,required String skuId}) async {
-  debugPrint("auth token >>>> $cartId");
+  debugPrint("cart id >>>> $cartId");
   QueryMutations queryMutation = QueryMutations();
   QueryResult results = await GraphQLClientAPI().mClient
       .mutate(GraphQlClient.addToCart(queryMutation.addToCart(cartId,skuId),
       cartId,skuId));
-  debugPrint(" add to cart mutation result >>> ${results.data}");
+  debugPrint(" add to cart mutation result >>> ${results.exception}");
   if (results.data != null) {
+    Utility.showSuccessMessage("Item added!");
     return true;
   }else{
     if(results.exception != null){

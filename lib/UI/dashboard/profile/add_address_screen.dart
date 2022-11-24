@@ -161,15 +161,18 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                             if(value){
                               print("the value of added address is $value");
                               Utility.showSuccessMessage("Address added!");
-
-                              //Navigator.pushNamedAndRemoveUntil(context, Routes.address,ModalRoute.withName(Routes.shoppingCart));
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AddressesScreen()
-                                  ),
-                                  ModalRoute.withName(Routes.shoppingCart)
-                              );
+                              //Navigator.pushNamed(context, Routes.address);
+                              Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder:(_)=> AddressesScreen()),
+                                      (Route route) => route.settings.name == Routes.shoppingCart);
+                              // Navigator.pushNamedAndRemoveUntil(context, Routes.address,
+                              //         (Route route) => route.settings.name == Routes.shoppingCart);
+                              // Navigator.pushAndRemoveUntil(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => AddressesScreen()
+                              //     ),
+                              //     ModalRoute.withName(Routes.shoppingCart)
+                              // );
                             }else{
                               Utility.showSuccessMessage("Something went wrong!");
                             }
