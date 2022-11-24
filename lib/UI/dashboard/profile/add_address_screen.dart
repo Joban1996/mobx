@@ -162,7 +162,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>AddressesScreen()),
                                       (Route<dynamic>route) => false);
                              // Navigator.pushNamed(context, Routes.address);
-                            }else{
+                            }
+                            else{
                               Utility.showSuccessMessage("Something went wrong!");
                             }
                           }
