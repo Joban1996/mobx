@@ -30,7 +30,7 @@ enum WebError {
 
 ///this class handles api calls
 class GraphQlClient {
-  static const GRAPH_URL = /*"https://stagem2r.mobex.in/graphql"*/"https://www.mobex.in/graphql";
+  static const GRAPH_URL = "https://stagem2r.mobex.in/graphql"/* production url - "https://www.mobex.in/graphql"*/;
   static var GRAPH_TOKEN = "";
   static var CUSTOMER_ID = "";
 
@@ -153,7 +153,8 @@ class GraphQlClient {
   }
 
   static addShippingAddress(String mutation,String firstName, String lastName,String city,
-      String pinCode, String  phonNumber,bool isBillingAddress,AvailableRegions regionsAvalable,String street,String cartId) {
+      String pinCode, String  phonNumber,bool isBillingAddress,AvailableRegions regionsAvalable,
+      String street,String cartId) {
     print(mutation);
     return MutationOptions(
       document: gql(mutation),
@@ -168,6 +169,17 @@ class GraphQlClient {
         'firstname': firstName,
         'lastname': lastName,
         'telephone': phonNumber,
+      },
+    );
+  }
+
+  static setPaymentMethod(String mutation,String cartId,String code) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'cart_id ': '$cartId',
+        'code': '$code'
       },
     );
   }

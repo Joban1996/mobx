@@ -112,7 +112,7 @@ class ShippingAddresses {
   Region? country;
   String? telephone;
   List<AvailableShippingMethods>? availableShippingMethods;
-  Null? selectedShippingMethod;
+  //Null? selectedShippingMethod;
 
   ShippingAddresses(
       {this.firstname,
@@ -123,7 +123,7 @@ class ShippingAddresses {
         this.country,
         this.telephone,
         this.availableShippingMethods,
-        this.selectedShippingMethod});
+        /*this.selectedShippingMethod*/});
 
   ShippingAddresses.fromJson(Map<String, dynamic> json) {
     firstname = json['firstname'];
@@ -141,7 +141,7 @@ class ShippingAddresses {
         availableShippingMethods!.add(new AvailableShippingMethods.fromJson(v));
       });
     }
-    selectedShippingMethod = json['selected_shipping_method'];
+    //selectedShippingMethod = json['selected_shipping_method'];
   }
 
   Map<String, dynamic> toJson() {
@@ -161,7 +161,7 @@ class ShippingAddresses {
       data['available_shipping_methods'] =
           this.availableShippingMethods!.map((v) => v.toJson()).toList();
     }
-    data['selected_shipping_method'] = this.selectedShippingMethod;
+    //data['selected_shipping_method'] = this.selectedShippingMethod;
     return data;
   }
 }

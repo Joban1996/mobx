@@ -4,10 +4,14 @@ import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/dashboard/item_info_arrow_forward.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/globally_common/app_button.dart';
+import 'package:mobx/common_widgets/globally_common/common_loader.dart';
+import 'package:mobx/provider/auth/login_provider.dart';
+import 'package:mobx/provider/dashboard/payment_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/constants/strings.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
+import 'package:provider/provider.dart';
 
 import '../../../api/graphql_operation/customer_queries.dart';
 import '../../../model/product/CartListModel.dart';
@@ -56,22 +60,16 @@ class PaymentScreen extends StatelessWidget {
           dividerCommon(context),
         Padding(
           padding: const EdgeInsets.only(top: 6,bottom: 6),
-          child: GestureDetector(
-            onTap: (){},
-            child: Container(
-              color: Colors.transparent,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(Strings.deliver_address, style: Theme.of(context).textTheme.bodyMedium),
-                    const SizedBox(height: 3,),
-                    Text( "${data.cart!.shippingAddresses![0].street![0].toString()}, "
-                        "${data.cart!.shippingAddresses![0].city.toString()}, "
-                        "${data.cart!.shippingAddresses![0].region!.label.toString()} ",
-                      style: Theme.of(context).textTheme.bodySmall,maxLines: 1,overflow: TextOverflow.ellipsis,)
-                  ]),
-            ),
-          ),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(Strings.deliver_address, style: Theme.of(context).textTheme.bodyMedium),
+                const SizedBox(height: 3,),
+                Text( "${data.cart!.shippingAddresses![0].street![0].toString()}, "
+                    "${data.cart!.shippingAddresses![0].city.toString()}, "
+                    "${data.cart!.shippingAddresses![0].region!.label.toString()} ",
+                  style: Theme.of(context).textTheme.bodySmall,maxLines: 1,overflow: TextOverflow.ellipsis,)
+              ]),
         ),
           dividerCommon(context),
           Expanded(
@@ -82,19 +80,38 @@ class PaymentScreen extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: data.cart!.availablePaymentMethods!.length,
                 itemBuilder: (context,index){
-              return Padding(
-                padding: const EdgeInsets.only(top: 6,bottom: 6),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(data.cart!.availablePaymentMethods![index].code == "cashondelivery" ? "Cash On Delivery"  : "Credit Card / Debit Card / NetBanking / UPI / Wallet", style: Theme.of(context).textTheme.bodyMedium),
-                      const SizedBox(height: 3,),
-                      GestureDetector(
-                        onTap: (){},
-                        child: Text(data.cart!.availablePaymentMethods![index].title.toString(),
-                          style: Theme.of(context).textTheme.bodySmall,maxLines: 1,overflow: TextOverflow.ellipsis,),
-                      )
-                    ]),
+              return Consumer2<PaymentProvider,LoginProvider>(
+                builder: (_,val,val2,child){
+                  return GestureDetector(
+                    onTap: () {
+                      val.setSelectedIndex(index);
+                      val.toggle();
+                      val2.setLoadingBool(true);
+                      val.hitSetPaymentMethod(cartId: App.localStorage.getString(PREF_CART_ID).toString(),
+                          code: data.cart!.availablePaymentMethods![index].code.toString()).then((value){
+                        val2.setLoadingBool(false);
+                      });
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      padding: const EdgeInsets.only(top: 6,bottom: 6),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(data.cart!.availablePaymentMethods![index].code == "cashondelivery" ? "Cash On Delivery"
+                                : "Credit Card / Debit Card / NetBanking / UPI / Wallet",
+                                style: val.getSelectedIndex == index ?
+                                Theme.of(context).textTheme.bodyMedium!.copyWith(color: Utility.getColorFromHex(globalOrangeColor))
+                                    : Theme.of(context).textTheme.bodyMedium),
+                            const SizedBox(height: 3,),
+                            Text(data.cart!.availablePaymentMethods![index].title.toString(),
+                              style: val.getSelectedIndex == index ?
+                              Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex(globalOrangeColor)):
+                                  Theme.of(context).textTheme.bodySmall,maxLines: 1,overflow: TextOverflow.ellipsis,)
+                          ]),
+                    ),
+                  );
+                },
               );
             }),
           ),
@@ -120,47 +137,47 @@ class PaymentScreen extends StatelessWidget {
             child: Image.asset("assets/images/back_arrow.png")),
       ),
       body:
-      Query(
-        options:
-        QueryOptions(
-        fetchPolicy: FetchPolicy.networkOnly,
-        document: gql(cartList), variables: {
-      'cart_id': App.localStorage.getString(PREF_CART_ID)!
-    }),
-    builder: (QueryResult result,
-    {VoidCallback? refetch, FetchMore? fetchMore}) {
-    debugPrint("cart exception get shopping cart >>> ${result}");
-    if (result.hasException) {
-    if(result.exception!.graphqlErrors[0].extensions!['category'].toString() == "graphql-authorization"){
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-    App.localStorage.clear();
-    Navigator.pushReplacementNamed(context, Routes.loginScreen);});
-    }
-    return Text(result.exception.toString());
-    }
-    if (result.isLoading) {
-    return globalLoader();
-    }
-    var parsed = CartListModel.fromJson(result.data!);
-    var productItems = parsed.cart!.items!;
-    debugPrint("cart list data in payment screen >>> ${productItems.length}");
-    return
-      Stack(
-        children: [
-          _column(context,parsed),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: AppButton(
-                  onTap: () {
-                    Navigator.pushNamed(context, Routes.orderConfirmed);
-                  },
-                  text: "PAY NOW"),
-            ),
-          )
-        ],
-      );})
+     CommonLoader(screenUI:  Query(
+         options:
+         QueryOptions(
+             fetchPolicy: FetchPolicy.networkOnly,
+             document: gql(cartList), variables: {
+           'cart_id': App.localStorage.getString(PREF_CART_ID)!
+         }),
+         builder: (QueryResult result,
+             {VoidCallback? refetch, FetchMore? fetchMore}) {
+           debugPrint("cart exception get shopping cart >>> ${result}");
+           if (result.hasException) {
+             if(result.exception!.graphqlErrors[0].extensions!['category'].toString() == "graphql-authorization"){
+               WidgetsBinding.instance.addPostFrameCallback((_) {
+                 App.localStorage.clear();
+                 Navigator.pushReplacementNamed(context, Routes.loginScreen);});
+             }
+             return Text(result.exception.toString());
+           }
+           if (result.isLoading) {
+             return globalLoader();
+           }
+           var parsed = CartListModel.fromJson(result.data!);
+           var productItems = parsed.cart!.items!;
+           debugPrint("cart list data in payment screen >>> ${productItems.length}");
+           return
+             Stack(
+               children: [
+                 _column(context,parsed),
+                 Align(
+                   alignment: Alignment.bottomCenter,
+                   child: Padding(
+                     padding: const EdgeInsets.all(8.0),
+                     child: AppButton(
+                         onTap: () {
+                           Navigator.pushNamed(context, Routes.orderConfirmed);
+                         },
+                         text: "PAY NOW"),
+                   ),
+                 )
+               ],
+             );}))
     );
   }
 }

@@ -146,7 +146,7 @@ Widget _column(BuildContext context,CartListModel data){
         ),
         SizedBox(height: getCurrentScreenHeight(context)*0.03,),
         AppButton(onTap: (){
-          if(data.cart!.shippingAddresses != null) {
+          if(data.cart!.shippingAddresses!.isNotEmpty) {
             Navigator.pushNamed(context, Routes.payment);
           }else{
             Utility.showNormalMessage("Please select delivery address");
@@ -199,7 +199,7 @@ Widget _column(BuildContext context,CartListModel data){
             }
             var parsed = CartListModel.fromJson(result.data!);
             var productItems = parsed.cart!.items!;
-            debugPrint("cart list data >>> ${productItems.length}");
+            debugPrint("cart list data >>> ${parsed.cart!.shippingAddresses}");
             return
               SingleChildScrollView(
                 child: Container(
@@ -249,7 +249,7 @@ Widget _column(BuildContext context,CartListModel data){
                         Navigator.pushNamed(context, Routes.address).then((value) {
                           reFresh.call();
                         });
-                      }, title: "DELIVERY ADDRESS", description: parsed.cart!.shippingAddresses != null
+                      }, title: "DELIVERY ADDRESS", description: parsed.cart!.shippingAddresses!.isNotEmpty
                           ? parsed.cart!.shippingAddresses![0].street![0].toString() + parsed.cart!.shippingAddresses![0].city.toString()+parsed.cart!.shippingAddresses![0].region!.label.toString()
                           : "Click here to add address"),
                       dividerCommon(context),

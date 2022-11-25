@@ -8,13 +8,11 @@ import 'package:mobx/model/address/address_model.dart';
 import 'package:mobx/model/product/getRegionModel.dart';
 import 'package:mobx/utils/app.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
-import 'package:mobx/utils/routes.dart';
-
 import '../../utils/utilities.dart';
 
 class AddressProvider with ChangeNotifier{
 
-    int selected = 0;
+  int selected = -1;
   int get getSelected => selected;
 
   late AddressModel addressDataParams;

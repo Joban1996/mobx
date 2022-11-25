@@ -236,4 +236,24 @@ mutation {
   }
 
 
+  String setPayMethod(String cartId, String code) {
+    return """
+    mutation {
+  setPaymentMethodOnCart(input: {
+      cart_id: $cartId
+      payment_method: {
+          code: $code
+      }
+  }) {
+    cart {
+      selected_payment_method {
+        code
+      }
+    }
+  }
+}  
+      """;
+  }
+
+
 }

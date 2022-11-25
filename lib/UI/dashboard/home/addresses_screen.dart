@@ -127,7 +127,7 @@ class AddressesScreen extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         child: AppButton(
                           onTap: () {
-                            Navigator.pushNamed(context, Routes.googleMapScreen);
+                            Navigator.pushReplacementNamed(context, Routes.googleMapScreen);
                           },
                           text: Strings.addNewAddressButton,
                           isTrailing: false,
