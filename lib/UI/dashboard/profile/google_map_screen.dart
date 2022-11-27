@@ -46,6 +46,8 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
     zoom: 14.4746,
   );
 
+
+
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
