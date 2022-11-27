@@ -4,15 +4,29 @@ import 'package:mobx/api/client_provider.dart';
 import 'package:mobx/api/graphql_client.dart';
 import 'package:mobx/api/graphql_operation/customer_queries.dart';
 import 'package:mobx/api/graphql_operation/mutations.dart';
+import 'package:mobx/model/address/address_model.dart';
 import 'package:mobx/model/product/getRegionModel.dart';
 import 'package:mobx/utils/app.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
-import 'package:mobx/utils/routes.dart';
-
 import '../../utils/utilities.dart';
 
-class AddressProvider with ChangeNotifier
-{
+class AddressProvider with ChangeNotifier{
+
+  int selected = -1;
+  int get getSelected => selected;
+
+  late AddressModel addressDataParams;
+
+  setAddressDataParmas(AddressModel val){
+    addressDataParams = val;
+    notifyListeners();
+  }
+
+  setSelectedValue(int val){
+    selected = val;
+    notifyListeners();
+  }
+
 
   String stateName = "";
   AvailableRegions regions = AvailableRegions(id: 578,code: "DL",name: "Delhi");
@@ -73,5 +87,25 @@ class AddressProvider with ChangeNotifier
       return false;
     }
   }
+
+    Future hitShippingDeliveryAddress({required String street,required String firstName,required String lastName,required String city,required
+    ,required String pinCode,required String  phonNumber,required bool isBillingAddress,required String cartId}) async {
+      debugPrint("auth token >>>> ${App.localStorage.getString(PREF_TOKEN)}");
+      QueryMutations queryMutation = QueryMutations();
+      QueryResult results = await GraphQLClientAPI().mClient
+          .mutate(GraphQlClient.addShippingAddress(queryMutation.addShippingAddress(getAvailableRegions,firstName,
+          lastName, city, pinCode, phonNumber, isBillingAddress,street,cartId),
+          firstName, lastName, city, pinCode, phonNumber, isBillingAddress,getAvailableRegions,street,cartId));
+      debugPrint(" addNew Address mutation result >>> ${results.data!}");
+      if (results.data != null) {
+        return true;
+      }else{
+        if(results.exception != null){
+          Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
+          debugPrint(results.exception!.graphqlErrors[0].message.toString());
+        }
+        return false;
+      }
+    }
   
 }

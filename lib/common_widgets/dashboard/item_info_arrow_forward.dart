@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../utils/constants/constants_colors.dart';
 import '../../utils/utilities.dart';
 
@@ -22,8 +21,8 @@ class ItemInfoArrowForward extends StatelessWidget {
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-        Text(title, style: Theme.of(context).textTheme.bodyText2),
-        SizedBox(height: 3,),
+        Text(title, style: Theme.of(context).textTheme.bodyMedium),
+        const SizedBox(height: 3,),
         GestureDetector(
           onTap: onTap,
           child: Row(

@@ -234,7 +234,6 @@ class ProductDetails1 extends StatelessWidget {
                                           skuId: val3.getSkuID).then((value) {
                                         val2.setLoadingBool(false);
                                         if(value){
-                                          Utility.showSuccessMessage("Item added!");
                                           Navigator.pushNamed(context, Routes.shoppingCart);
                                         }
                                         if(value == false){

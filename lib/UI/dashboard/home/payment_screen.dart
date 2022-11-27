@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/dashboard/item_info_arrow_forward.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/globally_common/app_button.dart';
+import 'package:mobx/common_widgets/globally_common/common_loader.dart';
+import 'package:mobx/provider/auth/login_provider.dart';
+import 'package:mobx/provider/dashboard/payment_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/constants/strings.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
+import 'package:provider/provider.dart';
+
+import '../../../api/graphql_operation/customer_queries.dart';
+import '../../../model/product/CartListModel.dart';
+import '../../../utils/app.dart';
 
 class PaymentScreen extends StatelessWidget {
   const PaymentScreen({Key? key}) : super(key: key);
@@ -28,49 +37,85 @@ class PaymentScreen extends StatelessWidget {
     );
   }
 
-  Widget _column(BuildContext context) {
+  Widget _column(BuildContext context,CartListModel data) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "PRICE DETAILS ( 2 Items)",
-            style: Theme.of(context).textTheme.bodyText2,
-          ),
+          Text("PRICE DETAILS ( ${data.cart!.items!.length} Items)",style: Theme.of(context).textTheme.bodyMedium,),
           verticalSpacing(heightInDouble: 0.01, context: context),
-          _priceDesRow("Sub Total", "₹110,198", context, globalBlackColor),
-          _priceDesRow("Discount", "₹-31,602", context, globalGreenColor),
-          _priceDesRow("Delivery Fee", "₹100", context, globalBlackColor),
-          _priceDesRow("Coupon", "₹0", context, globalBlackColor),
+          _priceDesRow("Sub Total", "₹${data.cart!.prices!.subtotalExcludingTax!.value}", context, globalBlackColor),
+          _priceDesRow("Discount", data.cart!.prices!.discounts!=null ?
+          "₹${data.cart!.prices!.discounts![0].amount!.value}": "₹0", context, globalGreenColor),
+          _priceDesRow("Delivery Fee", "₹0", context, globalBlackColor),
           dividerCommon(context),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Total Amount",
-                  style: Theme.of(context).textTheme.bodyText2),
-              Text(
-                "₹110,298",
-                style: Theme.of(context).textTheme.bodyText2,
-              )
+              Text("Total Amount",style: Theme.of(context).textTheme.bodyMedium),
+              Text("₹${data.cart!.prices!.grandTotal!.value}", style: Theme.of(context).textTheme.bodyMedium,)
             ],
           ),
           dividerCommon(context),
-          ItemInfoArrowForward(
-              onTap: () {},
-              title: Strings.deliver_address,
-              description:
-                  "John Smith, 2nd 3rd 4th  Floor, Shashwat Business Park,Opp....."),
+        Padding(
+          padding: const EdgeInsets.only(top: 6,bottom: 6),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(Strings.deliver_address, style: Theme.of(context).textTheme.bodyMedium),
+                const SizedBox(height: 3,),
+                Text( "${data.cart!.shippingAddresses![0].street![0].toString()}, "
+                    "${data.cart!.shippingAddresses![0].city.toString()}, "
+                    "${data.cart!.shippingAddresses![0].region!.label.toString()} ",
+                  style: Theme.of(context).textTheme.bodySmall,maxLines: 1,overflow: TextOverflow.ellipsis,)
+              ]),
+        ),
           dividerCommon(context),
-          ItemInfoArrowForward(
-              onTap: () {},
-              title: Strings.crid_debit_text,
-              description: "By RazerPay"),
-          dividerCommon(context),
-          ItemInfoArrowForward(
-              onTap: () {},
-              title: Strings.cashOnDelivery,
-              description: Strings.cashOnDelivery_subTitle),
+          Expanded(
+            child: ListView.separated(
+              separatorBuilder: (context,index){
+                return const Divider();
+              },
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: data.cart!.availablePaymentMethods!.length,
+                itemBuilder: (context,index){
+              return Consumer2<PaymentProvider,LoginProvider>(
+                builder: (_,val,val2,child){
+                  return GestureDetector(
+                    onTap: () {
+                      val.setSelectedIndex(index);
+                      val.toggle();
+                      val2.setLoadingBool(true);
+                      val.hitSetPaymentMethod(cartId: App.localStorage.getString(PREF_CART_ID).toString(),
+                          code: data.cart!.availablePaymentMethods![index].code.toString()).then((value){
+                        val2.setLoadingBool(false);
+                      });
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      padding: const EdgeInsets.only(top: 6,bottom: 6),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(data.cart!.availablePaymentMethods![index].code == "cashondelivery" ? "Cash On Delivery"
+                                : "Credit Card / Debit Card / NetBanking / UPI / Wallet",
+                                style: val.getSelectedIndex == index ?
+                                Theme.of(context).textTheme.bodyMedium!.copyWith(color: Utility.getColorFromHex(globalOrangeColor))
+                                    : Theme.of(context).textTheme.bodyMedium),
+                            const SizedBox(height: 3,),
+                            Text(data.cart!.availablePaymentMethods![index].title.toString(),
+                              style: val.getSelectedIndex == index ?
+                              Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex(globalOrangeColor)):
+                                  Theme.of(context).textTheme.bodySmall,maxLines: 1,overflow: TextOverflow.ellipsis,)
+                          ]),
+                    ),
+                  );
+                },
+              );
+            }),
+          ),
+
           dividerCommon(context),
           SizedBox(
             height: getCurrentScreenHeight(context) * 0.03,
@@ -90,32 +135,49 @@ class PaymentScreen extends StatelessWidget {
         leadingImage: GestureDetector(
             onTap: () => Navigator.pop(context),
             child: Image.asset("assets/images/back_arrow.png")),
-        // trailingAction: const [
-        //   Padding(
-        //     padding: EdgeInsets.only(right: 10),
-        //     child: Icon(
-        //       Icons.star_border_outlined,
-        //       color: Colors.black,
-        //     ),
-        //   ),
-        // ],
       ),
-      body: Stack(
-        children: [
-          _column(context),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: AppButton(
-                  onTap: () {
-                    Navigator.pushNamed(context, Routes.orderConfirmed);
-                  },
-                  text: "PAY NOW"),
-            ),
-          )
-        ],
-      ),
+      body:
+     CommonLoader(screenUI:  Query(
+         options:
+         QueryOptions(
+             fetchPolicy: FetchPolicy.networkOnly,
+             document: gql(cartList), variables: {
+           'cart_id': App.localStorage.getString(PREF_CART_ID)!
+         }),
+         builder: (QueryResult result,
+             {VoidCallback? refetch, FetchMore? fetchMore}) {
+           debugPrint("cart exception get shopping cart >>> ${result}");
+           if (result.hasException) {
+             if(result.exception!.graphqlErrors[0].extensions!['category'].toString() == "graphql-authorization"){
+               WidgetsBinding.instance.addPostFrameCallback((_) {
+                 App.localStorage.clear();
+                 Navigator.pushReplacementNamed(context, Routes.loginScreen);});
+             }
+             return Text(result.exception.toString());
+           }
+           if (result.isLoading) {
+             return globalLoader();
+           }
+           var parsed = CartListModel.fromJson(result.data!);
+           var productItems = parsed.cart!.items!;
+           debugPrint("cart list data in payment screen >>> ${productItems.length}");
+           return
+             Stack(
+               children: [
+                 _column(context,parsed),
+                 Align(
+                   alignment: Alignment.bottomCenter,
+                   child: Padding(
+                     padding: const EdgeInsets.all(8.0),
+                     child: AppButton(
+                         onTap: () {
+                           Navigator.pushNamed(context, Routes.orderConfirmed);
+                         },
+                         text: "PAY NOW"),
+                   ),
+                 )
+               ],
+             );}))
     );
   }
 }
