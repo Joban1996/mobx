@@ -16,12 +16,15 @@ class PaymentProvider with ChangeNotifier{
 
    bool _selectPayMethod = false;
    int _selectedIndex = 0;
+   String _selectedCode = "";
 
    bool get getPayMethod => _selectPayMethod;
    int get getSelectedIndex => _selectedIndex;
+   String get getSelectedCode => _selectedCode;
 
-   setSelectedIndex(int index){
+   setSelectedIndex(int index,String code){
      _selectedIndex = index;
+     _selectedCode = code;
    }
 
    toggle(){

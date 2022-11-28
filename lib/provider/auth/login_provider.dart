@@ -79,7 +79,6 @@ class LoginProvider with ChangeNotifier{
     final QueryResult results = await GraphQLClientAPI()
         .mClient
         .query(otpVerifyQuery);
-    debugPrint("enable noti mutation result >>> ${results.data!['loginOTPVerify']}");
     if(results.data != null){
       var data = await OtpVerify.fromJson(results.data!);
       if (results.data!['loginOTPVerify']['status'] == true) {

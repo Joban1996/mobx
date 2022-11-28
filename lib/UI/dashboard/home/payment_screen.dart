@@ -44,7 +44,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
-    debugPrint('payment succeed ::: ${response.paymentId}');
+    debugPrint('payment succeed ::: Payment Id > ${response.paymentId}');
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -56,12 +56,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
     // Do something when an external wallet was selected
     debugPrint('payment external wallet ::: ${response.walletName}');
   }
-void dataOptions(String amount,String name,String des,String contact,String email){
-  var options = {
+Map<String,dynamic> options(int amount,String name,String des,String contact,String email){
+  return  {
     'key': 'rzp_test_S3h5y6fLfZ28tI',
     'amount': amount*100,
-    'name': 'Acme Corp.',
-    'description': 'Fine T-Shirt',
+    'name': 'Mobex',
+    'description': 'test',
     'prefill': {
       'contact': contact,
       'email': email
@@ -138,11 +138,8 @@ void dataOptions(String amount,String name,String des,String contact,String emai
                           code: data.cart!.availablePaymentMethods![index].code.toString()).then((value){
                         val2.setLoadingBool(false);
                         if(value){
-                          val.setSelectedIndex(index);
+                          val.setSelectedIndex(index,data.cart!.availablePaymentMethods![index].code.toString());
                           val.toggle();
-                          if(data.cart!.availablePaymentMethods![index].code.toString() == "razorpay"){
-                            //dataOptions();
-                          }
                         }
                       });
                     },
@@ -227,10 +224,14 @@ void dataOptions(String amount,String name,String des,String contact,String emai
                        builder: (_,val1,val2,child){
                          return AppButton(
                              onTap: () {
-                               Navigator.pushNamedAndRemoveUntil(context, Routes.orderConfirmed,(_)=> false);
-                                //
+                               //Navigator.pushNamedAndRemoveUntil(context, Routes.orderConfirmed,(_)=> false);
+                               if(val1.getSelectedCode == "razorpay"){
+                                 _razorpay.open(options(int.parse(parsed.cart!.prices!.grandTotal!.value.toString()),
+                                     "name", "des",val2.getMobileNumber,App.localStorage.getString(PREF_USER_EMAIL).toString())
+                                 );
+                               }
+                                //debugPrint("tokennn>>>> ${App.localStorage.getString(PREF_TOKEN)}");
                                 // val1.hitPlaceOrder(cartId: App.localStorage.getString(PREF_CART_ID).toString()).then((value){
-                                //
                                 //   if(value){
                                 //     Navigator.pushNamed(context, Routes.orderConfirmed);
                                 //   }
