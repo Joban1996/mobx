@@ -255,5 +255,17 @@ mutation {
       """;
   }
 
+  String placeOrder(String cartId) {
+    return """
+   mutation {
+  placeOrder(input: {cart_id: '$cartId'}) {
+    order {
+      order_number
+    }
+  }
+
+      """;
+  }
+
 
 }

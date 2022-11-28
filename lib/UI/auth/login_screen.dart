@@ -1,14 +1,16 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/globally_common/app_button.dart';
 import 'package:mobx/common_widgets/common_textfield_style.dart';
 import 'package:mobx/provider/auth/login_provider.dart';
+import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
 import 'package:provider/provider.dart';
 import '../../common_widgets/globally_common/common_loader.dart';
-
+import 'package:flutter/cupertino.dart';
 
 
 class LoginScreen extends StatelessWidget {
@@ -50,12 +52,34 @@ final phoneController = TextEditingController();
                     style: Theme.of(context).textTheme.caption,),
                 ),
                 verticalSpacing(heightInDouble: 0.02, context: context),
-                TextField(
+                TextFormField(
                   controller: phoneController,
                   inputFormatters: [LengthLimitingTextInputFormatter(10),],
                   style: Theme.of(context).textTheme.bodyMedium,
                   keyboardType: TextInputType.phone,
-                  decoration: CommonStyle.textFieldStyle(context),
+                  decoration: InputDecoration(
+                      prefixIcon:  Text(" +91" ,style: Theme.of(context).textTheme. bodySmall,),
+                      prefixIconConstraints: const BoxConstraints(
+                        minWidth: 30,
+                        minHeight: 15,
+                      ),
+                      hintStyle: Theme.of(context).textTheme.bodySmall,
+                      contentPadding: const EdgeInsets.all(8),
+                      errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(color: Utility.getColorFromHex(globalOrangeColor))
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(color: Utility.getColorFromHex(globalOrangeColor))
+                      ),
+                      focusedBorder:  OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: Utility.getColorFromHex(globalOrangeColor))
+                      ),
+                      enabledBorder:  OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))
+                          ,borderSide: BorderSide(color: Utility.getColorFromHex(globalOrangeColor))
+                      )
+                  ),
                 ),
                 CheckboxListTile(
                     title: RichText(text: TextSpan(

@@ -7,25 +7,16 @@ import 'package:mobx/utils/constants/strings.dart';
 import 'package:mobx/utils/utilities.dart';
 class OrderConfirmed extends StatelessWidget {
   const OrderConfirmed({Key? key}) : super(key: key);
-
+  Widget appBarTitle(BuildContext context,String titleText){
+    return Text(titleText,style:  Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600),);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarCommon(
-        AppBarTitle(Strings.order_confirmed_app_title,''),
-        appbar: AppBar(),
-        onTapCallback: () {},
-        leadingImage: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Image.asset("assets/images/back_arrow.png")),
-        trailingAction: [
-          Icon(
-            Icons.search,
-            color: Colors.black,
-          ),
-          Image.asset("assets/images/lock.png")
-        ],
-      ),
+        appBar: AppBarCommon(Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: appBarTitle(context, "ORDER CONFIRMED"),
+        ), appbar: AppBar(), onTapCallback: (){}),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

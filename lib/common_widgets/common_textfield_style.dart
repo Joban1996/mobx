@@ -9,13 +9,14 @@ import 'package:mobx/utils/utilities.dart';
 class CommonStyle{
   static InputDecoration textFieldStyle(BuildContext context,{Widget? dropDownIcon,String? hintText,
     String borderSideColor = globalOrangeColor,bool isLeading = true}) {return  InputDecoration(
-      prefixIcon: hintText == null ?  Text(isLeading == true ?" +91" : "",style: Theme.of(context).textTheme.caption,) : null,
+      prefixIcon: hintText == null ?  Text(isLeading == true ?" +91" : "",style: Theme.of(context).textTheme. bodySmall,)
+          : null,
       prefixIconConstraints: const BoxConstraints(
         minWidth: 30,
         minHeight: 15,
       ),
       hintText:  hintText ?? "",
-      hintStyle: Theme.of(context).textTheme.caption,
+      hintStyle: Theme.of(context).textTheme.bodySmall,
       contentPadding: const EdgeInsets.all(8),
       errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),

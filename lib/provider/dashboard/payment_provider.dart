@@ -35,14 +35,34 @@ class PaymentProvider with ChangeNotifier{
      QueryResult results = await GraphQLClientAPI().mClient
          .mutate(GraphQlClient.setPaymentMethod(queryMutation.setPayMethod(cartId,code),
          cartId,code));
-     debugPrint(" addNew Address mutation result >>> ${results.data!}");
      if (results.data != null) {
+       debugPrint(" addNew Address mutation result >>> ${results.data!}");
        return true;
      }else{
        if(results.exception != null){
+         debugPrint(" addNew Address mutation result >>> ${results.exception!}");
          Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
          debugPrint(results.exception!.graphqlErrors[0].message.toString());
 
+       }
+       return false;
+     }
+   }
+
+   Future hitPlaceOrder({required String cartId}) async {
+     debugPrint("cart id >>>> $cartId");
+     QueryMutations queryMutation = QueryMutations();
+     QueryResult results = await GraphQLClientAPI().mClient
+         .mutate(GraphQlClient.placeUserOrder(queryMutation.placeOrder(cartId),
+         cartId));
+     if (results.data != null) {
+       debugPrint(" addNew Address mutation result >>> ${results.data!}");
+       return true;
+     }else{
+       if(results.exception != null){
+         debugPrint(" addNew Address mutation result >>> ${results.exception!}");
+         Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
+         debugPrint(results.exception!.graphqlErrors[0].message.toString());
        }
        return false;
      }

@@ -184,6 +184,15 @@ class GraphQlClient {
     );
   }
 
+  static placeUserOrder(String mutation,String cartId) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'cart_id': cartId,
+      },
+    );
+  }
 
 
 }

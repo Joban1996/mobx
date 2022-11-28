@@ -185,7 +185,7 @@ Widget _column(BuildContext context,CartListModel data){
           builder: (QueryResult result,
               {VoidCallback? refetch, FetchMore? fetchMore}) {
             reFresh = refetch!;
-            debugPrint("cart exception get shopping cart >>> ${result}");
+            debugPrint("cart exception get shopping cart >>> $result");
             if (result.hasException) {
               if(result.exception!.graphqlErrors[0].extensions!['category'].toString() == "graphql-authorization"){
               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -200,6 +200,7 @@ Widget _column(BuildContext context,CartListModel data){
             var parsed = CartListModel.fromJson(result.data!);
             var productItems = parsed.cart!.items!;
             debugPrint("cart list data >>> ${parsed.cart!.shippingAddresses}");
+            App.localStorage.setString(PREF_USER_EMAIL, parsed.cart!.email.toString());
             return
               SingleChildScrollView(
                 child: Container(

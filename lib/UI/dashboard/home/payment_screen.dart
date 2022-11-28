@@ -12,13 +12,62 @@ import 'package:mobx/utils/constants/strings.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
 import 'package:provider/provider.dart';
-
 import '../../../api/graphql_operation/customer_queries.dart';
 import '../../../model/product/CartListModel.dart';
 import '../../../utils/app.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
-class PaymentScreen extends StatelessWidget {
+class PaymentScreen extends StatefulWidget {
   const PaymentScreen({Key? key}) : super(key: key);
+
+  @override
+  State<PaymentScreen> createState() => _PaymentScreenState();
+}
+
+class _PaymentScreenState extends State<PaymentScreen> {
+  final _razorpay = Razorpay(); //razorpay instance
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _razorpay.clear(); // remove all listeners
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // Do something when payment succeeds
+    debugPrint('payment succeed ::: ${response.paymentId}');
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    // Do something when payment fails
+    debugPrint('payment fails ::: ${response.error}');
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    // Do something when an external wallet was selected
+    debugPrint('payment external wallet ::: ${response.walletName}');
+  }
+void dataOptions(String amount,String name,String des,String contact,String email){
+  var options = {
+    'key': 'rzp_test_S3h5y6fLfZ28tI',
+    'amount': amount*100,
+    'name': 'Acme Corp.',
+    'description': 'Fine T-Shirt',
+    'prefill': {
+      'contact': contact,
+      'email': email
+    }
+  };
+}
 
   Widget _priceDesRow(
       String title, String value, BuildContext context, var localColor) {
@@ -84,12 +133,17 @@ class PaymentScreen extends StatelessWidget {
                 builder: (_,val,val2,child){
                   return GestureDetector(
                     onTap: () {
-                      val.setSelectedIndex(index);
-                      val.toggle();
                       val2.setLoadingBool(true);
                       val.hitSetPaymentMethod(cartId: App.localStorage.getString(PREF_CART_ID).toString(),
                           code: data.cart!.availablePaymentMethods![index].code.toString()).then((value){
                         val2.setLoadingBool(false);
+                        if(value){
+                          val.setSelectedIndex(index);
+                          val.toggle();
+                          if(data.cart!.availablePaymentMethods![index].code.toString() == "razorpay"){
+                            //dataOptions();
+                          }
+                        }
                       });
                     },
                     child: Container(
@@ -169,11 +223,22 @@ class PaymentScreen extends StatelessWidget {
                    alignment: Alignment.bottomCenter,
                    child: Padding(
                      padding: const EdgeInsets.all(8.0),
-                     child: AppButton(
-                         onTap: () {
-                           Navigator.pushNamed(context, Routes.orderConfirmed);
-                         },
-                         text: "PAY NOW"),
+                     child: Consumer2<PaymentProvider,LoginProvider>(
+                       builder: (_,val1,val2,child){
+                         return AppButton(
+                             onTap: () {
+                               Navigator.pushNamedAndRemoveUntil(context, Routes.orderConfirmed,(_)=> false);
+                                //
+                                // val1.hitPlaceOrder(cartId: App.localStorage.getString(PREF_CART_ID).toString()).then((value){
+                                //
+                                //   if(value){
+                                //     Navigator.pushNamed(context, Routes.orderConfirmed);
+                                //   }
+                                // });
+                             },
+                             text: "PLACE ORDER");
+                       },
+                     ),
                    ),
                  )
                ],

@@ -88,7 +88,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
             GestureDetector(
                 onTap: (){
-                  Navigator.of(context).pushReplacementNamed(Routes.loginScreen);
+                  Navigator.pushReplacementNamed(context, Routes.loginScreen);
                 },
                 child: Padding(
                   padding: EdgeInsets.only(
