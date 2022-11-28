@@ -46,6 +46,12 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
     zoom: 14.4746,
   );
 
+  @override
+  void initState() {
+    getCallGoogleMapCurrentPosition();
+    super.initState();
+  }
+
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -102,6 +108,9 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                 child:
                 GoogleMap(
                   initialCameraPosition: _kGooglePlex,
+                  myLocationButtonEnabled: false,
+                  mapToolbarEnabled: false,
+                  zoomControlsEnabled: false,
                   myLocationEnabled: true,
                   markers: markers,
                   mapType: MapType.normal,
@@ -117,38 +126,17 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: OutlinedButton.icon(
                       onPressed: () async {
-                        Position position = await _determinePosition();
-
-                        _controller
-                            .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 14)));
-                        markers.clear();
-                        markers.add(
-                            Marker(
-                                draggable: true,
-                                markerId: const MarkerId('currentLocation'),
-                                position: LatLng(position.latitude, position.longitude),
-                              onDragEnd: ((newPosition) {
-                               //position=newPosition.latitude
-                                print('the newLat is ${newPosition.latitude}');
-                                print('the newLng is ${newPosition.longitude}');
-                                setState(() {
-                                  GetAddressFromLatLong(newPosition.latitude,newPosition.longitude);
-                                });
-                              }),
-                                infoWindow: InfoWindow(
-                          title: 'Your location',
-                        )));
-                        debugPrint("current location >>>>$position");
                         setState(() {
-                          GetAddressFromLatLong(position.latitude,position.longitude);
+                          markers.remove(markers.firstWhere((Marker marker) => marker.markerId.value == 'currentLocation'));
                         });
+                       getCallGoogleMapCurrentPosition();
                       },
                       icon: Icon(
                         Icons.my_location_sharp,
                         color: Utility.getColorFromHex(globalOrangeColor),
                       ),
                       label: Text(
-                        'Current Location',
+                        'Use Current Location',
                         style: TextStyle(
                             color:
                             Utility.getColorFromHex(globalOrangeColor)),
@@ -276,6 +264,34 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
     //
     //
     // });
+  }
+
+  void getCallGoogleMapCurrentPosition() async{
+    Position position = await _determinePosition();
+
+    _controller
+        .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 14)));
+    markers.add(
+        Marker(
+            draggable: true,
+            markerId: const MarkerId('currentLocation'),
+            position: LatLng(position.latitude, position.longitude),
+            onDragEnd: ((newPosition) {
+              //position=newPosition.latitude
+              print('the newLat is ${newPosition.latitude}');
+              print('the newLng is ${newPosition.longitude}');
+              setState(() {
+                GetAddressFromLatLong(newPosition.latitude,newPosition.longitude);
+              });
+            }),
+            infoWindow: const InfoWindow(
+              title: 'Your order will be delivered here',
+              snippet: 'Move pin to your exact location'
+            )));
+    debugPrint("current location >>>>$position");
+    setState(() {
+      GetAddressFromLatLong(position.latitude,position.longitude);
+    });
   }
 
 }
