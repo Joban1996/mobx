@@ -173,6 +173,27 @@ class GraphQlClient {
     );
   }
 
+  static addBillingAddress(String mutation,String firstName, String lastName,String city,
+      String pinCode, String  phonNumber,AvailableRegions regionsAvalable,
+      String street,String cartId) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'cart_id': cartId,
+        'street': [street],
+        'region':regionsAvalable.code,
+        'region_id':regionsAvalable.id,
+        'country_code': 'IN',
+        'postcode':pinCode,
+        'city':city,
+        'firstname': firstName,
+        'lastname': lastName,
+        'telephone': phonNumber,
+      },
+    );
+  }
+
   static setPaymentMethod(String mutation,String cartId,String code) {
     print(mutation);
     return MutationOptions(
@@ -180,6 +201,16 @@ class GraphQlClient {
       variables: {
         'cart_id ': '$cartId',
         'code': '$code'
+      },
+    );
+  }
+
+  static setShippingMethod(String mutation,String cartId) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'cart_id ': '$cartId',
       },
     );
   }

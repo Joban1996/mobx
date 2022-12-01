@@ -50,6 +50,7 @@ static String cashOnDelivery="Cash On Delivery";
 
   //Profile Address
   static var addNewAddressButton="ADD NEW ADDRESS";
+  static var proceedToPayment="PROCEED TO PAYMENT";
 
   //Add New Address
   static const String addnewAddressApptitle="ADD NEW ADDRESS";

@@ -55,6 +55,8 @@ class Customer {
 }
 
 class Addresses {
+  bool? defaultShipping;
+  bool? defaultBilling;
   String? firstname;
   String? lastname;
   List<String>? street;
@@ -65,7 +67,9 @@ class Addresses {
   String? telephone;
 
   Addresses(
-      {this.firstname,
+      {this.defaultShipping,
+        this.defaultBilling,
+        this.firstname,
         this.lastname,
         this.street,
         this.city,
@@ -75,6 +79,8 @@ class Addresses {
         this.telephone});
 
   Addresses.fromJson(Map<String, dynamic> json) {
+    defaultShipping = json['default_shipping'];
+    defaultBilling = json['default_billing'];
     firstname = json['firstname'];
     lastname = json['lastname'];
     street = json['street'].cast<String>();
@@ -88,6 +94,8 @@ class Addresses {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['default_shipping'] = this.defaultShipping;
+    data['default_billing'] = this.defaultBilling;
     data['firstname'] = this.firstname;
     data['lastname'] = this.lastname;
     data['street'] = this.street;

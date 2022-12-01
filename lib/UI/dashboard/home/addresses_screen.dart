@@ -16,25 +16,18 @@ import 'package:provider/provider.dart';
 import '../../../utils/app.dart';
 import '../../../utils/constants/strings.dart';
 class AddressesScreen extends StatelessWidget {
-
-
-  AddressesScreen({Key? key}) : super(key: key);
-  List<Map> addressList = [
-    {
-
-      'title': 'Home',
-      'subtitle': '297, DLF Tower, B2,  Sector 23, Gurgaon, India 110010'
-    },
-    {
-      'title': 'Work',
-      'subtitle': '2nd 3rd 4th  Floor, Shashwat Business Park,Opp. Soma Textiles,Rakhial, Ahmedabad – 380023, Gujarat, India.'
-    },
-  ];
+  const AddressesScreen({Key? key}) : super(key: key);
 
 
 
-  Widget AddressWidget(BuildContext context, String addressSubtitle,int index,Addresses data)
+
+  Widget addressWidget(BuildContext context, String addressSubtitle,int index,Addresses data)
   {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if(data.defaultShipping == true){
+        context.read<AddressProvider>().setSelectedValue(index);
+      }
+    });
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -51,15 +44,15 @@ class AddressesScreen extends StatelessWidget {
                     value: index,
                     onChanged: (value) {
                         val.setSelectedValue(value!);
-                        val2.setLoadingBool(true);
-                        val.hitShippingDeliveryAddress(street: data.street![0], firstName: data.firstname.toString(),
-                            lastName: data.lastname.toString(), city: data.city.toString(),
-                            pinCode: data.postcode.toString(),
-                            phonNumber: data.telephone.toString(), isBillingAddress: true,
-                            cartId: App.localStorage.getString(PREF_CART_ID).toString()).then((value) => {
-                              //Navigator.pushReplacementNamed(context, Routes.shoppingCart),
-                        val2.setLoadingBool(false)
-                        });
+                        // val2.setLoadingBool(true);
+                        // val.hitShippingDeliveryAddress(street: data.street![0], firstName: data.firstname.toString(),
+                        //     lastName: data.lastname.toString(), city: data.city.toString(),
+                        //     pinCode: data.postcode.toString(),
+                        //     phonNumber: data.telephone.toString(), isBillingAddress: true,
+                        //     cartId: App.localStorage.getString(PREF_CART_ID).toString()).then((value) => {
+                        //       //Navigator.pushReplacementNamed(context, Routes.shoppingCart),
+                        // val2.setLoadingBool(false)
+                        // });
                     }, groupValue: val.getSelected,
                   );
                 },
@@ -67,7 +60,7 @@ class AddressesScreen extends StatelessWidget {
             ],
           ),
         ),
-        Divider(
+        const Divider(
           thickness: 1.0,
         )
       ],
@@ -104,27 +97,26 @@ class AddressesScreen extends StatelessWidget {
             var parsed = AddressListingModel.fromJson(result.data!);
             var addressesList = parsed.customer!.addresses!;
             debugPrint("get addresses data >>> ${result.data}");
-            //debugPrint("get orders data >>> ${App.localStorage.getString(PREF_TOKEN)}");
+            debugPrint("get orders data >>> ${App.localStorage.getString(PREF_TOKEN)}");
             return
-              Container(
-                color: Colors.white.withOpacity(0.8),
-                child: Stack(
-                  children: [
-                    ListView.builder(
-                        padding: EdgeInsets.only(bottom: getCurrentScreenHeight(context)*0.1),
-                        shrinkWrap: true,
-                        itemCount: addressesList.length,
-                        itemBuilder: (context, index)
-                        {
-                          var model=addressesList[index];
-                          return AddressWidget(context,"${model.street![0]!}, ${model.city}, ${model.region!.region!}, India."
-                              ,index,model);
-                        }
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
+              Stack(
+                children: [
+                  ListView.builder(
+                      padding: EdgeInsets.only(bottom: getCurrentScreenHeight(context)/5),
+                      shrinkWrap: true,
+                      itemCount: addressesList.length,
+                      itemBuilder: (context, index)
+                      {
+                        var model=addressesList[index];
+                        return addressWidget(context,"${model.street![0]!}, ${model.city}, ${model.region!.region!}, India."
+                            ,index,model);
+                      }
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10,10,10,5),
                         child: AppButton(
                           onTap: () {
                             Navigator.pushReplacementNamed(context, Routes.googleMapScreen);
@@ -133,9 +125,40 @@ class AddressesScreen extends StatelessWidget {
                           isTrailing: false,
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Consumer2<AddressProvider,LoginProvider>(
+                          builder: (_,val,val1,child){
+                            return AppButton(
+                              onTap: () {
+                                val1.setLoadingBool(true);
+                                val.hitShippingDeliveryAddress(street: addressesList[val.getSelected].street![0],
+                                    firstName: addressesList[val.getSelected].firstname.toString(),
+                                    lastName: addressesList[val.getSelected].lastname.toString(), city: addressesList[val.getSelected].city.toString(),
+                                    pinCode: addressesList[val.getSelected].postcode.toString(),
+                                    phonNumber: addressesList[val.getSelected].telephone.toString(), isBillingAddress: true,
+                                    cartId: App.localStorage.getString(PREF_CART_ID).toString()).then((value) => {
+                                    val.hitSetBillingAddress(
+                                        street: addressesList[val.getSelected].street![0],
+                                        firstName: addressesList[val.getSelected].firstname.toString(),
+                                        lastName: addressesList[val.getSelected].lastname.toString(), city: addressesList[val.getSelected].city.toString(),
+                                        pinCode: addressesList[val.getSelected].postcode.toString(),
+                                        phonNumber: addressesList[val.getSelected].telephone.toString(), isBillingAddress: true,
+                                        cartId: App.localStorage.getString(PREF_CART_ID).toString()).then((value){
+                                      val1.setLoadingBool(false);
+                                      Navigator.pushReplacementNamed(context, Routes.payment);
+                                    }),
+                                });
+                              },
+                              text: Strings.proceedToPayment,
+                              isTrailing: false,
+                            );
+                            },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               );}))
     );
   }

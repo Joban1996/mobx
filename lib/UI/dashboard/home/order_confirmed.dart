@@ -4,6 +4,7 @@ import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/globally_common/outline_button.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/constants/strings.dart';
+import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
 class OrderConfirmed extends StatelessWidget {
   const OrderConfirmed({Key? key}) : super(key: key);
@@ -43,7 +44,9 @@ class OrderConfirmed extends StatelessWidget {
             Text(Strings.confirmationMessage2),
             verticalSpacing(heightInDouble: 0.02, context: context),
             OutLineButtonWidget(
-              onTap: (){},
+              onTap: (){
+                Navigator.pushReplacementNamed(context, Routes.dashboardScreen);
+              },
                 text: Strings.viewDetailsButton),
 
           ],

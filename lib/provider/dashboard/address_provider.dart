@@ -12,6 +12,7 @@ import '../../utils/utilities.dart';
 
 class AddressProvider with ChangeNotifier{
 
+
   int selected = -1;
   int get getSelected => selected;
 
@@ -107,5 +108,28 @@ class AddressProvider with ChangeNotifier{
         return false;
       }
     }
+
+
+Future hitSetBillingAddress({required String street,required String firstName,required String lastName,required String city,required
+,required String pinCode,required String  phonNumber,required bool isBillingAddress,required String cartId}) async {
+debugPrint("auth token >>>> ${App.localStorage.getString(PREF_TOKEN)}");
+QueryMutations queryMutation = QueryMutations();
+QueryResult results = await GraphQLClientAPI().mClient
+    .mutate(GraphQlClient.addBillingAddress(queryMutation.addBillingAddress(getAvailableRegions,firstName,
+lastName, city, pinCode, phonNumber,street,cartId),
+firstName, lastName, city, pinCode, phonNumber,getAvailableRegions,street,cartId));
+debugPrint(" addNew Address mutation result >>> ${results.data!}");
+if (results.data != null) {
+return true;
+}else{
+if(results.exception != null){
+Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
+debugPrint(results.exception!.graphqlErrors[0].message.toString());
+}
+return false;
+}
+}
+
+
   
 }

@@ -146,12 +146,9 @@ Widget _column(BuildContext context,CartListModel data){
         ),
         SizedBox(height: getCurrentScreenHeight(context)*0.03,),
         AppButton(onTap: (){
-          if(data.cart!.shippingAddresses!.isNotEmpty) {
-            Navigator.pushNamed(context, Routes.payment);
-          }else{
-            Utility.showNormalMessage("Please select delivery address");
-          }
-        }, text: "PROCEED")
+            //Navigator.pushNamed(context, Routes.payment);
+          Navigator.pushNamed(context, Routes.address);
+        }, text: "SELECT ADDRESS")
       ],
     ),
   );
@@ -214,7 +211,7 @@ Widget _column(BuildContext context,CartListModel data){
                           separatorBuilder: (context,index){return const Divider();},
                           itemCount: productItems.length,
                           itemBuilder: (context,index){
-                            return cartItemView(context,productItems[index],index,parsed.cart!.id.toString());
+                            return cartItemView(context,productItems[index],index,App.localStorage.getString(PREF_CART_ID).toString());
                           }),
                       dividerCommon(context),
                       ItemInfoArrowForward(onTap: (){}, title: "EMI OPTION", description: "3 interest-free payments of ₹ 15500 with"),
@@ -246,13 +243,13 @@ Widget _column(BuildContext context,CartListModel data){
                       }, title: "COUPONS", description: parsed.cart!.appliedCoupons!=null ?
                       "Applied coupon: ${parsed.cart!.appliedCoupons![0].code!}" : "Apply coupons"),
                       dividerCommon(context),
-                      ItemInfoArrowForward(onTap: (){
-                        Navigator.pushNamed(context, Routes.address).then((value) {
-                          reFresh.call();
-                        });
-                      }, title: "DELIVERY ADDRESS", description: parsed.cart!.shippingAddresses!.isNotEmpty
-                          ? parsed.cart!.shippingAddresses![0].street![0].toString() + parsed.cart!.shippingAddresses![0].city.toString()+parsed.cart!.shippingAddresses![0].region!.label.toString()
-                          : "Click here to add address"),
+                      // ItemInfoArrowForward(onTap: (){
+                      //   Navigator.pushNamed(context, Routes.address).then((value) {
+                      //     reFresh.call();
+                      //   });
+                      // }, title: "DELIVERY ADDRESS", description: parsed.cart!.shippingAddresses!.isNotEmpty
+                      //     ? parsed.cart!.shippingAddresses![0].street![0].toString() + parsed.cart!.shippingAddresses![0].city.toString()+parsed.cart!.shippingAddresses![0].region!.label.toString()
+                      //     : "Click here to add address"),
                       dividerCommon(context),
                       _column(context,parsed)
                     ],

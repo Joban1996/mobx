@@ -15,7 +15,7 @@ import '../../utils/utilities.dart';
 class PaymentProvider with ChangeNotifier{
 
    bool _selectPayMethod = false;
-   int _selectedIndex = 0;
+   int _selectedIndex = -1;
    String _selectedCode = "";
 
    bool get getPayMethod => _selectPayMethod;
@@ -43,6 +43,28 @@ class PaymentProvider with ChangeNotifier{
        return true;
      }else{
        if(results.exception != null){
+         //debugPrint(" addNew Address mutation result >>> ${results.exception!.linkException!.originalException}");
+         debugPrint(" addNew Address mutation result >>> ${results.exception!}");
+         Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
+         debugPrint(results.exception!.graphqlErrors[0].message.toString());
+
+       }
+       return false;
+     }
+   }
+
+   Future hitSetShippingMethod({required String cartId}) async {
+     debugPrint("auth token >>>> ${App.localStorage.getString(PREF_TOKEN)}");
+     QueryMutations queryMutation = QueryMutations();
+     QueryResult results = await GraphQLClientAPI().mClient
+         .mutate(GraphQlClient.setShippingMethod(queryMutation.setShippingMethod(cartId),
+         cartId));
+     if (results.data != null) {
+       debugPrint(" addNew Address mutation result >>> ${results.data!}");
+       return true;
+     }else{
+       if(results.exception != null){
+         //debugPrint(" addNew Address mutation result >>> ${results.exception!.linkException!.originalException}");
          debugPrint(" addNew Address mutation result >>> ${results.exception!}");
          Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
          debugPrint(results.exception!.graphqlErrors[0].message.toString());
@@ -53,7 +75,6 @@ class PaymentProvider with ChangeNotifier{
    }
 
    Future hitPlaceOrder({required String cartId}) async {
-     debugPrint("cart id >>>> $cartId");
      QueryMutations queryMutation = QueryMutations();
      QueryResult results = await GraphQLClientAPI().mClient
          .mutate(GraphQlClient.placeUserOrder(queryMutation.placeOrder(cartId),

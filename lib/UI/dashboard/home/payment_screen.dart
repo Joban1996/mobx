@@ -129,6 +129,10 @@ Map<String,dynamic> options(int amount,String name,String des,String contact,Str
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: data.cart!.availablePaymentMethods!.length,
                 itemBuilder: (context,index){
+                  /*if(data.cart!.selectedPaymentMethod!.code.toString() ==
+                      data.cart!.availablePaymentMethods![index].code.toString()) {
+                    context.read<PaymentProvider>().setSelectedIndex(index, data.cart!.availablePaymentMethods![index].code.toString());
+                  }*/
               return Consumer2<PaymentProvider,LoginProvider>(
                 builder: (_,val,val2,child){
                   return GestureDetector(
@@ -212,6 +216,7 @@ Map<String,dynamic> options(int amount,String name,String des,String contact,Str
            var parsed = CartListModel.fromJson(result.data!);
            var productItems = parsed.cart!.items!;
            debugPrint("cart list data in payment screen >>> ${productItems.length}");
+           debugPrint("set payment method >>>>> j ${result.data!['cart']['selectedPaymentMethod']}");
            return
              Stack(
                children: [
@@ -223,19 +228,35 @@ Map<String,dynamic> options(int amount,String name,String des,String contact,Str
                      child: Consumer2<PaymentProvider,LoginProvider>(
                        builder: (_,val1,val2,child){
                          return AppButton(
-                             onTap: () {
-                               //Navigator.pushNamedAndRemoveUntil(context, Routes.orderConfirmed,(_)=> false);
-                               if(val1.getSelectedCode == "razorpay"){
-                                 _razorpay.open(options(int.parse(parsed.cart!.prices!.grandTotal!.value.toString()),
-                                     "name", "des",val2.getMobileNumber,App.localStorage.getString(PREF_USER_EMAIL).toString())
-                                 );
+                             onTap: () async{
+                              // val2.setLoadingBool(true);
+                               if(parsed.cart!.shippingAddresses![0].selectedShippingMethod == null){
+                                 val1.hitSetShippingMethod(cartId: App.localStorage.getString(PREF_CART_ID).toString());
                                }
-                                //debugPrint("tokennn>>>> ${App.localStorage.getString(PREF_TOKEN)}");
-                                // val1.hitPlaceOrder(cartId: App.localStorage.getString(PREF_CART_ID).toString()).then((value){
-                                //   if(value){
-                                //     Navigator.pushNamed(context, Routes.orderConfirmed);
-                                //   }
-                                // });
+                               if(parsed.cart!.selectedPaymentMethod != null) {
+                                 if (val1.getSelectedCode == "razorpay") {
+                                   _razorpay.open(options(int.parse(
+                                       parsed.cart!.prices!.grandTotal!.value!
+                                           .round().toString()),
+                                       "name", "des", val2.getMobileNumber,
+                                       App.localStorage.getString(
+                                           PREF_USER_EMAIL).toString())
+                                   );
+                                 }
+                                 await val1.hitPlaceOrder(
+                                     cartId: App.localStorage.getString(
+                                         PREF_CART_ID).toString()).then((
+                                     value) async{
+                                   //val2.setLoadingBool(false);
+                                   if (value) {
+                                     await App.localStorage.remove(PREF_CART_ID);
+                                     debugPrint("cart id removed >>>>> ${App.localStorage.getString(PREF_CART_ID)}");
+                                     navigate();
+                                   }
+                                 });
+                               }else{
+                                 Utility.showNormalMessage("Please select a shipping method");
+                               }
                              },
                              text: "PLACE ORDER");
                        },
@@ -245,5 +266,10 @@ Map<String,dynamic> options(int amount,String name,String des,String contact,Str
                ],
              );}))
     );
+  }
+ navigate(){
+    Navigator.pushNamedAndRemoveUntil(
+        context, Routes.orderConfirmed, (
+        _) => false);
   }
 }

@@ -199,7 +199,7 @@ mutation {
             postcode: "$pinCode"
             country_code: "IN"
             telephone: "$phonNumber"
-            save_in_address_book: true
+            save_in_address_book: false
           }
         }
       ]
@@ -235,12 +235,61 @@ mutation {
     """;
   }
 
+ String addBillingAddress(AvailableRegions regions,String firstName, String lastName,String city,
+     String pinCode, String phonNumber,String street,String cartId){
+    return '''
+    mutation {
+  setBillingAddressOnCart(
+    input: {
+      cart_id: "$cartId"
+      billing_address: {
+        address: {
+            firstname: "$firstName"
+            lastname: "$lastName"
+            company: ""
+            street: ["$street"]
+            city: "$city"
+            region: "${regions.code}"
+            region_id: "${regions.id}"
+            postcode: "$pinCode"
+            country_code: "IN"
+            telephone: "$phonNumber"
+            save_in_address_book: false
+          }
+      }
+    }
+  ) {
+    cart {
+      billing_address {
+        firstname
+        lastname
+        company
+        street
+        city
+        region{
+          code
+          label
+        }
+        postcode
+        telephone
+        country {
+          code
+          label
+        }
+      }
+    }
+  }
+}
+
+    ''';
+  }
+
 
   String setPayMethod(String cartId, String code) {
     return """
     mutation {
   setPaymentMethodOnCart(input: {
-      cart_id: $cartId
+      cart_id: "$cartId"
       payment_method: {
           code: $code
       }
@@ -255,15 +304,43 @@ mutation {
       """;
   }
 
+  String setShippingMethod(String cartId) {
+    return """
+mutation {
+  setShippingMethodsOnCart(input: {
+    cart_id: "$cartId"
+    shipping_methods: [
+      {
+      carrier_code: "tablerate"
+        method_code: "bestway"
+      }
+    ]
+  }) {
+    cart {
+      shipping_addresses {
+        selected_shipping_method {
+          carrier_code
+          method_code
+          carrier_title
+          method_title
+        }
+      }
+    }
+  }
+}
+ 
+      """;
+  }
+
   String placeOrder(String cartId) {
     return """
    mutation {
-  placeOrder(input: {cart_id: '$cartId'}) {
+  placeOrder(input: {cart_id: "$cartId"}) {
     order {
       order_number
     }
   }
-
+}
       """;
   }
 

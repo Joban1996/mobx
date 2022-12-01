@@ -93,7 +93,7 @@ class ItemInfoCommon extends StatelessWidget {
       case 11:
         return "Nov";
       case 12:
-        return "Des";
+        return "Dec";
       default:
         return "NA";
     }

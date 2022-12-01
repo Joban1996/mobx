@@ -59,8 +59,9 @@ setItemIndex(int val){
 
 
 Future hitCreateCartID() async {
-  debugPrint("auth token >>>> ${App.localStorage.getString(PREF_TOKEN)}");
+  debugPrint("auth token >>>> ${App.localStorage.getString(PREF_CART_ID)}");
   QueryOptions generateCartIdQuery = QueryOptions(
+    fetchPolicy: FetchPolicy.noCache,
     document: gql(generateCartId),);
   final QueryResult results = await GraphQLClientAPI()
       .mClient

@@ -220,6 +220,7 @@ class ProductDetails1 extends StatelessWidget {
                                     leadingImage: "assets/images/lock.png",
                                     onTap: () async{
                                       val2.setLoadingBool(true);
+                                      print("cart id >>>> ${App.localStorage.getString(PREF_CART_ID)}");
                                       if(App.localStorage.getString(PREF_CART_ID) == null){
                                         await val1.hitCreateCartID().then((value) {
                                           val2.setLoadingBool(false);
@@ -229,7 +230,8 @@ class ProductDetails1 extends StatelessWidget {
                                                 Navigator.pushReplacementNamed(context, Routes.loginScreen);
                                             }
                                           }
-                                        });}
+                                        });
+                                      }
                                       val1.hitAddToCartMutation(cartId: App.localStorage.getString(PREF_CART_ID)!,
                                           skuId: val3.getSkuID).then((value) {
                                         val2.setLoadingBool(false);
