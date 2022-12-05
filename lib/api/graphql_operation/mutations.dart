@@ -344,5 +344,13 @@ mutation {
       """;
   }
 
+  String deleteAddress(int id) {
+    return """
+mutation {
+  deleteCustomerAddress(id: $id)
+}
+      """;
+  }
+
 
 }
