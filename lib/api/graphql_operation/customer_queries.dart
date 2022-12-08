@@ -9,6 +9,16 @@ loginOTPVerify(mobileNumber: \$mobileNumber,otp: \$otp,websiteId: \$websiteId){
 }
 ''';
 
+var getWishListId =  ''' 
+query {
+    customer {
+    wishlists{
+      id
+    }
+}
+}
+''';
+
 var categories = '''
 query categories(\$filters: CategoryFilterInput!){
  categories(filters: \$filters){
@@ -476,6 +486,48 @@ query {
       postcode
       country_code
       telephone
+    }
+  }
+}
+''';
+
+var getWishList =  ''' 
+{
+  wishlist {
+    items_count
+    name
+    sharing_code
+    updated_at
+    items {
+      id
+      qty
+      description
+      added_at
+      product {
+        sku
+        name
+         small_image{
+          url
+          label
+      }
+price_range {
+        minimum_price {
+          regular_price {
+            value
+            currency
+          }
+          final_price {
+            value
+            currency
+          }
+          discount {
+            amount_off
+            percent_off
+          }
+        
+        }
+      }
+      }
     }
   }
 }

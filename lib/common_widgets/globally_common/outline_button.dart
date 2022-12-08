@@ -16,9 +16,7 @@ class OutLineButtonWidget extends StatelessWidget {
       ),
       child: Text(text,
         textAlign: TextAlign.center,
-        style: const TextStyle(
-            color: Colors.black
-        ),),
+        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex(globalBlackColor),fontSize: 11)),
     );
   }
 }

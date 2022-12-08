@@ -5,6 +5,7 @@ import 'package:mobx/provider/dashboard/address_provider.dart';
 import 'package:mobx/provider/dashboard/dashboard_provider.dart';
 import 'package:mobx/provider/dashboard/payment_provider.dart';
 import 'package:mobx/provider/dashboard/product_provider.dart';
+import 'package:mobx/provider/wishlist_profile/wishlist_provider.dart';
 import 'package:mobx/utils/app.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/routes.dart';
@@ -24,6 +25,7 @@ void main()async{
   ));
   runApp(MultiProvider(
     providers: [
+      ChangeNotifierProvider(create: (_) => WishlistProvider()),
       ChangeNotifierProvider(create: (_) => PaymentProvider()),
       ChangeNotifierProvider(create: (_) => DashboardProvider()),
       ChangeNotifierProvider(create: (_) => LoginProvider()),

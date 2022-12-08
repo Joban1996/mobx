@@ -165,11 +165,7 @@ Widget _column(BuildContext context,CartListModel data){
       ),
         appbar: AppBar(), onTapCallback: (){},leadingImage: GestureDetector(
             onTap: ()=> Navigator.pop(context),
-            child: Image.asset("assets/images/back_arrow.png"))
-        ,trailingAction: const [Padding(
-          padding: EdgeInsets.only(right: 10),
-          child: Icon(Icons.star_border_outlined,color: Colors.black,),
-        ),],
+            child: Image.asset("assets/images/back_arrow.png")),
       ),
       body:
       CommonLoader(screenUI: Query(
