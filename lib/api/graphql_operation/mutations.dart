@@ -455,4 +455,23 @@ mutation {
       """;
   }
 
+  String updateCustomer(String name, String email) {
+    return """
+mutation {
+  updateCustomer(
+    input: {
+      firstname: "$name"
+      email: "$email"
+    }
+  ) {
+    customer {
+      firstname
+      email
+    }
+  }
+}
+
+      """;
+  }
+
 }

@@ -1,10 +1,7 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/utils/app.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
-
 import '../../api/client_provider.dart';
 import '../../api/graphql_client.dart';
 import '../../api/graphql_operation/customer_queries.dart';
@@ -13,18 +10,19 @@ import '../../utils/utilities.dart';
 
 class WishlistProvider with ChangeNotifier{
 
-  Future hitGetWishlistId() async {
+  Future hitGetUserDetails() async {
     QueryOptions otpVerifyQuery = QueryOptions(
-      document: gql(getWishListId),);
+      document: gql(getUserDetails),);
     final QueryResult results = await GraphQLClientAPI()
         .mClient
-        .query(otpVerifyQuery).catchError((e){
-          print("object >>> $e");
-    });
+        .query(otpVerifyQuery);
     if (results.data != null) {
       debugPrint("get wishlist data >>>>> ${results.data!['customer']['wishlists'][0]['id']}");
       if(results.data!['customer']['wishlists'] != null){
         App.localStorage.setString(PREF_WISHLIST_ID, results.data!['customer']['wishlists'][0]['id']);
+        App.localStorage.setString(PREF_NAME, "${results.data!['customer']['firstname']+" "+results.data!['customer']['lastname']}");
+        App.localStorage.setString(PREF_EMAIL, results.data!['customer']['email']);
+        App.localStorage.setString(PREF_MOBILE, results.data!['customer']['mobilenumber']);
       }
       return true;
     }else{
@@ -80,6 +78,26 @@ class WishlistProvider with ChangeNotifier{
         wishlistItemId,wishListId));
     debugPrint(" update to cart mutation result >>> ${results.data}");
     if (results.data != null) {
+      return true;
+    }else{
+      if(results.exception != null){
+        Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
+        debugPrint(results.exception!.graphqlErrors[0].message.toString());
+      }
+      return false;
+    }
+  }
+
+  Future hitUpdateCustomer({required String name,required String email}) async {
+    QueryMutations queryMutation = QueryMutations();
+    QueryResult results = await GraphQLClientAPI().mClient
+        .mutate(GraphQlClient.updateCustomer(queryMutation.updateCustomer(name,email),
+        name,email));
+    debugPrint(" Update customer result >>> ${results.data}");
+    if (results.data != null) {
+      Utility.showSuccessMessage("Data updated successfully!");
+       App.localStorage.setString(PREF_NAME, "${results.data!['updateCustomer']['customer']['firstname']}");
+       App.localStorage.setString(PREF_EMAIL, results.data!['updateCustomer']['customer']['email']);
       return true;
     }else{
       if(results.exception != null){

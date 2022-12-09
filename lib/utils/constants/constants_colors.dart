@@ -10,6 +10,9 @@ const PREF_ED_N = "ED_N";
 const PREF_CART_ID = "C_ID";
 const PREF_USER_EMAIL = "P_U_E";
 const PREF_WISHLIST_ID = "P_W_I";
+const PREF_NAME = 'P_N';
+const PREF_EMAIL = 'P_E';
+const PREF_MOBILE = 'P_M';
 
 
 ///colors

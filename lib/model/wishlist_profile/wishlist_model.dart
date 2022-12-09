@@ -216,7 +216,7 @@ class RegularPrice {
 
 class Discount {
   int? amountOff;
-  double? percentOff;
+  num? percentOff;
 
   Discount({this.amountOff, this.percentOff});
 

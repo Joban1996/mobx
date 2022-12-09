@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/common_widgets/dashboard/item_info_arrow_forward.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
-import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
+import 'package:mobx/utils/app.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/utilities.dart';
-
 import '../../../utils/constants/strings.dart';
 import '../../../utils/routes.dart';
-
-
-
-
 
 
 
@@ -19,6 +14,9 @@ class ProfileScreen extends StatelessWidget {
 
 
   Widget accountInfo(BuildContext context){
+    String name = App.localStorage.getString(PREF_NAME).toString();
+    String email = App.localStorage.getString(PREF_EMAIL).toString();
+    String mobile = App.localStorage.getString(PREF_MOBILE).toString();
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Row(
@@ -30,8 +28,8 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 Text(Strings.accountInfo,style: Theme.of(context).textTheme.bodyText2,),
                 verticalSpacing(heightInDouble: 0.01, context: context),
-                Text("John Smith",style: Theme.of(context).textTheme.caption,),
-                Text("+91-90212 12311 / john@mobex.in",style: Theme.of(context).textTheme.caption,)
+                Text(name,style: Theme.of(context).textTheme.caption,),
+                Text("+$mobile / $email",style: Theme.of(context).textTheme.caption,)
               ],
             ),
           ),

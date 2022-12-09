@@ -9,12 +9,16 @@ loginOTPVerify(mobileNumber: \$mobileNumber,otp: \$otp,websiteId: \$websiteId){
 }
 ''';
 
-var getWishListId =  ''' 
+var getUserDetails =  ''' 
 query {
     customer {
     wishlists{
       id
     }
+    firstname
+    lastname
+    email
+    mobilenumber
 }
 }
 ''';

@@ -257,6 +257,15 @@ class GraphQlClient {
     );
   }
 
-
+  static updateCustomer(String mutation,String name, String email) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'firstname': name,
+        'email': email,
+      },
+    );
+  }
 
 }

@@ -52,12 +52,10 @@ class ProductDetails1 extends StatelessWidget {
                    constraints: const BoxConstraints(),
                    onPressed: (){
                       value2.setLoadingBool(true);
-                      value.hitGetWishlistId().then((val){
                         value.addToWishList(id: int.parse(App.localStorage.getString(PREF_WISHLIST_ID)!),
                             sku: dataItem.sku.toString(), quantity: 1).then((dataValue) {
                           value2.setLoadingBool(false);
                         });
-                      });
                    },
                    icon: const Icon(Icons.star_border_outlined),
                    color: Colors.black,
