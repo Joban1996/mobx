@@ -536,3 +536,20 @@ price_range {
   }
 }
 ''';
+
+var searchProduct =  ''' 
+query products(\$search: String!){
+  products(search: \$search) {
+    total_count
+    items {
+      name
+      sku
+      special_price
+    }
+    page_info {
+      page_size
+      current_page
+    }
+  }
+}
+''';

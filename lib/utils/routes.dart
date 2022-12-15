@@ -16,12 +16,12 @@ import 'package:mobx/UI/dashboard/orders/orderDetailsScreen.dart';
 import 'package:mobx/UI/dashboard/orders/orders_home.dart';
 import 'package:mobx/UI/dashboard/profile/aboutUs_screen.dart';
 import 'package:mobx/UI/dashboard/profile/account_information.dart';
-import 'package:mobx/UI/dashboard/profile/add_address_screen.dart';
 import 'package:mobx/UI/dashboard/profile/faq_screen.dart';
 import 'package:mobx/UI/dashboard/profile/google_map_screen.dart';
 import 'package:mobx/UI/dashboard/profile/profile_addresses_screen.dart';
 import 'package:mobx/UI/dashboard/profile/profile_screen.dart';
 import 'package:mobx/UI/dashboard/profile/wishlist_screen.dart';
+import 'package:mobx/UI/dashboard/search_screen.dart';
 import 'package:mobx/UI/dashboard/sell/brand_model_screen.dart';
 import 'package:mobx/UI/dashboard/sell/device_info_screen.dart';
 import 'package:mobx/UI/dashboard/sell/sell_home.dart';
@@ -66,6 +66,7 @@ class Routes {
   static const googleMapScreen="googleMapScreen";
   static const brandModelScreen="brandModelScreen";
   static const deviceInfoScreen="deviceInfoScreen";
+  static const searchScreen="searchScreen";
 
 static Route<dynamic> generatedRoute(RouteSettings settings){
         switch(settings.name){
@@ -134,6 +135,8 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
             return MaterialPageRoute(builder: (_) => BrandModelScreen());
           case deviceInfoScreen:
             return MaterialPageRoute(builder: (_) => DeviceInfoScreen());
+          case searchScreen:
+            return MaterialPageRoute(builder: (_) => SearchScreen());
           default:
             return MaterialPageRoute(
                 builder: (_) => Scaffold(

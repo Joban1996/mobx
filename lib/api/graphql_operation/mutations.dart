@@ -113,7 +113,7 @@ mutation {
 mutation {
   removeCouponFromCart(
     input:
-      { cart_id: $cartId }
+      { cart_id: "$cartId" }
     ) {
     cart {
       items {

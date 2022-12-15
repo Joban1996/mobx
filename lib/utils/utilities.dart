@@ -244,7 +244,7 @@ Widget globalLoader(){
   AlwaysStoppedAnimation<Color>(Utility.getColorFromHex(globalOrangeColor))));
 }
 
-Widget dividerCommon(BuildContext context){
+Widget  dividerCommon(BuildContext context){
   return Divider(height: getCurrentScreenHeight(context)*0.02);
 }
 

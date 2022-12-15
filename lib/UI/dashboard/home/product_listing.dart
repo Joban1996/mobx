@@ -27,10 +27,10 @@ class ProductListing extends StatelessWidget {
             onTap: () => Navigator.pop(context),
             child: Image.asset("assets/images/back_arrow.png")),
         trailingAction: [
-          const Icon(
-            Icons.star_border_outlined,
-            color: Colors.black,
-          ),
+          // const Icon(
+          //   Icons.star_border_outlined,
+          //   color: Colors.black,
+          // ),
           Image.asset("assets/images/lock.png")
         ],
       ),

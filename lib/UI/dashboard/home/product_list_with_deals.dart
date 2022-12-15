@@ -54,10 +54,10 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
               onTap: () => Navigator.pop(context),
               child: Image.asset("assets/images/back_arrow.png")),
           trailingAction: [
-            Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
+            IconButton(onPressed: (){
+              Navigator.pushNamed(context, Routes.searchScreen);
+            }, icon: Icon(Icons.search,color
+                :Utility.getColorFromHex(globalSubTextGreyColor),size: 25,)),
             Image.asset("assets/images/lock.png")
           ],
         ),
