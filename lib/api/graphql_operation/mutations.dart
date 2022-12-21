@@ -113,7 +113,7 @@ mutation {
 mutation {
   removeCouponFromCart(
     input:
-      { cart_id: $cartId }
+      { cart_id: "$cartId" }
     ) {
     cart {
       items {
@@ -352,5 +352,126 @@ mutation {
       """;
   }
 
+  String addToWishlistMutation(int id,String sku,int quantity) {
+    return """
+mutation {
+  addProductsToWishlist(
+    wishlistId: $id
+    wishlistItems: [
+      {
+        sku: "$sku"
+        quantity: $quantity
+      }
+    ]
+  ) {
+    wishlist {
+      id
+
+    }
+    user_errors {
+      code
+      message
+    }
+  }
+}
+
+      """;
+  }
+
+  String deleteWishlist(int wishlistItemId, int wishListId,) {
+    return """
+mutation {
+  removeProductsFromWishlist(
+  wishlistId: $wishListId
+  wishlistItemsIds: [
+    $wishlistItemId
+  ]){
+    wishlist {
+      id
+      items_count
+      items_v2 {
+        items {
+          id
+          quantity
+          product {
+            uid
+            name
+            sku
+            price_range {
+              minimum_price {
+                regular_price  {
+                  currency
+                  value
+                }
+              }
+              maximum_price {
+                regular_price {
+                  currency
+                  value
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    user_errors {
+      code
+      message
+    }
+  }
+}
+  
+      """;
+  }
+
+  String addWishlistToCart(int wishlistItemId, int wishListId) {
+    return """
+mutation {
+  addWishlistItemsToCart(
+    wishlistId: $wishListId
+    wishlistItemIds: [$wishlistItemId])
+  {
+    status
+    add_wishlist_items_to_cart_user_errors {
+      code
+      message
+    }
+    wishlist {
+      id
+      items_v2 {
+        items {
+          id
+          product {
+            uid
+            sku
+            name
+          }
+        }
+      }
+    }
+  }
+} 
+      """;
+  }
+
+  String updateCustomer(String name, String email) {
+    return """
+mutation {
+  updateCustomer(
+    input: {
+      firstname: "$name"
+      email: "$email"
+    }
+  ) {
+    customer {
+      firstname
+      email
+    }
+  }
+}
+
+      """;
+  }
 
 }

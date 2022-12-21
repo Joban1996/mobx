@@ -234,5 +234,38 @@ class GraphQlClient {
       },
     );
   }
+  static addToWishList(String mutation,int id,String sku,int quantity) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'wishlistId': id,
+        'sku': sku,
+        'quantity': quantity
+      },
+    );
+  }
+
+  static deleteOrAddWishlistToCart(String mutation,int wishlistItemId, int wishListId) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'wishlistId': wishListId,
+        'wishlistItemsIds': [wishlistItemId],
+      },
+    );
+  }
+
+  static updateCustomer(String mutation,String name, String email) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'firstname': name,
+        'email': email,
+      },
+    );
+  }
 
 }

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/model/categories_model.dart';
+import 'package:mobx/model/product/searchData_model.dart';
 import 'package:mobx/utils/constants/strings.dart';
+
+import '../../api/client_provider.dart';
+import '../../api/graphql_operation/customer_queries.dart';
+import '../../utils/utilities.dart';
 
 
 
@@ -21,6 +27,7 @@ class  DashboardProvider with ChangeNotifier{
   String _skuID = "";
   int currentPage = 0;
   int currentPageDetail = 0;
+  SearchDataModel? searchData;
 
 
   List<Children>? get getSubCate => _subCate;
@@ -34,6 +41,12 @@ class  DashboardProvider with ChangeNotifier{
   String get getSkuID => _skuID;
   int get   getCurrentPage =>  currentPage;
   int get   getCurrentPageDetail =>  currentPageDetail;
+  SearchDataModel? get getSearchData => searchData;
+
+  setSearchData(SearchDataModel? data){
+    searchData = data;
+    notifyListeners();
+  }
 
   setCurrentPage(int val)
   {
@@ -88,6 +101,32 @@ class  DashboardProvider with ChangeNotifier{
   setPath(List<String> val){
     _path = val;
     notifyListeners();
+  }
+
+  Future hitSearchProductQuery({required String searchValue }) async {
+    print("query results >>>> $searchValue");
+    QueryOptions otpVerifyQuery = QueryOptions(
+      fetchPolicy: FetchPolicy.networkOnly,
+      document: gql(searchProduct),
+      variables:{
+        'search': searchValue,
+      },);
+    final QueryResult results = await GraphQLClientAPI()
+        .mClient
+        .query(otpVerifyQuery);
+    if(results.data != null){
+          debugPrint('${results.data}');
+          var _data  = SearchDataModel.fromJson(results.data!);
+          setSearchData(_data);
+        return true;
+    }else{
+      Utility.showErrorMessage("${results.data!['loginOTPVerify']['message']}");
+      if(results.exception != null){
+        Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
+        debugPrint(results.exception!.graphqlErrors[0].message.toString());
+      }
+      return false;
+    }
   }
 
 

@@ -9,6 +9,20 @@ loginOTPVerify(mobileNumber: \$mobileNumber,otp: \$otp,websiteId: \$websiteId){
 }
 ''';
 
+var getUserDetails =  ''' 
+query {
+    customer {
+    wishlists{
+      id
+    }
+    firstname
+    lastname
+    email
+    mobilenumber
+}
+}
+''';
+
 var categories = '''
 query categories(\$filters: CategoryFilterInput!){
  categories(filters: \$filters){
@@ -476,6 +490,65 @@ query {
       postcode
       country_code
       telephone
+    }
+  }
+}
+''';
+
+var getWishList =  ''' 
+{
+  wishlist {
+    items_count
+    name
+    sharing_code
+    updated_at
+    items {
+      id
+      qty
+      description
+      added_at
+      product {
+        sku
+        name
+         small_image{
+          url
+          label
+      }
+price_range {
+        minimum_price {
+          regular_price {
+            value
+            currency
+          }
+          final_price {
+            value
+            currency
+          }
+          discount {
+            amount_off
+            percent_off
+          }
+        
+        }
+      }
+      }
+    }
+  }
+}
+''';
+
+var searchProduct =  ''' 
+query products(\$search: String!){
+  products(search: \$search) {
+    total_count
+    items {
+      name
+      sku
+      special_price
+    }
+    page_info {
+      page_size
+      current_page
     }
   }
 }

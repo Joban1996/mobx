@@ -195,16 +195,17 @@ class AddressProvider with ChangeNotifier {
     }
   }
 
-  Future deleteAddress({required int id}) async {
+  Future hitDeleteAddress({required int id}) async {
     debugPrint("auth token >>>> ${App.localStorage.getString(PREF_TOKEN)}");
     QueryMutations queryMutation = QueryMutations();
     QueryResult results = await GraphQLClientAPI().mClient.mutate(
         GraphQlClient.deleteAddress(queryMutation.deleteAddress(id), id));
-    debugPrint(" addNew Address mutation result >>> ${results.data!}");
     if (results.data != null) {
+      debugPrint(" addNew Address mutation result >>> ${results.data!}");
       return true;
     } else {
       if (results.exception != null) {
+        debugPrint(" addNew Address mutation excepion >>> ${results.exception!}");
         Utility.showErrorMessage(
             results.exception!.graphqlErrors[0].message.toString());
         debugPrint(results.exception!.graphqlErrors[0].message.toString());

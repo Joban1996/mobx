@@ -12,6 +12,7 @@ import 'package:mobx/model/categories_model.dart';
 import 'package:mobx/model/product_description_model.dart' as pData;
 import 'package:mobx/provider/auth/login_provider.dart';
 import 'package:mobx/provider/dashboard/product_provider.dart';
+import 'package:mobx/provider/wishlist_profile/wishlist_provider.dart';
 import 'package:mobx/utils/app.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/routes.dart';
@@ -44,10 +45,23 @@ class ProductDetails1 extends StatelessWidget {
               },
               child: Image.asset("assets/images/back_arrow.png")),
           trailingAction: [
-            const Icon(
-              Icons.star_border_outlined,
-              color: Colors.black,
-            ),
+             Consumer2<WishlistProvider,LoginProvider>(
+               builder: (BuildContext context, value, value2, Widget? child) {
+                 return IconButton(
+                   padding: EdgeInsets.zero,
+                   constraints: const BoxConstraints(),
+                   onPressed: (){
+                      value2.setLoadingBool(true);
+                        value.addToWishList(id: int.parse(App.localStorage.getString(PREF_WISHLIST_ID)!),
+                            sku: dataItem.sku.toString(), quantity: 1).then((dataValue) {
+                          value2.setLoadingBool(false);
+                        });
+                   },
+                   icon: const Icon(Icons.star_border_outlined),
+                   color: Colors.black,
+                 );
+               },
+             ),
             Image.asset("assets/images/lock.png")
           ],
         ),
@@ -70,6 +84,7 @@ class ProductDetails1 extends StatelessWidget {
                         return globalLoader();
                       }
                       var parsed = pData.ProductDescriptionModel.fromJson(result.data!);
+                      debugPrint("login token >>>>> ${App.localStorage.getString(PREF_TOKEN)}");
                       if(parsed.products!.items!.isNotEmpty){
                        dataItem = parsed.products!.items![0];
                       }

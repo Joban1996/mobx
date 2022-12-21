@@ -40,6 +40,7 @@ static String cashOnDelivery="Cash On Delivery";
       "Your order is placed successfully.";
   static String confirmationMessage2="You will get confirmation call shortly.";
   static String viewDetailsButton = "VIEW DETAIL";
+  static String search = "SEARCH";
 
   //profile
  // static String accountInfo = "ACCOUNT INFORMATION";

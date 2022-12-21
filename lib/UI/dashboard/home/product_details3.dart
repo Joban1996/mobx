@@ -45,7 +45,7 @@ class ProductDetails3 extends StatelessWidget {
                 if (result.isLoading) {
                   return globalLoader();
                 }
-                debugPrint("products >>>>>>> ${result.data}");
+                debugPrint("products >>>>>>>${result.data}");
                 var subCateProductData = ProductModel.fromJson(result.data!);
                 return
                   Column(
