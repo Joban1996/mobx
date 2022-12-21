@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Strings {
   static String app_name = "mobex";
+  static String rupee_sign="₹";
   static String logo = "LOGO";
   static String splash_sub_title = "SELL | PURCHASE | REPAIR | INSURANCE";
 
