@@ -35,15 +35,16 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
   String pinCode='';
   String country='';
   String street ='';
+  double zoom=17.0;
   var addressController=TextEditingController();
   late String latitudeValue, longitudeValue;
 
   late GoogleMapController _controller;
   Set<Marker> markers = {};
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
+  static  const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(30.7333, 76.7794),
-    zoom: 14.4746,
+    zoom: 17.0,
   );
 
   @override
@@ -116,6 +117,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                   mapType: MapType.normal,
                   onMapCreated: (GoogleMapController controller){
                     _controller = controller;
+
                   },
                 ),
               ),
