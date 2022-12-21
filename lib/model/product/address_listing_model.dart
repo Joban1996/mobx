@@ -55,6 +55,7 @@ class Customer {
 }
 
 class Addresses {
+  int? id;
   bool? defaultShipping;
   bool? defaultBilling;
   String? firstname;
@@ -67,7 +68,8 @@ class Addresses {
   String? telephone;
 
   Addresses(
-      {this.defaultShipping,
+      {this.id,
+        this.defaultShipping,
         this.defaultBilling,
         this.firstname,
         this.lastname,
@@ -79,6 +81,7 @@ class Addresses {
         this.telephone});
 
   Addresses.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     defaultShipping = json['default_shipping'];
     defaultBilling = json['default_billing'];
     firstname = json['firstname'];

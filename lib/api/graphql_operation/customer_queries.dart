@@ -462,6 +462,7 @@ query {
     suffix
     email
     addresses {
+    id
          default_shipping
       default_billing
       firstname

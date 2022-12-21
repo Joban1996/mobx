@@ -225,5 +225,14 @@ class GraphQlClient {
     );
   }
 
+  static deleteAddress(String mutation,int id) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'id': id,
+      },
+    );
+  }
 
 }

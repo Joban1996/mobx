@@ -131,24 +131,51 @@ class AddressesScreen extends StatelessWidget {
                           builder: (_,val,val1,child){
                             return AppButton(
                               onTap: () {
-                                val1.setLoadingBool(true);
-                                val.hitShippingDeliveryAddress(street: addressesList[val.getSelected].street![0],
-                                    firstName: addressesList[val.getSelected].firstname.toString(),
-                                    lastName: addressesList[val.getSelected].lastname.toString(), city: addressesList[val.getSelected].city.toString(),
-                                    pinCode: addressesList[val.getSelected].postcode.toString(),
-                                    phonNumber: addressesList[val.getSelected].telephone.toString(), isBillingAddress: true,
-                                    cartId: App.localStorage.getString(PREF_CART_ID).toString()).then((value) => {
+                                if(addressesList.isNotEmpty) {
+                                  val1.setLoadingBool(true);
+                                  val.hitShippingDeliveryAddress(
+                                      street: addressesList[val.getSelected]
+                                          .street![0],
+                                      firstName: addressesList[val.getSelected]
+                                          .firstname.toString(),
+                                      lastName: addressesList[val.getSelected]
+                                          .lastname.toString(),
+                                      city: addressesList[val.getSelected].city
+                                          .toString(),
+                                      pinCode: addressesList[val.getSelected]
+                                          .postcode.toString(),
+                                      phonNumber: addressesList[val.getSelected]
+                                          .telephone.toString(),
+                                      isBillingAddress: true,
+                                      cartId: App.localStorage.getString(
+                                          PREF_CART_ID).toString()).then((
+                                      value) =>
+                                  {
                                     val.hitSetBillingAddress(
-                                        street: addressesList[val.getSelected].street![0],
-                                        firstName: addressesList[val.getSelected].firstname.toString(),
-                                        lastName: addressesList[val.getSelected].lastname.toString(), city: addressesList[val.getSelected].city.toString(),
-                                        pinCode: addressesList[val.getSelected].postcode.toString(),
-                                        phonNumber: addressesList[val.getSelected].telephone.toString(), isBillingAddress: true,
-                                        cartId: App.localStorage.getString(PREF_CART_ID).toString()).then((value){
+                                        street: addressesList[val.getSelected]
+                                            .street![0],
+                                        firstName: addressesList[val
+                                            .getSelected].firstname.toString(),
+                                        lastName: addressesList[val.getSelected]
+                                            .lastname.toString(),
+                                        city: addressesList[val.getSelected]
+                                            .city.toString(),
+                                        pinCode: addressesList[val.getSelected]
+                                            .postcode.toString(),
+                                        phonNumber: addressesList[val
+                                            .getSelected].telephone.toString(),
+                                        isBillingAddress: true,
+                                        cartId: App.localStorage.getString(
+                                            PREF_CART_ID).toString()).then((
+                                        value) {
                                       val1.setLoadingBool(false);
-                                      Navigator.pushReplacementNamed(context, Routes.payment);
+                                      Navigator.pushReplacementNamed(
+                                          context, Routes.payment);
                                     }),
-                                });
+                                  });
+                                }else{
+                                  Utility.showNormalMessage("Add your address first to proceed.");
+                                }
                               },
                               text: Strings.proceedToPayment,
                               isTrailing: false,
