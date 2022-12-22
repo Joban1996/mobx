@@ -49,11 +49,14 @@ class SearchScreen extends StatelessWidget {
             return Column(
               children: [
                 TextField(
-                  onChanged: (_){
+                  onChanged: (val){
+                      if(_searchController.text.trim() == "") {
+                        val1.setSearchData(null);
+                      }else{
                     val2.setLoadingBool(true);
                     val1.hitSearchProductQuery(searchValue: _searchController.text.trim()).then((value) {
                       val2.setLoadingBool(false);
-                    });
+                    });}
                   },
                   controller: _searchController,
                   inputFormatters: [LengthLimitingTextInputFormatter(15),],
@@ -61,6 +64,7 @@ class SearchScreen extends StatelessWidget {
                   keyboardType: TextInputType.text,
                   decoration: CommonStyle.textFieldStyle(context,isLeading: false,
                       hintText: "What you want to Purchase?",suffix: IconButton(onPressed: (){
+                          val1.setSearchData(null);
                         _searchController.clear();
                       }, icon: Icon(Icons.close))),
                 ),

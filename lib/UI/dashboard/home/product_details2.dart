@@ -38,8 +38,8 @@ Widget itemColumn(String txt1,String txt2,BuildContext context){
             tilePadding: EdgeInsets.zero,
             children: [Row(
               children: [
-                Expanded(child: itemColumn("Brand","${dataItem.modelName}",context)),
-                Expanded(child: itemColumn("Colour",dataItem.colour.toString()??"-",context)),
+                Expanded(child: itemColumn("Brand",dataItem.modelName??"-",context)),
+                Expanded(child: itemColumn("Colour",dataItem.colour??"-",context)),
               ],
             ),
               Row(
@@ -50,7 +50,7 @@ Widget itemColumn(String txt1,String txt2,BuildContext context){
               ),
               Row(
                 children: [
-                  Expanded(child: itemColumn("Memory Storage Capacity","${dataItem.memoryStorageCapacity ?? "-"} GB",context)),
+                  Expanded(child: itemColumn("Memory Storage Capacity","${dataItem.memoryStorageCapacity?? "-"} ${dataItem.memoryStorageCapacity ==null ? "" : "GB"}",context)),
                   Expanded(child: itemColumn("Country of Origin",dataItem.countryOfManufacture??"-",context)),
                 ],
               ),

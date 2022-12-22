@@ -23,7 +23,7 @@ class Strings {
 
   // Product Lst with Deals
   static String today_deal = "TODAY DEALS";
-  static String all_phones = "ALL PHONES";
+    static String all_phones = "ALL PRODUCTS";
 
   //Payment Screen
   static String payment_app_bar="PAYMENT";
