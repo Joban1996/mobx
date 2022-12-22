@@ -81,20 +81,20 @@ final phoneController = TextEditingController();
                       )
                   ),
                 ),
-                CheckboxListTile(
-                    title: RichText(text: TextSpan(
-                        children: [
-                          TextSpan(text: "I agree to the",style: Theme.of(context).textTheme.bodySmall),
-                          TextSpan(text: "Terms & Conditions",style:
-                          Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex("#1D4AE7"))),
-                        ]
-                    )
-                    ), //    <-- label
-                    value: checkedValue,
-                    contentPadding: EdgeInsets.zero,
-                    onChanged: (newValue) {  },
-                    controlAffinity: ListTileControlAffinity.leading
-                ),
+                // CheckboxListTile(
+                //     title: RichText(text: TextSpan(
+                //         children: [
+                //           TextSpan(text: "I agree to the",style: Theme.of(context).textTheme.bodySmall),
+                //           TextSpan(text: "Terms & Conditions",style:
+                //           Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex("#1D4AE7"))),
+                //         ]
+                //     )
+                //     ), //    <-- label
+                //     value: checkedValue,
+                //     contentPadding: EdgeInsets.zero,
+                //     onChanged: (newValue) {  },
+                //     controlAffinity: ListTileControlAffinity.leading
+                // ),
                 SizedBox(height: getCurrentScreenHeight(context)*0.03,),
                 AppButton(onTap: (){
                   if(phoneController.text.isNotEmpty){

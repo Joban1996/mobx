@@ -31,7 +31,10 @@ class ProductListing extends StatelessWidget {
           //   Icons.star_border_outlined,
           //   color: Colors.black,
           // ),
-          Image.asset("assets/images/lock.png")
+          GestureDetector(
+              onTap: (){Navigator.pushNamed(
+                  context, Routes.shoppingCart);},
+              child: Image.asset("assets/images/lock.png"))
         ],
       ),
       body: Query(

@@ -15,6 +15,7 @@ import 'package:mobx/provider/dashboard/product_provider.dart';
 import 'package:mobx/provider/wishlist_profile/wishlist_provider.dart';
 import 'package:mobx/utils/app.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
+import 'package:mobx/utils/constants/strings.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
 import 'package:provider/provider.dart';
@@ -62,7 +63,10 @@ class ProductDetails1 extends StatelessWidget {
                  );
                },
              ),
-            Image.asset("assets/images/lock.png")
+            GestureDetector(
+                onTap: (){Navigator.pushNamed(
+                    context, Routes.shoppingCart);},
+                child: Image.asset("assets/images/lock.png"))
           ],
         ),
         body: Consumer<DashboardProvider>(
@@ -146,24 +150,20 @@ class ProductDetails1 extends StatelessWidget {
                                 Row(
                                   children: [
                                     Text(
-                                      dataItem
-                                          .priceRange!.minimumPrice!.finalPrice!.value
-                                          .toString(),
+                                      "${Strings.rupee_sign}${dataItem.priceRange!.minimumPrice!.finalPrice!.value.toString()}",
                                       style: Theme.of(context).textTheme.bodyText2,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 3,
                                     ),
                                     Text(
-                                      dataItem
-                                          .priceRange!.minimumPrice!.regularPrice!.value
-                                          .toString(),
+                                      "${Strings.rupee_sign}${dataItem.priceRange!.minimumPrice!.regularPrice!.value.toString()}",
                                       style:
                                       Theme.of(context).textTheme.caption!.copyWith(
                                         decoration: TextDecoration.lineThrough,
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 3,
                                     ),
                                     Text(

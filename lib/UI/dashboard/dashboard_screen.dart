@@ -46,7 +46,12 @@ class DashboardScreen extends StatelessWidget {
           Navigator.pushNamed(context, Routes.searchScreen);
         }, icon: Icon(Icons.search,color
             :Utility.getColorFromHex(globalSubTextGreyColor),size: 25,)),
-          Image.asset("assets/images/lock.png")],),
+          GestureDetector(
+            onTap: (){
+              Navigator.pushNamed(
+                  context, Routes.shoppingCart);
+            },
+              child: Image.asset("assets/images/lock.png"))],),
       bottomNavigationBar: BottomNavigationBar(
         items:  <BottomNavigationBarItem>[
           BottomNavigationBarItem(

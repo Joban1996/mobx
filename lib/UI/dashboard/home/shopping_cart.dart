@@ -14,6 +14,7 @@ import '../../../api/graphql_operation/customer_queries.dart';
 import '../../../common_widgets/dashboard/item_info_arrow_forward.dart';
 import '../../../common_widgets/globally_common/app_button.dart';
 import '../../../utils/app.dart';
+import '../../../utils/constants/strings.dart';
 
 
 
@@ -84,11 +85,11 @@ Widget cartItemView(BuildContext context,Items productItems,int index,String car
                   ],
                 ),
                 Row(children: [
-                  Text(productItems!.product!.priceRange!.minimumPrice!.finalPrice!.value.toString(),style: Theme.of(context).textTheme.bodyMedium,),
+                  Text("${Strings.rupee_sign}${productItems!.product!.priceRange!.minimumPrice!.finalPrice!.value.toString()}",style: Theme.of(context).textTheme.bodyMedium,),
                   SizedBox(width: 3,),
-                  Text(productItems!.product!.priceRange!.minimumPrice!.regularPrice!.value.toString(),style: Theme.of(context).textTheme.bodySmall!.copyWith(decoration: TextDecoration.lineThrough,),)
+                  Text("${Strings.rupee_sign}${productItems!.product!.priceRange!.minimumPrice!.regularPrice!.value.toString()}",style: Theme.of(context).textTheme.bodySmall!.copyWith(decoration: TextDecoration.lineThrough,),)
                 ],),
-                Text("You Save ₹${productItems.product!.priceRange!.minimumPrice!.discount!.amountOff} "
+                Text("You Save ${Strings.rupee_sign}${productItems.product!.priceRange!.minimumPrice!.discount!.amountOff} "
                     "(${productItems.product!.priceRange!.minimumPrice!.discount!.percentOff}% OFF)",style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex(globalGreenColor)),)
               ],
             ),

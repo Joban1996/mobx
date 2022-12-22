@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/provider/dashboard/dashboard_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
+import 'package:mobx/utils/constants/strings.dart';
 import 'package:mobx/utils/utilities.dart';
 import 'package:mobx/model/product_model.dart' as pro;
 import 'package:provider/provider.dart';
@@ -49,9 +50,9 @@ String skuID;
                 style: Theme.of(context).textTheme.caption,maxLines: 2,overflow: TextOverflow.ellipsis,)),
           const SizedBox(height: 5,),
           Row(children: [
-            Text(productData != null ? productData!.priceRange!.minimumPrice!.finalPrice!.value.toString() :"₹55,099",style: Theme.of(context).textTheme.bodyText2,),
+            Text(productData != null ? "${Strings.rupee_sign}${productData!.priceRange!.minimumPrice!.finalPrice!.value.toString()}" :"₹55,099",style: Theme.of(context).textTheme.bodyText2,),
             SizedBox(width: 3,),
-            Text(productData != null ? "₹${productData!.priceRange!.minimumPrice!.regularPrice!.value}" :"₹70,900",style: Theme.of(context).textTheme.caption!.copyWith(decoration: TextDecoration.lineThrough,),)
+            Text(productData != null ? "${Strings.rupee_sign}${productData!.priceRange!.minimumPrice!.regularPrice!.value}" :"₹70,900",style: Theme.of(context).textTheme.caption!.copyWith(decoration: TextDecoration.lineThrough,),)
           ],)
       ],
     );
