@@ -45,6 +45,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
     debugPrint('payment succeed ::: Payment Id > ${response.paymentId}');
+     context.read<PaymentProvider>().hitPlaceOrder(
+        cartId: App.localStorage.getString(
+            PREF_CART_ID).toString()).then((
+        value) async{
+      if (value) {
+        await App.localStorage.remove(PREF_CART_ID);
+        debugPrint("cart id removed >>>>> ${App.localStorage.getString(PREF_CART_ID)}");
+        navigate();
+      }
+    });
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -184,7 +194,14 @@ Map<String,dynamic> options(int amount,String name,String des,String contact,Str
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarCommon(
-        AppBarTitle(Strings.payment_app_bar, "2 items added "),
+        Consumer<PaymentProvider>(
+            builder: (context,val,child){
+              if(val.getCartData == null){
+                 return  AppBarTitle(Strings.payment_app_bar, "0 items added ");
+              }
+              return AppBarTitle(Strings.payment_app_bar, "${val.getCartData!.cart!.items!.length} items added ");
+            },
+        ),
         appbar: AppBar(),
         onTapCallback: () {},
         leadingImage: GestureDetector(
@@ -214,6 +231,9 @@ Map<String,dynamic> options(int amount,String name,String des,String contact,Str
              return globalLoader();
            }
            var parsed = CartListModel.fromJson(result.data!);
+           WidgetsBinding.instance.addPostFrameCallback((_){
+             context.read<PaymentProvider>().setCartListData(parsed);
+           });
            var productItems = parsed.cart!.items!;
            debugPrint("cart list data in payment screen >>> ${productItems.length}");
            debugPrint("set payment method >>>>> j ${result.data!['cart']['selectedPaymentMethod']}");
@@ -235,25 +255,19 @@ Map<String,dynamic> options(int amount,String name,String des,String contact,Str
                                }
                                if(parsed.cart!.selectedPaymentMethod != null) {
                                  if (val1.getSelectedCode == "razorpay") {
-                                   _razorpay.open(options(int.parse(
-                                       parsed.cart!.prices!.grandTotal!.value!
-                                           .round().toString()),
-                                       "name", "des", val2.getMobileNumber,
-                                       App.localStorage.getString(
-                                           PREF_USER_EMAIL).toString())
-                                   );
+                                    paymentUsingRazorpay(parsed, val2, val1);
+                                 }else{
+                                    val1.hitPlaceOrder(
+                                       cartId: App.localStorage.getString(
+                                           PREF_CART_ID).toString()).then((
+                                       value) async{
+                                     if (value) {
+                                       await App.localStorage.remove(PREF_CART_ID);
+                                       debugPrint("cart id removed >>>>> ${App.localStorage.getString(PREF_CART_ID)}");
+                                       navigate();
+                                     }
+                                   });
                                  }
-                                 await val1.hitPlaceOrder(
-                                     cartId: App.localStorage.getString(
-                                         PREF_CART_ID).toString()).then((
-                                     value) async{
-                                   //val2.setLoadingBool(false);
-                                   if (value) {
-                                     await App.localStorage.remove(PREF_CART_ID);
-                                     debugPrint("cart id removed >>>>> ${App.localStorage.getString(PREF_CART_ID)}");
-                                     navigate();
-                                   }
-                                 });
                                }else{
                                  Utility.showNormalMessage("Please select a shipping method");
                                }
@@ -267,6 +281,17 @@ Map<String,dynamic> options(int amount,String name,String des,String contact,Str
              );}))
     );
   }
+
+  paymentUsingRazorpay(CartListModel data,LoginProvider val2,PaymentProvider val1) async{
+    _razorpay.open(options(int.parse(
+        data.cart!.prices!.grandTotal!.value!
+            .round().toString()),
+        "name", "des", val2.getMobileNumber,
+        App.localStorage.getString(
+            PREF_USER_EMAIL).toString())
+    );
+  }
+
  navigate(){
     Navigator.pushNamedAndRemoveUntil(
         context, Routes.orderConfirmed, (

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:mobx/model/product_description_model.dart';
-import 'package:mobx/provider/dashboard/product_provider.dart';
 import 'package:mobx/utils/utilities.dart';
-import 'package:provider/provider.dart';
-import '../../../utils/routes.dart';
 
 
 

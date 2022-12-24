@@ -71,7 +71,7 @@ class AddressesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarCommon(
-          const AppBarTitle("ADDRESSES", "Add, edit or delete your addresses "),
+          const AppBarTitle("ADDRESSES", ""),
           appbar: AppBar(),
           onTapCallback: () {},
           leadingImage: GestureDetector(
@@ -101,20 +101,21 @@ class AddressesScreen extends StatelessWidget {
             return
               Stack(
                 children: [
-                  ListView.builder(
-                      padding: EdgeInsets.only(bottom: getCurrentScreenHeight(context)/5),
-                      shrinkWrap: true,
-                      itemCount: addressesList.length,
-                      itemBuilder: (context, index)
-                      {
-                        var model=addressesList[index];
-                        return addressWidget(context,"${model.street![0]!}, ${model.city}, ${model.region!.region!}, India."
-                            ,index,model);
-                      }
-                  ),
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                     addressesList.isEmpty ?  Padding(
+                       padding: EdgeInsets.all(8.0),
+                       child: Text("Click on below button to add new address",style: Theme.of(context).textTheme.bodySmall,),
+                     ) :  ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: addressesList.length,
+                          itemBuilder: (context, index)
+                          {
+                            var model=addressesList[index];
+                            return addressWidget(context,"${model.street![0]!}, ${model.city}, ${model.region!.region!}, India."
+                                ,index,model);
+                          }
+                      ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10,10,10,5),
                         child: AppButton(
@@ -125,6 +126,11 @@ class AddressesScreen extends StatelessWidget {
                           isTrailing: false,
                         ),
                       ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Consumer2<AddressProvider,LoginProvider>(

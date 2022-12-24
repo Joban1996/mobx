@@ -98,9 +98,9 @@ Widget cartItemView(BuildContext context,Items productItems,int index,String car
          Consumer2<ProductProvider,LoginProvider>(
            builder: (_,val,val2,child){
              return IconButton(
-               constraints: BoxConstraints(),
+               constraints: const BoxConstraints(),
                padding: EdgeInsets.zero,
-               icon: Icon(Icons.close),onPressed: (){
+               icon: const Icon(Icons.close),onPressed: (){
                     val2.setLoadingBool(true);
                     val.hitUpdateCartMutation(cartId: cartId,
                         cartUID: productItems.id.toString(),
@@ -160,8 +160,7 @@ Widget _column(BuildContext context,CartListModel data){
     return Scaffold(
       appBar: AppBarCommon(Consumer<ProductProvider>(
         builder: (_,val,child){
-          return  const AppBarTitle("SHOPPING CART",
-              "2 items added ");
+          return  const AppBarTitle("SHOPPING CART", "");
         },
       ),
         appbar: AppBar(), onTapCallback: (){},leadingImage: GestureDetector(

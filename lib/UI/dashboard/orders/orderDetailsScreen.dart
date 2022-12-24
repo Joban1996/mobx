@@ -79,7 +79,7 @@ class OrderDetailsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "PRICE DETAILS ( 2 Items)",
+            "PRICE DETAILS ( ${data.items!.length} Items)",
             style: Theme.of(context).textTheme.bodyText2,
           ),
           verticalSpacing(heightInDouble: 0.01, context: context),
@@ -94,7 +94,7 @@ class OrderDetailsScreen extends StatelessWidget {
               Text("Total Amount",
                   style: Theme.of(context).textTheme.bodyText2),
               Text(
-                "₹110,298",
+                "${data.total!.grandTotal!.value}",
                 style: Theme.of(context).textTheme.bodyText2,
               )
             ],
@@ -123,8 +123,8 @@ class OrderDetailsScreen extends StatelessWidget {
         ],
         leadingImage: IconButton(
           padding: EdgeInsets.zero,
-          constraints: BoxConstraints(),
-          icon: Icon(Icons.arrow_back),
+          constraints: const BoxConstraints(),
+          icon: const Icon(Icons.arrow_back),
           color: Colors.black,
           onPressed: () => Navigator.pop(context),
         ),

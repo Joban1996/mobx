@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:mobx/model/product/CartListModel.dart';
 
 import '../../api/client_provider.dart';
 import '../../api/graphql_client.dart';
@@ -17,10 +18,17 @@ class PaymentProvider with ChangeNotifier{
    bool _selectPayMethod = false;
    int _selectedIndex = -1;
    String _selectedCode = "";
+    CartListModel? cartData;
 
    bool get getPayMethod => _selectPayMethod;
    int get getSelectedIndex => _selectedIndex;
    String get getSelectedCode => _selectedCode;
+   CartListModel?  get getCartData  => cartData;
+
+   setCartListData(var data){
+     cartData = data;
+     notifyListeners();
+   }
 
    setSelectedIndex(int index,String code){
      _selectedIndex = index;
