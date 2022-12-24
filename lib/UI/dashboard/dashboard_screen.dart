@@ -55,23 +55,23 @@ class DashboardScreen extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         items:  <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Image.asset("assets/images/home_icon.png"),
+            icon: Image.asset("assets/images/home_icon.png",height: 24.0,width: 24.0,),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset("assets/images/sell_icon.png"),
+            icon: Image.asset("assets/images/sell_icon.png",height: 24.0,width: 24.0,),
             label: 'Sell',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset("assets/images/repair_icon.png"),
+            icon: Image.asset("assets/images/repair_icon.png",height: 24.0,width: 24.0,),
             label: 'Repair',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset("assets/images/order_icon.png"),
+            icon: Image.asset("assets/images/order_icon.png",height: 24.0,width: 24.0,),
             label: 'Orders',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset("assets/images/profile_icon.png",),
+            icon: Image.asset("assets/images/profile_icon.png",height: 24.0,width: 24.0,),
             label: 'Profile',
           ),
         ],

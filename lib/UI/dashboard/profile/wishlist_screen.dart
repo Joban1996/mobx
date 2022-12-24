@@ -35,15 +35,17 @@ class WishListScreeen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Utility.getColorFromHex(globalGreyColor))),
             height: getCurrentScreenHeight(context)/5.5,
+            width: getCurrentScreenWidth(context)/3.0,
             child: productItems.product!.smallImage!.url!= null ? Image.network(productItems.product!.smallImage!.url.toString()) :Image.asset("assets/images/iphone_pic.png"),),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(8,8,8,0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(/*productItems.product!.brand??*/"APPLE",style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12,height: 1.3),),
-                  SizedBox(height: 3,),
+                  // Text(/*productItems.product!.brand??*/"APPLE",style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12,height: 1.3),),
+                  // SizedBox(height: 3,),
                   Text(productItems.product!.name??"Refurbished Apple iPhone 12 Mini White 128 GB",
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 13)),
                   // Row(
@@ -81,38 +83,65 @@ class WishListScreeen extends StatelessWidget {
                   //   ],
                   // ),
                   SizedBox(height: 5,),
-                  Row(
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Row(children: [
-                              Text(productItems!.product!.priceRange!.minimumPrice!.finalPrice!.value.toString(),style: Theme.of(context).textTheme.bodyMedium,),
-                              SizedBox(width: 3,),
-                              Text(productItems!.product!.priceRange!.minimumPrice!.regularPrice!.value.toString(),style: Theme.of(context).textTheme.bodySmall!.copyWith(decoration: TextDecoration.lineThrough,),)
-                            ],),
-                            Text("You Save ₹${productItems.product!.priceRange!.minimumPrice!.discount!.amountOff} "
-                                "(${productItems.product!.priceRange!.minimumPrice!.discount!.percentOff}% OFF)",style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex(globalGreenColor)),)
+                      Row(children: [
+                        Text("${Strings.rupee_sign}${productItems!.product!.priceRange!.minimumPrice!.finalPrice!.value.toString()}",style: Theme.of(context).textTheme.bodyMedium,),
+                        SizedBox(width: 3,),
+                        Text("${Strings.rupee_sign}${productItems!.product!.priceRange!.minimumPrice!.regularPrice!.value.toString()}",style: Theme.of(context).textTheme.bodySmall!.copyWith(decoration: TextDecoration.lineThrough,),)
+                      ],),
+                      Text("You Save ₹${productItems.product!.priceRange!.minimumPrice!.discount!.amountOff} "
+                          "(${productItems.product!.priceRange!.minimumPrice!.discount!.percentOff}% OFF)",style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex(globalGreenColor)),)
 
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Consumer2<WishlistProvider,LoginProvider>(
-                          builder: (_,value,value2,child){
-                            return OutLineButtonWidget(
-                                onTap: (){
-                                  value2.setLoadingBool(true);
-                                  value.hitAddWishlistToCart(wishlistItemId: productItems.id!,wishListId: int.parse(App.localStorage.getString(PREF_WISHLIST_ID)!)).then((value) {
-                                    value2.setLoadingBool(false);
-                                    reFresh.call();
-                                  });
-                                },
-                                text: Strings.addToCart);
-                          },
-                        ),
-                      ),
                     ],
+                  ),
+                  // Row(
+                  //   children: [
+                  //     Expanded(
+                  //       child: Column(
+                  //         children: [
+                  //           Row(children: [
+                  //             Text(productItems!.product!.priceRange!.minimumPrice!.finalPrice!.value.toString(),style: Theme.of(context).textTheme.bodyMedium,),
+                  //             SizedBox(width: 3,),
+                  //             Text(productItems!.product!.priceRange!.minimumPrice!.regularPrice!.value.toString(),style: Theme.of(context).textTheme.bodySmall!.copyWith(decoration: TextDecoration.lineThrough,),)
+                  //           ],),
+                  //           Text("You Save ₹${productItems.product!.priceRange!.minimumPrice!.discount!.amountOff} "
+                  //               "(${productItems.product!.priceRange!.minimumPrice!.discount!.percentOff}% OFF)",style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex(globalGreenColor)),)
+                  //
+                  //         ],
+                  //       ),
+                  //     ),
+                  //     Expanded(
+                  //       child: Consumer2<WishlistProvider,LoginProvider>(
+                  //         builder: (_,value,value2,child){
+                  //           return OutLineButtonWidget(
+                  //               onTap: (){
+                  //                 value2.setLoadingBool(true);
+                  //                 value.hitAddWishlistToCart(wishlistItemId: productItems.id!,wishListId: int.parse(App.localStorage.getString(PREF_WISHLIST_ID)!)).then((value) {
+                  //                   value2.setLoadingBool(false);
+                  //                   reFresh.call();
+                  //                 });
+                  //               },
+                  //               text: Strings.addToCart);
+                  //         },
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  Consumer2<WishlistProvider,LoginProvider>(
+                    builder: (_,value,value2,child){
+                      return OutLineButtonWidget(
+                          onTap: (){
+                            value2.setLoadingBool(true);
+                            value.hitAddWishlistToCart(wishlistItemId: productItems.id!,wishListId: int.parse(App.localStorage.getString(PREF_WISHLIST_ID)!)).then((value) {
+                              value2.setLoadingBool(false);
+                              reFresh.call();
+                            });
+                          },
+                          text: Strings.addToCart);
+                    },
                   ),
                  ],
               ),

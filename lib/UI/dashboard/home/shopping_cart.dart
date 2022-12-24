@@ -39,6 +39,7 @@ Widget cartItemView(BuildContext context,Items productItems,int index,String car
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: Utility.getColorFromHex(globalGreyColor))),
           height: getCurrentScreenHeight(context)/5.5,
+          width: getCurrentScreenWidth(context)/3.0,
           child: productItems.product!.smallImage!.url!= null ? Image.network(productItems.product!.smallImage!.url.toString()) :Image.asset("assets/images/iphone_pic.png"),),
         Expanded(
           child: Padding(
@@ -46,8 +47,8 @@ Widget cartItemView(BuildContext context,Items productItems,int index,String car
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(/*productItems.product!.brand??*/"APPLE",style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12,height: 1.3),),
-                SizedBox(height: 3,),
+                // Text(/*productItems.product!.brand??*/"APPLE",style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12,height: 1.3),),
+                // SizedBox(height: 3,),
                 Text(productItems.product!.name??"Refurbished Apple iPhone 12 Mini White 128 GB",
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 13)),
                 Row(
