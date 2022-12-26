@@ -75,6 +75,8 @@ class DashboardScreen extends StatelessWidget {
             label: 'Profile',
           ),
         ],
+        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
+        selectedLabelStyle:  const TextStyle(fontWeight: FontWeight.bold),
         currentIndex: context.watch<DashboardProvider>().selectedIndex,
         selectedItemColor: Colors.amber[800],
         onTap: (int index) => _gotoScreen(index,context),

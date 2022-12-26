@@ -65,6 +65,18 @@ class GraphQlClient {
     );
   }
 
+  static loginWithEmail(String mutation, String email,String password) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'email': email,
+        'password': password,
+
+      },
+    );
+  }
+
   static addToCart(String mutation,String cartId,String skuId) {
     print(mutation);
     return MutationOptions(

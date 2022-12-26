@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/UI/auth/login_screen.dart';
+import 'package:mobx/UI/auth/login_with_email.dart';
 import 'package:mobx/UI/auth/splash_screen.dart';
 import 'package:mobx/UI/auth/welcome_screen.dart';
 import 'package:mobx/UI/dashboard/dashboard_screen.dart';
@@ -67,6 +68,7 @@ class Routes {
   static const brandModelScreen="brandModelScreen";
   static const deviceInfoScreen="deviceInfoScreen";
   static const searchScreen="searchScreen";
+  static const loginWithEmail="loginWithEmail";
 
 static Route<dynamic> generatedRoute(RouteSettings settings){
         switch(settings.name){
@@ -74,6 +76,8 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
             return MaterialPageRoute(builder: (_) => WelcomeScreen());
           case loginScreen:
             return MaterialPageRoute(builder: (_) => LoginScreen());
+          case loginWithEmail:
+            return MaterialPageRoute(builder: (_) => LoginWithEmail());
           case dashboardScreen:
             return MaterialPageRoute(builder: (_) => DashboardScreen());
           case homeScreen:

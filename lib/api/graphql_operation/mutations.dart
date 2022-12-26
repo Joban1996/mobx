@@ -22,6 +22,21 @@ class QueryMutations {
       """;
   }
 
+  String loginWithEmailMutation(String email,String password) {
+    return """
+mutation {
+  generateCustomerToken(
+    email: "$email"
+    password: "$password"
+  ) {
+    token
+  }
+}
+
+  
+      """;
+  }
+
   String addToCart(String cartId, String skuID) {
 
     return """

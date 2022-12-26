@@ -66,6 +66,28 @@ class LoginProvider with ChangeNotifier{
     }
   }
 
+  Future hitLoginWithEmail({required String email,required String password,required int webSiteId}) async {
+    QueryMutations queryMutation = QueryMutations();
+    QueryResult results = await GraphQLClientAPI().mClient
+        .mutate(GraphQlClient.loginWithEmail(queryMutation.loginWithEmailMutation(email,password),
+        email,password));
+    debugPrint("${results.data}");
+    if (results.data != null) {
+      //var data = await OtpVerify.fromJson(results.data!);
+      debugPrint("enable noti mutation result >>> ${results.data!}");
+      App.localStorage.setString(PREF_TOKEN,results.data!['generateCustomerToken']['token']);
+      /*Utility.showSuccessMessage(results.data!['loginOTPVerify']['message'] == null? "Successfully LoggedIn":
+      " ${data!.data!.loginOTPVerify!.message}");*/
+      return true;
+    }else{
+      if(results.exception != null){
+        Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
+        debugPrint(results.exception!.graphqlErrors[0].message.toString());
+      }
+      return false;
+    }
+  }
+
 
   Future hitOtpVerifyQuery({required String phone,required String otp}) async {
     print("query results >>>> ${phone}");

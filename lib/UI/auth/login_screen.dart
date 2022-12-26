@@ -110,7 +110,11 @@ final phoneController = TextEditingController();
                   }else{
                     Utility.showErrorMessage("Please enter your phone number");
                   }
-                }, text: "CONTINUE")
+                }, text: "CONTINUE"),
+                SizedBox(height: getCurrentScreenHeight(context)*0.03,),
+                GestureDetector(
+                    onTap: ()=> Navigator.pushReplacementNamed(context, Routes.loginWithEmail),
+                    child: Text("Login with Email ID & Password",style: Theme.of(context).textTheme.bodySmall,))
               ],
             ),
           ),
