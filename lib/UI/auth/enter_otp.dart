@@ -47,6 +47,13 @@ class _EnterOtpState extends State<EnterOtp> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    timer!.cancel();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarCommon(Padding(
@@ -73,7 +80,9 @@ class _EnterOtpState extends State<EnterOtp> {
                       ]
                   )
                   ),
-                  Text("Change",style:  Theme.of(context).textTheme.caption!.copyWith(color: Utility.getColorFromHex(globalOrangeColor)),)
+                  GestureDetector(
+                      onTap: ()=> Navigator.pushReplacementNamed(context, Routes.loginScreen),
+                      child: Text("Change",style:  Theme.of(context).textTheme.caption!.copyWith(color: Utility.getColorFromHex(globalOrangeColor)),))
                 ],
               ),
               SizedBox(height: getCurrentScreenHeight(context)*0.02,),

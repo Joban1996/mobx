@@ -148,8 +148,9 @@ Widget _column(BuildContext context,CartListModel data){
         ),
         SizedBox(height: getCurrentScreenHeight(context)*0.03,),
         AppButton(onTap: (){
-            //Navigator.pushNamed(context, Routes.payment);
-          Navigator.pushNamed(context, Routes.address);
+            if(data.cart!.items!.isNotEmpty) {
+              Navigator.pushNamed(context, Routes.address);
+            }
         }, text: "SELECT ADDRESS")
       ],
     ),

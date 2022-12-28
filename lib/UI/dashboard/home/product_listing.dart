@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:mobx/common_widgets/dashboard/filter_view.dart';
 import 'package:mobx/common_widgets/dashboard/grid_Item.dart';
 import 'package:mobx/common_widgets/dashboard/horizontal_circle_brand_list.dart';
 import 'package:mobx/utils/routes.dart';
@@ -11,6 +12,9 @@ import '../../../common_widgets/globally_common/app_bar_common.dart';
 import '../../../model/categories_model.dart';
 import '../../../model/product_model.dart' as pro;
 import '../../../provider/dashboard/dashboard_provider.dart';
+import '../../../utils/app.dart';
+import '../../../utils/constants/constants_colors.dart';
+import '../../../utils/constants/strings.dart';
 
 class ProductListing extends StatelessWidget {
   const ProductListing({Key? key}) : super(key: key);
@@ -24,7 +28,10 @@ class ProductListing extends StatelessWidget {
         appbar: AppBar(),
         onTapCallback: () {},
         leadingImage: GestureDetector(
-            onTap: () => Navigator.pop(context),
+            onTap: () {
+              context.read<DashboardProvider>().setSubCategoryName(Strings.refurbished_mobiles);
+              Navigator.pop(context);
+            },
             child: Image.asset("assets/images/back_arrow.png")),
         trailingAction: [
           // const Icon(
@@ -32,8 +39,10 @@ class ProductListing extends StatelessWidget {
           //   color: Colors.black,
           // ),
           GestureDetector(
-              onTap: (){Navigator.pushNamed(
-                  context, Routes.shoppingCart);},
+              onTap: (){
+                if(App.localStorage.getString(PREF_CART_ID) != null){
+                Navigator.pushNamed(
+                  context, Routes.shoppingCart);}},
               child: Image.asset("assets/images/lock.png"))
         ],
       ),
@@ -64,31 +73,34 @@ class ProductListing extends StatelessWidget {
             }
             debugPrint("sub cate inner >>>>>>> ${result.data}");
             var parsed = CategoriesModel.fromJson(result.data!);
-            return Column(
+            return Stack(
+              alignment: Alignment.bottomCenter,
               children: [
-                parsed.categories!.items!.isEmpty ? const Text("No Data Found..") : parsed.categories!.items![0].children!.isEmpty ? Container()
-                    : Container(
-                  alignment: Alignment.centerLeft,
-                  height: getCurrentScreenHeight(context)/7,
-                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount:
-                          parsed.categories!.items![0].children!.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            context.read<DashboardProvider>().setInnerSubCateId(parsed.categories!.items![0].children![index].uid!);
-                          },
-                          child: HorizontalCircleBrandList(
-                              brandImage: parsed.categories!.items![0].children![index].image.toString(),
-                              brandName: parsed
-                                  .categories!.items![0].children![index].name!,
-                              colorName: Colors.grey),
-                        );
-                      }),
-                ),
+                Column(
+                  children: [
+                    parsed.categories!.items!.isEmpty ? const Text("No Data Found..") : parsed.categories!.items![0].children!.isEmpty ? Container()
+                        : Container(
+                      alignment: Alignment.centerLeft,
+                      height: getCurrentScreenHeight(context)/7,
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount:
+                              parsed.categories!.items![0].children!.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                context.read<DashboardProvider>().setInnerSubCateId(parsed.categories!.items![0].children![index].uid!);
+                              },
+                              child: HorizontalCircleBrandList(
+                                  brandImage: parsed.categories!.items![0].children![index].image.toString(),
+                                  brandName: parsed
+                                      .categories!.items![0].children![index].name!,
+                                  colorName: Colors.grey),
+                            );
+                          }),
+                    ),
     Query(
     options: QueryOptions(
     document: gql(products),
@@ -108,26 +120,51 @@ class ProductListing extends StatelessWidget {
     }
     var subCateProductData = pro.ProductModel.fromJson(result.data!);
     return
-                Expanded(
-                  child: MediaQuery.removePadding(
-                    context: context,
-                    removeTop: true,
-                    child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: 4 / 6,
-                          crossAxisSpacing: 1,
-                          crossAxisCount: 2,
-                        ),
-                        itemCount: subCateProductData!.products!.items!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return GridItem(
-                            skuID: subCateProductData!.products!.items![index].sku!,
-                            productData: subCateProductData!.products!.items![index],);
-                        }
-                        ),
-                  ),
-                );})
+                    Expanded(
+                      child: MediaQuery.removePadding(
+                        context: context,
+                        removeTop: true,
+                        child: GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              childAspectRatio: 4 / 6,
+                              crossAxisSpacing: 1,
+                              crossAxisCount: 2,
+                            ),
+                            itemCount: subCateProductData!.products!.items!.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GridItem(
+                                skuID: subCateProductData!.products!.items![index].sku!,
+                                productData: subCateProductData!.products!.items![index],);
+                            }
+                            ),
+                      ),
+                    );})
+                  ],
+                ),
+                GestureDetector(
+                    onTap: (){showModalBottomSheet(
+                        context: context, builder: (context){
+                      return Wrap(
+                        children: [
+                          FilterView()
+                        ],
+                      );
+                    });},
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration:  BoxDecoration(
+                          border: Border.all(),color: Utility.getColorFromHex(globalWhiteColor)
+                         ),
+                      height: 50,width: getCurrentScreenWidth(context),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset("assets/images/filter_icon.png"),
+                        horizontalSpacing(widthInDouble: 0.02, context: context),
+                         Text("Filter",style: Theme.of(context).textTheme.bodyMedium,),
+                      ],
+                    ),))
               ],
             );
           }),

@@ -16,6 +16,7 @@ class ProductDetails2 extends StatelessWidget {
 Widget itemColumn(String txt1,String txt2,BuildContext context){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start ,
+    mainAxisAlignment: MainAxisAlignment.start,
     children: [
       Text(txt1,style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 11,height: 3)),
       Text(txt2,style: Theme.of(context).textTheme.caption,)
@@ -34,24 +35,32 @@ Widget itemColumn(String txt1,String txt2,BuildContext context){
             title: Text("SPECIFICATIONS",style: Theme.of(context).textTheme.bodyMedium),
             tilePadding: EdgeInsets.zero,
             children: [Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(child: itemColumn("Brand",dataItem.modelName??"-",context)),
-                Expanded(child: itemColumn("Colour",dataItem.colour??"-",context)),
+                dataItem.modelName !=null ?
+                Expanded(child: itemColumn("Brand/Model",dataItem.modelName??"-",context)): Container(),
+                dataItem.colour!=null?Expanded(child: itemColumn("Colour",dataItem.colour??"-",context)):Container(),
               ],
             ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(child: itemColumn("Weight",dataItem.itemWeight??"-",context)),
-                  Expanded(child: itemColumn("Dimensions",dataItem.productDimensions??"-",context)),
+                  dataItem.itemWeight != null ?Expanded(child: itemColumn("Weight",dataItem.itemWeight??"-",context)):Container(),
+                  dataItem.productDimensions != null ? Expanded(child: itemColumn("Dimensions",dataItem.productDimensions??"-",
+                      context)) :Container(),
                 ],
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(child: itemColumn("Memory Storage Capacity","${dataItem.memoryStorageCapacity?? "-"} ${dataItem.memoryStorageCapacity ==null ? "" : "GB"}",context)),
-                  Expanded(child: itemColumn("Country of Origin",dataItem.countryOfManufacture??"-",context)),
+                  dataItem.memoryStorageCapacity!= null?  Expanded(child: itemColumn("Memory Storage Capacity","${dataItem.memoryStorageCapacity?? "-"}"
+                      " ${dataItem.memoryStorageCapacity ==null ? "" : "GB"}",context)): Container(),
+                  dataItem.countryOfManufacture != null ? Expanded(child:
+                  itemColumn("Country of Origin",dataItem.countryOfManufacture??"-",context)): Container(),
                 ],
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(child: itemColumn("Whats in the box","1 Year Warranty Card, Charger, ‎Handset",context)),
                   Expanded(child: itemColumn("Quality","Excellent",context)),

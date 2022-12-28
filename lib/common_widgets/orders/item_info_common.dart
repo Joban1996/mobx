@@ -59,7 +59,7 @@ class ItemInfoCommon extends StatelessWidget {
               Text(productName,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 13)),
               const SizedBox(height: 5,),
-              Text(grandTotal,style: Theme.of(context).textTheme.bodySmall,),
+              Text("₹$grandTotal",style: Theme.of(context).textTheme.bodySmall,),
               Text("${splitDate[2]}th ${getMonthName(splitDate[1])} ${splitDate[0]} / ${splitTime[0]}:${splitTime[1]} ",style: Theme.of(context).textTheme.bodySmall,),
             ],
           ),

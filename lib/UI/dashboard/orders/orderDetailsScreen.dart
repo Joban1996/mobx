@@ -20,7 +20,7 @@ class OrderDetailsScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
        Padding(
-         padding: const EdgeInsets.all(8.0),
+         padding: const EdgeInsets.fromLTRB(16,8,16,8),
          child: Column(
            crossAxisAlignment: CrossAxisAlignment.start,
            children: [
@@ -74,7 +74,7 @@ class OrderDetailsScreen extends StatelessWidget {
   Widget PriceView(BuildContext context,Items data )
   {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.fromLTRB(16,8,16,8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

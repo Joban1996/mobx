@@ -49,7 +49,7 @@ class ProfileAddressesScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          addressTitle,
+                          "",
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                         Consumer2<AddressProvider,LoginProvider>(
