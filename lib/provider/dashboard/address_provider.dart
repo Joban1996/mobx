@@ -112,6 +112,51 @@ class AddressProvider with ChangeNotifier {
     }
   }
 
+  Future hitUpdateAddress(
+      {required String street,
+        required String firstName,
+        required String lastName,
+        required String city,
+        required String state,
+        required String pinCode,
+        required int addressId
+      }) async {
+    debugPrint("auth token >>>> ${App.localStorage.getString(PREF_TOKEN)}");
+    QueryMutations queryMutation = QueryMutations();
+    QueryResult results = await GraphQLClientAPI().mClient.mutate(
+        GraphQlClient.updateAddress(
+            queryMutation.updateAddressMutation(
+                firstName,
+                lastName,
+                city,
+                state,
+                pinCode,
+                street,addressId,getAvailableRegions),
+            firstName,
+            lastName,
+            city,
+            state,
+            pinCode,
+            street,
+        getAvailableRegions));
+    if (results.data != null) {
+      debugPrint(" addNew Address mutation result >>> ${results.data!}");
+      return true;
+    } else {
+      if (results.exception != null) {
+        debugPrint(" addNew Address mutation result >>> ${results.exception!}");
+        Utility.showErrorMessage(
+            results.exception!.graphqlErrors[0].message.toString());
+        debugPrint(results.exception!.graphqlErrors[0].message.toString());
+        // if(results.exception!.graphqlErrors[0].extensions!['category'] == "graphql-authorization"){
+        //   App.localStorage.clear();
+        //   Navigator.pushReplacementNamed(context, Routes.loginScreen);
+        // }
+      }
+      return false;
+    }
+  }
+
   Future hitShippingDeliveryAddress(
       {required String street,
       required String firstName,

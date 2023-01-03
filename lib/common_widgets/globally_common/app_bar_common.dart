@@ -34,7 +34,10 @@ class AppBarCommon extends StatelessWidget implements PreferredSizeWidget{
           preferredSize: Size.fromHeight(4.0)),
       elevation: 0,
       backgroundColor: Utility.getColorFromHex(globalWhiteColor).withOpacity(0.8),
-      title: titleText,
+      title: Padding(
+        padding: const EdgeInsets.only(left: 12),
+        child: titleText,
+      ),
     );
   }
 

@@ -21,18 +21,7 @@ class OrdersHome extends StatelessWidget {
       length: 4,
       child: Scaffold(
           appBar: AppBar(
-            leading: IconButton(
-              padding: EdgeInsets.zero,
-              constraints: BoxConstraints(),
-              icon: Icon(Icons.arrow_back),
-              color: Colors.black,
-              onPressed: () => Navigator.pop(context),
-            ),
-            title: Text(Strings.myOrderAppTitle,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2!
-                    .copyWith(fontWeight: FontWeight.w600)),
+            toolbarHeight: 0.0,
             elevation: 0,
             backgroundColor: Utility.getColorFromHex(globalWhiteColor).withOpacity(0.8),
             bottom: TabBar(

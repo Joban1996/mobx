@@ -192,6 +192,32 @@ mutation {
     """;
   }
 
+  String updateAddressMutation(String firstName, String lastName,String city, String state,
+      String pinCode,String street,int id,AvailableRegions regions)
+  {
+    return """
+mutation {
+  updateCustomerAddress(id: $id, input: {
+    street: ["$street"]     
+    postcode: "$pinCode"
+    city: "$city"
+    firstname: "$firstName"
+    lastname: "$lastName"
+    region: {
+      region: "${regions.name}"
+      region_code: "${regions.code}"
+      region_id: "${regions.id}"
+    }
+  }) {
+    id
+    city
+    postcode
+  }
+}
+
+    """;
+  }
+
 
   String addShippingAddress(AvailableRegions regions,String firstName, String lastName,String city,
       String pinCode, String phonNumber,bool isBillingAddress,String street,String cartId)

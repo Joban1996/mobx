@@ -164,6 +164,22 @@ class GraphQlClient {
     );
   }
 
+  static updateAddress(String mutation,String firstName, String lastName,String city, String state,
+      String pinCode,String street,AvailableRegions regionsAvalable) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'street': [street],
+        'region':state,
+        'postcode':pinCode,
+        'city':city,
+        'firstname': firstName,
+        'lastname': lastName,
+      },
+    );
+  }
+
   static addShippingAddress(String mutation,String firstName, String lastName,String city,
       String pinCode, String  phonNumber,bool isBillingAddress,AvailableRegions regionsAvalable,
       String street,String cartId) {

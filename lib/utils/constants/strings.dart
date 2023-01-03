@@ -71,6 +71,7 @@ static String cashOnDelivery="Cash On Delivery";
 
 
   static var save="SAVE";
+  static var update="UPDATE";
 
   //faqscreen
 static const faqScreenAppTitle="FAQs";

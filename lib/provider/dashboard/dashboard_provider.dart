@@ -28,6 +28,7 @@ class  DashboardProvider with ChangeNotifier{
   int currentPage = 0;
   int currentPageDetail = 0;
   SearchDataModel? searchData;
+  int selectedTabIndex = 0;
 
 
   List<Children>? get getSubCate => _subCate;
@@ -42,6 +43,12 @@ class  DashboardProvider with ChangeNotifier{
   int get   getCurrentPage =>  currentPage;
   int get   getCurrentPageDetail =>  currentPageDetail;
   SearchDataModel? get getSearchData => searchData;
+  int get getSelectedTabIndex  => selectedTabIndex;
+
+  setTabIndex(int val){
+    selectedTabIndex = val;
+    notifyListeners();
+  }
 
   setSearchData(SearchDataModel? data){
     searchData = data;

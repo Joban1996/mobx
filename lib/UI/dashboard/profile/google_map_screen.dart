@@ -184,7 +184,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                             });
                             Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=>
                                 AddAddressScreen(street: street,flatAddress: flatAddress, city: city, state: state, pinCode: pinCode,
-                                    country: country)));
+                                    country: country,isEdit: false,)));
                           }else{
                             Utility.showNormalMessage("Please select current location");
                           }

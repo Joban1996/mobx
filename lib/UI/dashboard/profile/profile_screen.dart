@@ -89,11 +89,11 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBarCommon(Text("PROFILE",style:  Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w600)),
-          appbar: AppBar(), onTapCallback: (){},leadingImage: IconButton(
-            padding: EdgeInsets.zero,
-            constraints: BoxConstraints(),
-            icon: Icon(Icons.arrow_back),color: Colors.black,onPressed: ()=>Navigator.pop(context),),),
+        // appBar: AppBarCommon(Text("PROFILE",style:  Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w600)),
+        //   appbar: AppBar(), onTapCallback: (){},leadingImage: IconButton(
+        //     padding: EdgeInsets.zero,
+        //     constraints: BoxConstraints(),
+        //     icon: Icon(Icons.arrow_back),color: Colors.black,onPressed: ()=>Navigator.pop(context),),),
         body: SingleChildScrollView(
           child: Container(
             color: Colors.white.withOpacity(0.8),
@@ -121,8 +121,9 @@ class ProfileScreen extends StatelessWidget {
                 }, title: "FAQs", description: "View all Frequency Asked Questions"),
                 dividerCommon(context),
                 ItemInfoArrowForward(onTap: (){
-                  // Navigator.pushNamed(context, Routes.wishListScreeen);
-                }, title: "LOGOUT", description: "Logout From All Devices"),
+                  App.localStorage.clear();
+                  Navigator.pushNamedAndRemoveUntil(context, Routes.loginScreen, (route) => false);
+                }, title: "LOGOUT", description: "Logout From this Device"),
                 dividerCommon(context),
                 Align(
                     alignment: Alignment.center,

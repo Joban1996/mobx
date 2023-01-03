@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/globally_common/outline_button.dart';
+import 'package:mobx/provider/dashboard/dashboard_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/constants/strings.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
+import 'package:provider/provider.dart';
 class OrderConfirmed extends StatelessWidget {
   const OrderConfirmed({Key? key}) : super(key: key);
   Widget appBarTitle(BuildContext context,String titleText){
@@ -43,11 +45,16 @@ class OrderConfirmed extends StatelessWidget {
            // verticalSpacing(heightInDouble: 0.02, context: context),
             Text(Strings.confirmationMessage2),
             verticalSpacing(heightInDouble: 0.02, context: context),
-            OutLineButtonWidget(
-              onTap: (){
-                Navigator.pushReplacementNamed(context, Routes.dashboardScreen);
+            Consumer<DashboardProvider>(
+              builder: (_,val,child){
+                return OutLineButtonWidget(
+                    onTap: (){
+                      val.setTabIndex(3);
+                      Navigator.pushReplacementNamed(context, Routes.dashboardScreen);
+                    },
+                    text: Strings.viewDetailsButton);
               },
-                text: Strings.viewDetailsButton),
+            ),
 
           ],
         ),

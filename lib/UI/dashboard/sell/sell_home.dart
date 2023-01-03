@@ -26,14 +26,14 @@ class SellHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBarCommon(
-          AppBarTitle("BRAND", "Sell Your Phone- Select brand of your phone"),
-          appbar: AppBar(),
-          onTapCallback: () {},
-          leadingImage: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Image.asset("assets/images/back_arrow.png")),
-        ),
+        // appBar: AppBarCommon(
+        //   AppBarTitle("BRAND", "Sell Your Phone- Select brand of your phone"),
+        //   appbar: AppBar(),
+        //   onTapCallback: () {},
+        //   leadingImage: GestureDetector(
+        //       onTap: () => Navigator.pop(context),
+        //       child: Image.asset("assets/images/back_arrow.png")),
+        // ),
         body: GridView.builder(
             gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(

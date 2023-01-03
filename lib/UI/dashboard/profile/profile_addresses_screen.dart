@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import '../../../api/graphql_operation/customer_queries.dart';
 import '../../../model/product/address_listing_model.dart';
 import '../../../utils/app.dart';
+import 'add_address_screen.dart';
 
 class ProfileAddressesScreen extends StatelessWidget {
   ProfileAddressesScreen({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class ProfileAddressesScreen extends StatelessWidget {
   late VoidCallback reFresh;
 
   Widget addressWidget(
-      BuildContext context, String addressTitle, String addressSubtitle,int addressId) {
+      BuildContext context, String addressTitle, String addressSubtitle,int addressId,String name,String lastName,Addresses data) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -49,7 +50,7 @@ class ProfileAddressesScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "",
+                          "$name $lastName",
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                         Consumer2<AddressProvider,LoginProvider>(
@@ -57,7 +58,12 @@ class ProfileAddressesScreen extends StatelessWidget {
                             return Row(
                               children: [
                                 IconButton(
-                                    onPressed: () {}, icon: Icon(Icons.edit,size: 20,)),
+                                    onPressed: () {
+                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context)=>
+                                          AddAddressScreen(street: data.street.toString(),flatAddress: data.street![0].toString(), city: data.city.toString(),
+                                              state: data.region!.region.toString(), pinCode: data.postcode.toString(),
+                                              country: "India",isEdit: true,fistName: name,lastName: lastName,addId: data.id!,)));
+                                    }, icon: Icon(Icons.edit,size: 20,)),
                                 IconButton(
                                     onPressed: () {
                                       loginProVal.setLoadingBool(true);
@@ -99,7 +105,7 @@ class ProfileAddressesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarCommon(
-          AppBarTitle("ADDRESSES", "Add, edit or delete your addresses "),
+          const AppBarTitle("ADDRESSES", ""),
           appbar: AppBar(),
           onTapCallback: () {},
           leadingImage: GestureDetector(
@@ -144,7 +150,9 @@ class ProfileAddressesScreen extends StatelessWidget {
                            itemBuilder: (context, index) {
                              var model = addressesList[index];
                              return addressWidget(
-                                 context, "Home", "${model.street![0]!}, ${model.city}, ${model.region!.region!}, India.",model.id!);
+
+                                 context, "Home", "${model.street![0]!}, ${model.postcode}, ${model.city}, ${model.region!.region!},"
+                                 " India.",model.id!,model.firstname.toString(),model.lastname.toString(),model);
                            }),
                        Padding(
                          padding: const EdgeInsets.all(10.0),
