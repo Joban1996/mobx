@@ -31,7 +31,7 @@ class PurchasedScreen extends StatelessWidget {
           App.localStorage.clear();
           Navigator.pushReplacementNamed(context, Routes.loginScreen);});
       }
-    return Text(result.exception.toString());
+    return Center(child: Text(result.exception!.graphqlErrors[0].message));
     }
     if (result.isLoading) {
     return globalLoader();

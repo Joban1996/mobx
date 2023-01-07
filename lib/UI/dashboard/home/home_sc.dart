@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/model/home_banner_model.dart';
 import 'package:mobx/provider/dashboard/dashboard_provider.dart';
+import 'package:mobx/provider/dashboard/product_provider.dart';
 import 'package:mobx/provider/wishlist_profile/wishlist_provider.dart';
 import 'package:mobx/utils/app.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
@@ -40,6 +41,15 @@ class _HomeScreenState extends State<HomeScreen> {
         Provider.of<WishlistProvider>(context, listen: false)
             .hitGetUserDetails();
       });
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    if(App.localStorage.getString(PREF_CART_ID) == null) {
+      Provider.of<ProductProvider>(context, listen: false).hitCreateCartID();
     }
   }
 

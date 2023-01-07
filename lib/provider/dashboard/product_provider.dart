@@ -67,12 +67,13 @@ Future hitCreateCartID() async {
       .mClient
       .query(generateCartIdQuery);
   //debugPrint("create cart id >>> ${results.exception}");
-  debugPrint("create cart id >>> ${results.data}");
   if(results.data != null){
+    debugPrint("create cart id >>> ${results.data}");
     App.localStorage.setString(PREF_CART_ID, results.data!['customerCart']['id']);
     return true;
   }else{
     if(results.exception != null){
+      debugPrint("create cart id >>> ${results.exception}");
       Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
       debugPrint(results.exception!.graphqlErrors[0].message.toString());
       setTokenExpireMsg(results.exception!.graphqlErrors[0].extensions!['category'].toString());
