@@ -32,7 +32,7 @@ class AppButtonLeading extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(leadingImage),
+          Image.asset(leadingImage,color: Colors.white,),
           SizedBox(width: getCurrentScreenWidth(context)*0.02,),
           Padding(
             padding: const EdgeInsets.only(top:4.0),

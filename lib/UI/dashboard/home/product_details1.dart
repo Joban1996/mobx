@@ -262,10 +262,11 @@ class ProductDetails1 extends StatelessWidget {
                                       });
                                     },
                                     text: "ADD TO CART",
-                                    btnColor: dataItem.stockStatus == "IN_STOCK"
-                                        ? Utility.getColorFromHex("#E0E0E0")
-                                        : Utility.getColorFromHex("#E0E0E0")
-                                        .withOpacity(0.5),
+                                    btnTxtColor: Utility.getColorFromHex(globalWhiteColor),
+                                    // btnColor: dataItem.stockStatus == "IN_STOCK"
+                                    //     ? Utility.getColorFromHex("#E0E0E0")
+                                    //     : Utility.getColorFromHex("#E0E0E0")
+                                    //     .withOpacity(0.5),
                                   );
                                 },
                               ),

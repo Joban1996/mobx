@@ -41,7 +41,7 @@ class WishlistProvider with ChangeNotifier{
         GraphQlClient.addToWishList(queryMutation.addToWishlistMutation(id,sku,quantity), id,sku,quantity));
     if (results.data != null) {
       debugPrint(" add to wishlist mutation result >>> ${results.data!}");
-      Utility.showSuccessMessage("Item added to wishlist!");
+      Utility.showSuccessMessage("Product Added Successfully in Wishlist!");
       return true;
     } else {
       if (results.exception != null) {
@@ -95,7 +95,7 @@ class WishlistProvider with ChangeNotifier{
         name,email));
     debugPrint(" Update customer result >>> ${results.data}");
     if (results.data != null) {
-      Utility.showSuccessMessage("Data updated successfully!");
+      Utility.showSuccessMessage("Profile Updated Successfully!");
        App.localStorage.setString(PREF_NAME, "${results.data!['updateCustomer']['customer']['firstname']}");
        App.localStorage.setString(PREF_EMAIL, results.data!['updateCustomer']['customer']['email']);
       return true;

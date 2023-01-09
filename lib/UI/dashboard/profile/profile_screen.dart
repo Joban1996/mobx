@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/common_widgets/dashboard/item_info_arrow_forward.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
+import 'package:mobx/provider/dashboard/dashboard_provider.dart';
 import 'package:mobx/utils/app.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/utilities.dart';
+import 'package:provider/provider.dart';
 import '../../../utils/constants/strings.dart';
 import '../../../utils/routes.dart';
 
@@ -120,10 +122,15 @@ class ProfileScreen extends StatelessWidget {
                   Navigator.pushNamed(context, Routes.faqScreen);
                 }, title: "FAQs", description: "View all Frequency Asked Questions"),
                 dividerCommon(context),
-                ItemInfoArrowForward(onTap: (){
-                  App.localStorage.clear();
-                  Navigator.pushNamedAndRemoveUntil(context, Routes.loginScreen, (route) => false);
-                }, title: "LOGOUT", description: "Logout From this Device"),
+                Consumer<DashboardProvider>(
+                  builder: (_,val,child){
+                    return  ItemInfoArrowForward(onTap: (){
+                      val.setTabIndex(0);
+                      App.localStorage.clear();
+                      Navigator.pushNamedAndRemoveUntil(context, Routes.loginScreen, (route) => false);
+                    }, title: "LOGOUT", description: "Logout From this Device");
+                  },
+                ),
                 dividerCommon(context),
                 Align(
                     alignment: Alignment.center,
