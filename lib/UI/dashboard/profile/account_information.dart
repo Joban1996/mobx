@@ -76,7 +76,10 @@ class AccountInformation extends StatelessWidget {
                       val2.setLoadingBool(true);
                       val.hitUpdateCustomer(name: name.text, email: email.text).then((value){
                         val2.setLoadingBool(false);
-                        Navigator.pushNamedAndRemoveUntil(context, Routes.dashboardScreen,ModalRoute.withName(Routes.dashboardScreen));
+                        App.localStorage.setString(PREF_NAME, name.text);
+                        App.localStorage.setString(PREF_EMAIL, email.text);
+                        Navigator.pushNamedAndRemoveUntil(context,
+                            Routes.dashboardScreen,ModalRoute.withName(Routes.dashboardScreen));
                       });
                     }, text: "UPDATE",isTrailing: false,);
                   },

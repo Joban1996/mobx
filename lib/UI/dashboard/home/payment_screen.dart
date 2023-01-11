@@ -249,14 +249,16 @@ Map<String,dynamic> options(int amount,String name,String des,String contact,Str
                        builder: (_,val1,val2,child){
                          return AppButton(
                              onTap: () async{
-                              // val2.setLoadingBool(true);
+                               val2.setLoadingBool(true);
                                if(parsed.cart!.shippingAddresses![0].selectedShippingMethod == null){
                                  val1.hitSetShippingMethod(cartId: App.localStorage.getString(PREF_CART_ID).toString());
                                }
                                if(parsed.cart!.selectedPaymentMethod != null) {
                                  if (val1.getSelectedCode == "razorpay") {
                                     paymentUsingRazorpay(parsed, val2, val1);
+                                    val2.setLoadingBool(false);
                                  }else{
+                                   val2.setLoadingBool(false);
                                     val1.hitPlaceOrder(
                                        cartId: App.localStorage.getString(
                                            PREF_CART_ID).toString()).then((

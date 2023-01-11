@@ -43,7 +43,7 @@ class Routes {
   static const repairHome = "repairHome";
   static const ordersHome = "ordersHome";
   static const profileScreen = "profileScreen";
-  static const productDetail1 = "productDetail1";
+  static const  productDetail1 = "productDetail1";
   static const productDetail2 = "productDetail2";
   static const productDetail3 = "productDetail3";
   static const shoppingCart = "shoppingCart";

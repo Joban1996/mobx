@@ -25,6 +25,8 @@ class PaymentProvider with ChangeNotifier{
    String get getSelectedCode => _selectedCode;
    CartListModel?  get getCartData  => cartData;
 
+
+
    setCartListData(var data){
      cartData = data;
      notifyListeners();

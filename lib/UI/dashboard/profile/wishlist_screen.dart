@@ -14,6 +14,8 @@ import 'package:mobx/utils/utilities.dart';
 import 'package:provider/provider.dart';
 import '../../../common_widgets/dashboard/app_bar_title.dart';
 import '../../../provider/auth/login_provider.dart';
+import '../../../provider/dashboard/dashboard_provider.dart';
+import '../../../utils/routes.dart';
 
 class WishListScreeen extends StatelessWidget {
   WishListScreeen({Key? key}) : super(key: key);
@@ -28,15 +30,22 @@ class WishListScreeen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: EdgeInsets.all(10),
-            // width: getCurrentScreenWidth(context)/4,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Utility.getColorFromHex(globalGreyColor))),
-            height: getCurrentScreenHeight(context)/5.5,
-            width: getCurrentScreenWidth(context)/3.0,
-            child: productItems.product!.smallImage!.url!= null ? Image.network(productItems.product!.smallImage!.url.toString()) :Image.asset("assets/images/iphone_pic.png"),),
+          GestureDetector(
+            onTap: (){
+              context.read<DashboardProvider>().setSkuId(productItems.product!.sku.toString());
+              Navigator.pushNamed(
+                  context, Routes.productDetail1);
+            },
+            child: Container(
+              padding: EdgeInsets.all(10),
+              // width: getCurrentScreenWidth(context)/4,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Utility.getColorFromHex(globalGreyColor))),
+              height: getCurrentScreenHeight(context)/5.5,
+              width: getCurrentScreenWidth(context)/3.0,
+              child: productItems.product!.smallImage!.url!= null ? Image.network(productItems.product!.smallImage!.url.toString()) :Image.asset("assets/images/iphone_pic.png"),),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(8,8,8,0),
@@ -46,57 +55,7 @@ class WishListScreeen extends StatelessWidget {
                 children: [
                   // Text(/*productItems.product!.brand??*/"APPLE",style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12,height: 1.3),),
                   // SizedBox(height: 3,),
-                  Text(productItems.product!.name??"Refurbished Apple iPhone 12 Mini White 128 GB",
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 13)),
-                  // Row(
-                  //   children: [
-                  //     Text("Qty ",style: Theme.of(context).textTheme.bodySmall),
-                  //     Consumer2<ProductProvider,LoginProvider>(
-                  //       builder: (_,productProviderValue,loginProviderValue,child){
-                  //         return DropdownButtonHideUnderline(
-                  //           child: DropdownButton<String>(
-                  //             icon: const Icon(Icons.keyboard_arrow_down),
-                  //             isDense: true,
-                  //             onTap: (){
-                  //               productProviderValue.setItemIndex(index);
-                  //             },
-                  //             value: productItems.quantity.toString(),
-                  //             items: quantitySelect.map((String value) {
-                  //               return DropdownMenuItem<String>(
-                  //                 value: value,
-                  //                 child: Text(value,style: Theme.of(context).textTheme.bodyMedium,),
-                  //               );
-                  //             }).toList(), onChanged: (String? value) {
-                  //            /* productProviderValue.getItemIndex == index ? productProviderValue.setDropDownValue(value!): null;
-                  //             loginProviderValue.setLoadingBool(true);
-                  //             productProviderValue.hitUpdateCartMutation(cartId: cartId,
-                  //                 cartUID: productItems.id.toString(),
-                  //                 quantity: int.parse(value!)).then((value) {
-                  //               loginProviderValue.setLoadingBool(false);
-                  //               reFresh.call();
-                  //             });*/
-                  //           },
-                  //           ),
-                  //         );
-                  //       },
-                  //     ),
-                  //   ],
-                  // ),
-                  SizedBox(height: 5,),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(children: [
-                        Text("${Strings.rupee_sign}${productItems!.product!.priceRange!.minimumPrice!.finalPrice!.value.toString()}",style: Theme.of(context).textTheme.bodyMedium,),
-                        SizedBox(width: 3,),
-                        Text("${Strings.rupee_sign}${productItems!.product!.priceRange!.minimumPrice!.regularPrice!.value.toString()}",style: Theme.of(context).textTheme.bodySmall!.copyWith(decoration: TextDecoration.lineThrough,),)
-                      ],),
-                      Text("You Save ₹${productItems.product!.priceRange!.minimumPrice!.discount!.amountOff} "
-                          "(${productItems.product!.priceRange!.minimumPrice!.discount!.percentOff}% OFF)",style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex(globalGreenColor)),)
-
-                    ],
-                  ),
+                  info(productItems, context),
                   // Row(
                   //   children: [
                   //     Expanded(
@@ -207,6 +166,71 @@ class WishListScreeen extends StatelessWidget {
                     return cartItemView(context,model,index);
                   }
               );}))
+    );
+  }
+
+  Widget info(Items productItems,BuildContext context){
+    return GestureDetector(
+      onTap: (){
+        context.read<DashboardProvider>().setSkuId(productItems.product!.sku.toString());
+        Navigator.pushNamed(
+            context, Routes.productDetail1);
+      },
+      child: Column(
+        children: [
+          Text(productItems.product!.name??"Refurbished Apple iPhone 12 Mini White 128 GB",
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 13)),
+          // Row(
+          //   children: [
+          //     Text("Qty ",style: Theme.of(context).textTheme.bodySmall),
+          //     Consumer2<ProductProvider,LoginProvider>(
+          //       builder: (_,productProviderValue,loginProviderValue,child){
+          //         return DropdownButtonHideUnderline(
+          //           child: DropdownButton<String>(
+          //             icon: const Icon(Icons.keyboard_arrow_down),
+          //             isDense: true,
+          //             onTap: (){
+          //               productProviderValue.setItemIndex(index);
+          //             },
+          //             value: productItems.quantity.toString(),
+          //             items: quantitySelect.map((String value) {
+          //               return DropdownMenuItem<String>(
+          //                 value: value,
+          //                 child: Text(value,style: Theme.of(context).textTheme.bodyMedium,),
+          //               );
+          //             }).toList(), onChanged: (String? value) {
+          //            /* productProviderValue.getItemIndex == index ? productProviderValue.setDropDownValue(value!): null;
+          //             loginProviderValue.setLoadingBool(true);
+          //             productProviderValue.hitUpdateCartMutation(cartId: cartId,
+          //                 cartUID: productItems.id.toString(),
+          //                 quantity: int.parse(value!)).then((value) {
+          //               loginProviderValue.setLoadingBool(false);
+          //               reFresh.call();
+          //             });*/
+          //           },
+          //           ),
+          //         );
+          //       },
+          //     ),
+          //   ],
+          // ),
+          SizedBox(height: 5,),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(children: [
+                Text("${Strings.rupee_sign}${productItems!.product!.priceRange!.minimumPrice!.finalPrice!.value.toString()}",style: Theme.of(context).textTheme.bodyMedium,),
+                SizedBox(width: 3,),
+                Text("${Strings.rupee_sign}${productItems!.product!.priceRange!.minimumPrice!.regularPrice!.value.toString()}",style: Theme.of(context).textTheme.bodySmall!.copyWith(decoration: TextDecoration.lineThrough,),)
+              ],),
+              Text("You Save ₹${productItems.product!.priceRange!.minimumPrice!.discount!.amountOff} "
+                  "(${productItems.product!.priceRange!.minimumPrice!.discount!.percentOff}% OFF)",style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex(globalGreenColor)),)
+
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
