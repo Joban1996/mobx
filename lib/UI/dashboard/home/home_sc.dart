@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:mobx/UI/dashboard/home/today_deals.dart';
 import 'package:mobx/model/home_banner_model.dart';
 import 'package:mobx/provider/dashboard/dashboard_provider.dart';
 import 'package:mobx/provider/dashboard/product_provider.dart';
@@ -28,7 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
     initialPage: 0,
   );
 
-  double? currentPage = 0;
+  late Timer _timer;
+  int currentPage = 0;
 
   List urls = [];
 
@@ -42,6 +46,19 @@ class _HomeScreenState extends State<HomeScreen> {
             .hitGetUserDetails();
       });
     }
+    _timer = Timer.periodic(Duration(seconds: 4), (Timer timer) {
+      if (currentPage! < 2) {
+        currentPage++;
+      } else {
+        currentPage = 0;
+      }
+
+      _controller.animateToPage(
+        currentPage,
+        duration: Duration(milliseconds: 350),
+        curve: Curves.easeIn,
+      );
+    });
   }
 
   @override
@@ -216,9 +233,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       verticalSpacing(heightInDouble: 0.02, context: context),
-                      Text(
-                        "TODAY DEALS",
-                        style: Theme.of(context).textTheme.bodyMedium,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "TODAY DEALS",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.pushNamed(context, Routes.todayDeals);
+                            },
+                            child: Text(
+                              "VIEW MORE",
+                              style: Theme.of(context).textTheme.bodySmall!.copyWith(color:Colors.lightBlue),
+                            ),
+                          ),
+                        ],
                       ),
                       verticalSpacing(heightInDouble: 0.01, context: context),
                       Query(

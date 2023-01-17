@@ -40,7 +40,9 @@ final phoneController = TextEditingController();
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset("assets/images/mobex2.png"),
+                Container(
+                    height: 80,width: 200,
+                    child: Image.asset("assets/images/Mobex_tp.png")),
                 SizedBox(height: getCurrentScreenHeight(context)*0.02,),
                 Text("SELL | PURCHASE | REPAIR | INSURANCE",
                   style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14.0),

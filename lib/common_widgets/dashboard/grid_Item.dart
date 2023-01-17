@@ -47,7 +47,7 @@ String skuID;
               width: getCurrentScreenWidth(context)/2,
               child: Text(productData != null ? productData!.name.toString() :
               "Refurbished Apple iPhone 12 128 GB",
-                style: Theme.of(context).textTheme.caption,maxLines: 2,overflow: TextOverflow.ellipsis,)),
+                style: Theme.of(context).textTheme.caption,maxLines: 1,overflow: TextOverflow.ellipsis,)),
           const SizedBox(height: 5,),
           Row(children: [
             Text(productData != null ? "${Strings.rupee_sign}${productData!.priceRange!.minimumPrice!.finalPrice!.value.toString()}" :"₹55,099",style: Theme.of(context).textTheme.bodyText2,),

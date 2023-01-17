@@ -1,9 +1,3 @@
-
-
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/common_widgets/dashboard/grid_Item.dart';
@@ -216,7 +210,7 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 3/4,
+                                    childAspectRatio: 3/3,
                                     crossAxisSpacing: 1,
                                     crossAxisCount: 2,
 

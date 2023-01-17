@@ -13,6 +13,7 @@ import 'package:mobx/UI/dashboard/home/payment_screen.dart';
 import 'package:mobx/UI/dashboard/home/product_details1.dart';
 import 'package:mobx/UI/dashboard/home/product_list_with_deals.dart';
 import 'package:mobx/UI/dashboard/home/product_listing.dart';
+import 'package:mobx/UI/dashboard/home/today_deals.dart';
 import 'package:mobx/UI/dashboard/orders/orderDetailsScreen.dart';
 import 'package:mobx/UI/dashboard/orders/orders_home.dart';
 import 'package:mobx/UI/dashboard/profile/aboutUs_screen.dart';
@@ -69,6 +70,7 @@ class Routes {
   static const deviceInfoScreen="deviceInfoScreen";
   static const searchScreen="searchScreen";
   static const loginWithEmail="loginWithEmail";
+  static const todayDeals="todayDeals";
 
 static Route<dynamic> generatedRoute(RouteSettings settings){
         switch(settings.name){
@@ -141,6 +143,8 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
             return MaterialPageRoute(builder: (_) => DeviceInfoScreen());
           case searchScreen:
             return MaterialPageRoute(builder: (_) => SearchScreen());
+          case todayDeals:
+            return MaterialPageRoute(builder: (_) => const TodayDeals());
           default:
             return MaterialPageRoute(
                 builder: (_) => Scaffold(
