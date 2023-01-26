@@ -22,7 +22,8 @@ enum GenderTypeEnum { Male, Female }
 class AccountInformation extends StatefulWidget {
   final String firstName;
   final String lastName;
-  const AccountInformation({Key? key,required this.firstName,required this.lastName}) : super(key: key);
+  final int gender;
+  const AccountInformation({Key? key,required this.firstName,required this.lastName,required this.gender}) : super(key: key);
 
   @override
   State<AccountInformation> createState() => _AccountInformationState();
@@ -37,7 +38,7 @@ class _AccountInformationState extends State<AccountInformation> {
 
   GenderTypeEnum? _genderTypeEnum;
 
-  int _value = 1;
+  int _value = -1;
   var valuefirst = false;
   int counter = 0;
 
@@ -58,7 +59,7 @@ last_name =
     TextEditingController();
   first_name!.text = widget.firstName;
     last_name!.text = widget.lastName;
-
+  _value = widget.gender;
 
   }
 

@@ -1,6 +1,6 @@
 class ProfileNames{
   String firstName = '';
   String lastName = '';
-
-  ProfileNames(this.firstName,this.lastName);
+  int gender = -1;
+  ProfileNames(this.firstName,this.lastName, this.gender);
 }

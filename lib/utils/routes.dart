@@ -131,7 +131,7 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
             return MaterialPageRoute(builder: (_) =>CouponScreen());
           case accountInformation:
             final args = settings.arguments as ProfileNames;
-            return MaterialPageRoute(builder: (_) =>AccountInformation(firstName: args.firstName,lastName: args.lastName,));
+            return MaterialPageRoute(builder: (_) =>AccountInformation(firstName: args.firstName,lastName: args.lastName,gender: args.gender,));
           case wishListScreeen:
             return MaterialPageRoute(builder: (_) =>WishListScreeen());
           case profileAddressesScreen:
