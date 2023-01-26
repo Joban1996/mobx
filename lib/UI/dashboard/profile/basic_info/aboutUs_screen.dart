@@ -276,10 +276,10 @@ List urls = [];
         child: SingleChildScrollView(
            child: Column(
              children: [
-               // Text(_parseHtmlString(cmsPageData.cmsPage!.content.toString()),
-               //     style: Theme.of(context).textTheme.caption
-               // ),
-               Html(data: htmlData)
+               Text(_parseHtmlString(cmsPageData.cmsPage!.content.toString()),
+                   style: Theme.of(context).textTheme.caption
+               ),
+               //Html(data: cmsPageData.cmsPage!.content.toString())
              ],
            ),
         ),

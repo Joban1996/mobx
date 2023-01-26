@@ -86,7 +86,7 @@ class SignUpProvider with ChangeNotifier {
       print("ONE PHASE SIGN UP SUGGESS DONE FROM MY END");
       if (results.data?['createCustomerAccount']['status'] == true) {
         print("SIGN UP SUGGESS DONE FROM MY END");
-        App.localStorage.setString(
+       await App.localStorage.setString(
             PREF_TOKEN, results.data!['createCustomerAccount']['token']);
         // Utility.showSuccessMessage(
         //     "${results.data!['createAccount']['message']}");

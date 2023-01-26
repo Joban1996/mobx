@@ -18,6 +18,20 @@ createAccountOTPVerify(mobileNumber: \$mobileNumber,otp: \$otp,websiteId: \$webs
 ''';
 
 
+var   getUserDetailsNow =  '''
+query {
+customer {
+firstname
+lastname
+email
+mobilenumber
+date_of_birth
+gender
+email
+}
+}
+''';
+
 
 var getUserDetails =  ''' 
 query {

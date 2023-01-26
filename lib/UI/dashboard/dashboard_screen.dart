@@ -35,7 +35,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
    hitQueries();
   }
 
-  hitQueries(){
+  hitQueries()async{
+    await App.init();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
       await  Provider.of<WishlistProvider>(context, listen: false)
           .hitGetUserDetails().then((value) {
@@ -57,7 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 3:
         return const OrdersHome();
       case 4:
-       return const ProfileScreen();
+       return  ProfileScreen();
       default:
         return Container();
 

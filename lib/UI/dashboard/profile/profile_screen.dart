@@ -1,27 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/common_widgets/dashboard/item_info_arrow_forward.dart';
-import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
+import 'package:mobx/model/name_model.dart';
 import 'package:mobx/provider/dashboard/dashboard_provider.dart';
 import 'package:mobx/utils/app.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/utilities.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
+import '../../../api/graphql_operation/customer_queries.dart';
 import '../../../utils/constants/strings.dart';
 import '../../../utils/routes.dart';
 
 
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class ProfileScreen extends StatefulWidget {
+   ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String name = '',email = '',mobile = '',dataOfBithN = '', lastName = '';
 
 
-  Widget accountInfo(BuildContext context){
-    String name = App.localStorage.getString(PREF_NAME).toString();
-    String email = App.localStorage.getString(PREF_EMAIL).toString();
-    String mobile = App.localStorage.getString(PREF_MOBILE).toString();
-    String dateOfBithN = App.localStorage.getString(PREF_DOB).toString();
-  print("dateOfBithdateOfBith $dateOfBithN");
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  late VoidCallback reFresh;
+
+  Widget accountInfo(BuildContext context, var profileData) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Row(
@@ -33,18 +45,20 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 Text(Strings.accountInfo,style: Theme.of(context).textTheme.bodyText2,),
                 verticalSpacing(heightInDouble: 0.01, context: context),
-                Text(name,style: Theme.of(context).textTheme.caption,),
-                Text("+$mobile / $email",style: Theme.of(context).textTheme.caption,)
+                Text("${profileData['firstname']} ${profileData['lastname']}",style: Theme.of(context).textTheme.caption),
+                Text("+${profileData['mobilenumber']} / ${profileData['email']}",style: Theme.of(context).textTheme.caption,)
               ],
             ),
           ),
           GestureDetector(
-              onTap: () => Navigator.pushNamed(context, Routes.accountInformation),
+              onTap: () {
+                Navigator.pushNamed(context, Routes.accountInformation,arguments: ProfileNames("${profileData['firstname']}","${profileData['lastname']}"));},
               child: Text("Edit",style: Theme.of(context).textTheme.caption!.copyWith(color: Utility.getColorFromHex(globalRedColor)),))
         ],
       ),
     );
   }
+
   Widget _row(String title,BuildContext context){
     return Padding(
       padding: const EdgeInsets.all(4.0),
@@ -163,22 +177,46 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         // appBar: AppBarCommon(Text("PROFILE",style:  Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w600)),
         //   appbar: AppBar(), onTapCallback: (){},leadingImage: IconButton(
         //     padding: EdgeInsets.zero,
         //     constraints: BoxConstraints(),
         //     icon: Icon(Icons.arrow_back),color: Colors.black,onPressed: ()=>Navigator.pop(context),),),
-        body: SingleChildScrollView(
+        body:
+        Query(
+        options:
+        QueryOptions(
+        fetchPolicy: FetchPolicy.networkOnly,
+        document: gql(getUserDetails),),
+    builder: (QueryResult result,
+    {VoidCallback? refetch, FetchMore? fetchMore}) {
+    reFresh = refetch!;
+    debugPrint("cart exception >>> ${result.exception}");
+    if (result.hasException) {
+      if(result.exception!.graphqlErrors[0].extensions!['category'].toString() == "graphql-authorization"){
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          App.localStorage.clear();
+          Navigator.pushReplacementNamed(context, Routes.loginScreen);});
+      }
+    return Text(result.exception.toString());
+    }
+    if (result.isLoading) {
+    return globalLoader();
+    }
+    debugPrint("get wishlist data >>> ${result.data}");
+    return
+
+        SingleChildScrollView(
           child: Container(
             color: Colors.white.withOpacity(0.8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                accountInfo(context),
+                accountInfo(context,result.data!['customer']),
                 dividerCommon(context),
                 ItemInfoArrowForward(onTap: (){
                   Navigator.pushNamed(context, Routes.wishListScreeen);
@@ -200,9 +238,8 @@ class ProfileScreen extends StatelessWidget {
                 dividerCommon(context),
                 Consumer<DashboardProvider>(
                   builder: (_,val,child){
-                    return  ItemInfoArrowForward(onTap: () async{
-                      val.setTabIndex(0);
-                      App.localStorage.clear();
+                    return  ItemInfoArrowForward(onTap: () {
+                      clearPrefs(val);
                       Navigator.pushNamedAndRemoveUntil(context, Routes.loginScreen, (route) => false);
                     }, title: "LOGOUT", description: "Logout From this Device");
                   },
@@ -213,6 +250,11 @@ class ProfileScreen extends StatelessWidget {
                     child: Text("Version 1.12",style: Theme.of(context).textTheme.caption,))
               ],
             ),),
-        ));
+        );})
+    );
+  }
+ Future clearPrefs(DashboardProvider val)async{
+    val.setTabIndex(0);
+   await App.localStorage.clear();
   }
 }

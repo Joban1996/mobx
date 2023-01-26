@@ -29,6 +29,7 @@ import 'package:mobx/UI/dashboard/search_screen.dart';
 import 'package:mobx/UI/dashboard/sell/brand_model_screen.dart';
 import 'package:mobx/UI/dashboard/sell/device_info_screen.dart';
 import 'package:mobx/UI/dashboard/sell/sell_home.dart';
+import 'package:mobx/model/name_model.dart';
 import '../UI/dashboard/home/product_details3.dart';
 import '../UI/dashboard/home/shopping_cart.dart';
 import '../UI/dashboard/repair/repair_home.dart';
@@ -129,7 +130,8 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
           case coupon:
             return MaterialPageRoute(builder: (_) =>CouponScreen());
           case accountInformation:
-            return MaterialPageRoute(builder: (_) =>AccountInformation());
+            final args = settings.arguments as ProfileNames;
+            return MaterialPageRoute(builder: (_) =>AccountInformation(firstName: args.firstName,lastName: args.lastName,));
           case wishListScreeen:
             return MaterialPageRoute(builder: (_) =>WishListScreeen());
           case profileAddressesScreen:
@@ -143,8 +145,6 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
           case orderDetails:
             final argument = settings.arguments as String;
             return MaterialPageRoute(builder: (_) =>OrderDetailsScreen(number: argument));
-          case accountInformation:
-            return MaterialPageRoute(builder: (_) => AccountInformation());
           case googleMapScreen:
             return MaterialPageRoute(builder: (_) => GoogleMapScreen());
           case brandModelScreen:

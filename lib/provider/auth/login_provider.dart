@@ -75,7 +75,7 @@ class LoginProvider with ChangeNotifier{
     if (results.data != null) {
       //var data = await OtpVerify.fromJson(results.data!);
       debugPrint("enable noti mutation result >>> ${results.data!}");
-      App.localStorage.setString(PREF_TOKEN,results.data!['generateCustomerToken']['token']);
+     await App.localStorage.setString(PREF_TOKEN,results.data!['generateCustomerToken']['token']);
       /*Utility.showSuccessMessage(results.data!['loginOTPVerify']['message'] == null? "Successfully LoggedIn":
       " ${data!.data!.loginOTPVerify!.message}");*/
       return true;
@@ -105,7 +105,7 @@ class LoginProvider with ChangeNotifier{
       var data = await OtpVerify.fromJson(results.data!);
       if (results.data!['loginOTPVerify']['status'] == true) {
         debugPrint("enable noti mutation result >>> ${results.data!}");
-        App.localStorage.setString(PREF_TOKEN,results.data!['loginOTPVerify']['token']);
+       await App.localStorage.setString(PREF_TOKEN,results.data!['loginOTPVerify']['token']);
         Utility.showSuccessMessage(results.data!['loginOTPVerify']['message'] == null? "Successfully LoggedIn":
         " ${data!.data!.loginOTPVerify!.message}");
         return true;

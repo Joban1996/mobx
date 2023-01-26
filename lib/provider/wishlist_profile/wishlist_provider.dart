@@ -10,13 +10,13 @@ import '../../utils/utilities.dart';
 
 class WishlistProvider with ChangeNotifier{
 
-  Future hitGetUserDetails() async {
+  Future  hitGetUserDetails() async {
     print("hitGetUserDetailscall");
-    QueryOptions otpVerifyQuery = QueryOptions(
+    QueryOptions getUserDetailsQuery = QueryOptions(
       document: gql(getUserDetails),);
     final QueryResult results = await GraphQLClientAPI()
         .mClient
-        .query(otpVerifyQuery);
+        .query(getUserDetailsQuery);
     if (results.data != null) {
       debugPrint("customer data joban ${results.data!['customer']}");
       if(results.data!['customer']['wishlists'] != null) {
@@ -101,12 +101,13 @@ class WishlistProvider with ChangeNotifier{
         name,lastname,gender,dob,email));
     debugPrint(" Update customer result >>> ${results.data}");
     if (results.data != null) {
+      App.init();
       Utility.showSuccessMessage("Profile Updated Successfully!");
-      await App.localStorage.setString(PREF_NAME, "${results.data!['updateCustomer']['customer']['firstname']}");
-      await App.localStorage.setString(PREF_LASTNAME, "${results.data!['updateCustomer']['customer']['lastname']}");
-      await App.localStorage.setString(PREF_GEN, "${results.data!['updateCustomer']['customer']['gender']}");
-      await App.localStorage.setString(PREF_DOB, "${results.data!['updateCustomer']['customer']['date_of_birth']}");
-      await App.localStorage.setString(PREF_EMAIL, results.data!['updateCustomer']['customer']['email']);
+       App.localStorage.setString(PREF_NAME, "${results.data!['updateCustomer']['customer']['firstname']}");
+       App.localStorage.setString(PREF_LASTNAME, "${results.data!['updateCustomer']['customer']['lastname']}");
+       App.localStorage.setString(PREF_GEN, "${results.data!['updateCustomer']['customer']['gender']}");
+       App.localStorage.setString(PREF_DOB, "${results.data!['updateCustomer']['customer']['date_of_birth']}");
+       App.localStorage.setString(PREF_EMAIL, results.data!['updateCustomer']['customer']['email']);
       return true;
     }else{
       if(results.exception != null){

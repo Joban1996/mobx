@@ -62,12 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _timer.cancel();
   }
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
 
-  }
 
   Widget _exploreItem(BuildContext context, String txt,
       List<Children> parsedData, String path, String cateId, String? img) {

@@ -34,7 +34,7 @@ class GraphQlClient {
   static var GRAPH_TOKEN = "";
   static var CUSTOMER_ID = "";
 
-
+  //https://stagem2r.mobex.in/graphql
 
   static updateCustomerMutations(
       String mutation, double latitude, double longitude, int modelYear) {
