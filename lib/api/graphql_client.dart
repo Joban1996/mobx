@@ -64,7 +64,44 @@ class GraphQlClient {
       },
     );
   }
+  static createCustomer(String mutation,String mobileNumber,String otp, String firstName,String lastName,String emailAddress) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'mobileNumber':mobileNumber,
+        'otp':otp,
+        'firstname': firstName,
+        'lastname': lastName,
+        'email': emailAddress,
+        
 
+      },
+    );
+  }
+  static createAccountOTP(String mutation, String mobileNo) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'mobileNumber': mobileNo,
+        'websiteId': 1,
+
+      },
+    );
+  }
+  static createAccountOTPVerify(String query,String mobileNo,String otp) {
+    print(query);
+    return MutationOptions(
+      document: gql(query),
+      variables: {
+        'mobileNumber': mobileNo,
+        'otp': otp,
+        'websiteId': 1,
+
+      },
+    );
+  }
   static loginWithEmail(String mutation, String email,String password) {
     print(mutation);
     return MutationOptions(
@@ -285,13 +322,17 @@ class GraphQlClient {
     );
   }
 
-  static updateCustomer(String mutation,String name, String email) {
+  static updateCustomer(String mutation,String name,String lastname, int gender ,String date_of_birth,String email) {
     print(mutation);
     return MutationOptions(
       document: gql(mutation),
       variables: {
         'firstname': name,
+        'lastname':lastname,
+        'gender':gender,
+        'date_of_birth':date_of_birth,
         'email': email,
+        
       },
     );
   }

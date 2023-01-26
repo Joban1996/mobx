@@ -11,6 +11,9 @@ import 'package:mobx/utils/utilities.dart';
 import 'package:provider/provider.dart';
 import '../../common_widgets/globally_common/common_loader.dart';
 import 'package:flutter/cupertino.dart';
+import 'dart:developer';
+
+import 'SignUpScreen.dart';
 
 
 class LoginScreen extends StatelessWidget {
@@ -21,16 +24,34 @@ static bool checkedValue = false;
 Widget appBarTitle(BuildContext context,String titleText){
   return Text(titleText,style:  Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600),);
 }
-
+Widget appBarTitleOragne(BuildContext context,String titleText){
+  return Text(titleText,style:  Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600),);
+}
 final phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle style = TextButton.styleFrom(
+      foregroundColor: Utility.getColorFromHex(globalOrangeColor),
+    );
+     final ButtonStyle styleSecond = TextButton.styleFrom(
+      foregroundColor: Colors.black,
+      
+    );
     return Scaffold(
-      appBar: AppBarCommon(Padding(
-        padding: const EdgeInsets.only(left: 10),
-        child: appBarTitle(context, "LOGIN"),
-      ), appbar: AppBar(), onTapCallback: (){}),
+    appBar: AppBar(
+      backgroundColor: Colors.white,
+        actions: <Widget>[
+          TextButton(
+            style: style,
+            onPressed: (){
+              Navigator.pushNamed(context, Routes.signUpScreen);
+            },
+            child: const Text('Sign Up'),
+          ),
+        ],
+         title: appBarTitle(context, "LOGIN"),
+      ),
       body: CommonLoader(
           screenUI: Center(
         child: SingleChildScrollView(

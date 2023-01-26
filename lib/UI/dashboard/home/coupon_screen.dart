@@ -28,40 +28,39 @@ final couponCont  = TextEditingController();
         padding: const EdgeInsets.all(8.0),
         child:  Column(
           children: [
-            Expanded(
-              child: TextField(
-                controller: couponCont,
-                decoration: InputDecoration(
-                  hintText: "Enter your coupon code",
-                  hintStyle: Theme.of(context).textTheme.bodySmall,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(width: 1, color: Utility.getColorFromHex(globalGreyColor)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(width: 1, color: Utility.getColorFromHex(globalOrangeColor)),
-                  ),
-                  // suffixIcon: Consumer2<ProductProvider,LoginProvider>(
-                  //   builder: (_,val,val2,child){
-                  //     return GestureDetector(
-                  //         onTap: (){
-                  //           if(couponCont.text.isNotEmpty) {
-                  //             val2.setLoadingBool(true);
-                  //             val.hitApplyCouponMutation(
-                  //                 cartId: App.localStorage.getString(PREF_CART_ID).toString(),
-                  //                 couponCode: couponCont.text).then((value) {
-                  //               val2.setLoadingBool(false);
-                  //               if(value) Navigator.of(context).pop(true);
-                  //             });
-                  //           }
-                  //         },
-                  //         child: Icon(Icons.arrow_right_alt_sharp,color: Colors.grey,));
-                  //   },
-                  // ),
+            TextField(
+              controller: couponCont,
+              decoration: InputDecoration(
+                hintText: "Enter your coupon code",
+                hintStyle: Theme.of(context).textTheme.bodySmall,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(width: 1, color: Utility.getColorFromHex(globalGreyColor)),
                 ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(width: 1, color: Utility.getColorFromHex(globalOrangeColor)),
+                ),
+                // suffixIcon: Consumer2<ProductProvider,LoginProvider>(
+                //   builder: (_,val,val2,child){
+                //     return GestureDetector(
+                //         onTap: (){
+                //           if(couponCont.text.isNotEmpty) {
+                //             val2.setLoadingBool(true);
+                //             val.hitApplyCouponMutation(
+                //                 cartId: App.localStorage.getString(PREF_CART_ID).toString(),
+                //                 couponCode: couponCont.text).then((value) {
+                //               val2.setLoadingBool(false);
+                //               if(value) Navigator.of(context).pop(true);
+                //             });
+                //           }
+                //         },
+                //         child: Icon(Icons.arrow_right_alt_sharp,color: Colors.grey,));
+                //   },
+                // ),
               ),
             ),
+            verticalSpacing(heightInDouble: 0.03, context: context),
             Consumer2<ProductProvider,LoginProvider>(
             builder: (_,val,val2,child) {
               return AppButton(

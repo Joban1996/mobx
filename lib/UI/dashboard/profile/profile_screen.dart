@@ -5,6 +5,7 @@ import 'package:mobx/provider/dashboard/dashboard_provider.dart';
 import 'package:mobx/utils/app.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/utilities.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 import '../../../utils/constants/strings.dart';
 import '../../../utils/routes.dart';
@@ -19,6 +20,8 @@ class ProfileScreen extends StatelessWidget {
     String name = App.localStorage.getString(PREF_NAME).toString();
     String email = App.localStorage.getString(PREF_EMAIL).toString();
     String mobile = App.localStorage.getString(PREF_MOBILE).toString();
+    String dateOfBithN = App.localStorage.getString(PREF_DOB).toString();
+  print("dateOfBithdateOfBith $dateOfBithN");
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Row(
@@ -62,6 +65,40 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  Widget _specialText(String title,String titleTwo,BuildContext context){
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: RichText(text: TextSpan(
+              text:title,
+               style: Theme.of(context).textTheme.caption,
+               children: <TextSpan>[
+                TextSpan(
+              text:titleTwo,
+               style: TextStyle(
+                fontSize: 12,
+                color: Colors.blueAccent
+               )
+
+               )
+               ]
+            )),
+
+          ),
+
+          Icon(
+            Icons.arrow_forward_ios_rounded,
+            color: Utility.getColorFromHex(globalSubTextGreyColor),
+            size: 20,
+          )
+        ],
+      ),
+    );
+  }
+
   Widget aboutAndLegal(BuildContext context){
     return Padding(
       padding: const EdgeInsets.all(10.0),
@@ -78,18 +115,57 @@ class ProfileScreen extends StatelessWidget {
           ),
           GestureDetector(
               onTap: (){
-                //Navigator.pushNamed(context, Routes.wishListScreeen);
+                Navigator.pushNamed(context, Routes.termsAndConditions);
               },
               child: _row("Term & Conditions", context)),
-          _row("Privacy Policy", context),
-          _row("Refund Policy", context)
+          GestureDetector(
+              onTap: ()=>  Navigator.pushNamed(context, Routes.privacyPolicy),
+              child: _row("Privacy Policy", context)),
+          GestureDetector(
+              onTap: ()async{
+             String userEmail = "support@mobex.in";
+             String emailSubject ="Contact via Email";
+             String body = "Respected Sir";
+
+             final Uri params = Uri(
+               scheme: 'mailto',
+               path: 'support@mobex.in',
+               query: emailSubject, //add subject and body here
+             );
+
+             var url = params.toString();
+
+             String query = ''' mailto:$userEmail?'
+             &subject=${Uri.encodeComponent(emailSubject)}
+                &body=${Uri.encodeComponent(body)}''';
+
+             if(await canLaunch(url)){
+                  await launch(url);
+             }else{
+                  debugPrint("Unable to Launch Email.");
+             }
+
+              },
+              child: _specialText("Support Email - ","support@mobex.in", context)),
+          GestureDetector(
+              onTap: ()async{
+                String phoneNumber = "tel:+91 7676576765";
+                if(await canLaunch(phoneNumber) ){
+                    launch(phoneNumber);
+                }else{
+                  debugPrint("Not open call app.");
+                }
+
+              },
+              child: _specialText("Customer Care Number - ","7676576765", context))
+          // _row("Refund Policy", context)
         ],
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         // appBar: AppBarCommon(Text("PROFILE",style:  Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w600)),
         //   appbar: AppBar(), onTapCallback: (){},leadingImage: IconButton(
@@ -124,7 +200,7 @@ class ProfileScreen extends StatelessWidget {
                 dividerCommon(context),
                 Consumer<DashboardProvider>(
                   builder: (_,val,child){
-                    return  ItemInfoArrowForward(onTap: (){
+                    return  ItemInfoArrowForward(onTap: () async{
                       val.setTabIndex(0);
                       App.localStorage.clear();
                       Navigator.pushNamedAndRemoveUntil(context, Routes.loginScreen, (route) => false);

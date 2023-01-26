@@ -54,7 +54,10 @@ class TodayDeals extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: 6,
                   itemBuilder: (context, index) {
+
                     return GridItem(
+                      itemWidth: 2,
+                      itemHeight: 5,
                       skuID: "",
                     );
                   }),
@@ -64,14 +67,16 @@ class TodayDeals extends StatelessWidget {
                   removeTop: true,
                   child: GridView.builder(
                       gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 4 / 4,
+                       SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: getItemWidth(context) / getItemHeight(context) ,
                         crossAxisSpacing: 1,
                         crossAxisCount: 2,
                       ),
                       itemCount: parsedProductData!.products!.items!.length,
                       itemBuilder: (BuildContext context, int index) {
                         return GridItem(
+                          itemWidth: 2,
+                          itemHeight: 4.5,
                           skuID: parsedProductData!.products!.items![index].sku!,
                           productData: parsedProductData!.products!.items![index],);
                       }

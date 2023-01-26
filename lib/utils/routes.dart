@@ -16,8 +16,10 @@ import 'package:mobx/UI/dashboard/home/product_listing.dart';
 import 'package:mobx/UI/dashboard/home/today_deals.dart';
 import 'package:mobx/UI/dashboard/orders/orderDetailsScreen.dart';
 import 'package:mobx/UI/dashboard/orders/orders_home.dart';
-import 'package:mobx/UI/dashboard/profile/aboutUs_screen.dart';
+import 'package:mobx/UI/dashboard/profile/basic_info/aboutUs_screen.dart';
 import 'package:mobx/UI/dashboard/profile/account_information.dart';
+import 'package:mobx/UI/dashboard/profile/basic_info/privacy_policy.dart';
+import 'package:mobx/UI/dashboard/profile/basic_info/terms_conditions.dart';
 import 'package:mobx/UI/dashboard/profile/faq_screen.dart';
 import 'package:mobx/UI/dashboard/profile/google_map_screen.dart';
 import 'package:mobx/UI/dashboard/profile/profile_addresses_screen.dart';
@@ -30,9 +32,9 @@ import 'package:mobx/UI/dashboard/sell/sell_home.dart';
 import '../UI/dashboard/home/product_details3.dart';
 import '../UI/dashboard/home/shopping_cart.dart';
 import '../UI/dashboard/repair/repair_home.dart';
+import 'package:mobx/UI/auth/SignUpScreen.dart';
 import 'package:mobx/UI/auth/enter_otp.dart';
-
-
+import 'package:mobx/UI/auth/EnterSignUpOtp.dart';
 
 
 class Routes {
@@ -70,7 +72,11 @@ class Routes {
   static const deviceInfoScreen="deviceInfoScreen";
   static const searchScreen="searchScreen";
   static const loginWithEmail="loginWithEmail";
+  static const signUpScreen = "SignUpScreen";
+  static const enterSignUpOtp = "EnterSignUpOtp";
   static const todayDeals="todayDeals";
+  static const termsAndConditions="termsAndConditions";
+  static const privacyPolicy="privacyPolicy";
 
 static Route<dynamic> generatedRoute(RouteSettings settings){
         switch(settings.name){
@@ -80,6 +86,10 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
             return MaterialPageRoute(builder: (_) => LoginScreen());
           case loginWithEmail:
             return MaterialPageRoute(builder: (_) => LoginWithEmail());
+             case signUpScreen:
+            return MaterialPageRoute(builder: (_) => SignUpScreen());
+          case enterSignUpOtp:
+            return MaterialPageRoute(builder: (_) => EnterSignUpOtp());
           case dashboardScreen:
             return MaterialPageRoute(builder: (_) => DashboardScreen());
           case homeScreen:
@@ -145,6 +155,10 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
             return MaterialPageRoute(builder: (_) => SearchScreen());
           case todayDeals:
             return MaterialPageRoute(builder: (_) => const TodayDeals());
+          case termsAndConditions:
+            return MaterialPageRoute(builder: (_) =>  TermsAndConditions());
+          case privacyPolicy:
+            return MaterialPageRoute(builder: (_) => const PrivacyPolicy());
           default:
             return MaterialPageRoute(
                 builder: (_) => Scaffold(

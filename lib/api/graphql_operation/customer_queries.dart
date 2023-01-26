@@ -8,6 +8,16 @@ loginOTPVerify(mobileNumber: \$mobileNumber,otp: \$otp,websiteId: \$websiteId){
   }
 }
 ''';
+var signUpOtpVerify = '''query createAccountOTPVerify(\$mobileNumber: String!,\$otp: String!,\$websiteId: Int!){ 
+createAccountOTPVerify(mobileNumber: \$mobileNumber,otp: \$otp,websiteId: \$websiteId){
+    message
+    status
+    
+  }
+}
+''';
+
+
 
 var getUserDetails =  ''' 
 query {
@@ -18,6 +28,8 @@ query {
     firstname
     lastname
     email
+    date_of_birth
+    gender
     mobilenumber
 }
 }
@@ -173,6 +185,19 @@ var homePageBanner = '''query cmsBlocks(\$identifiers: [String]){
       title
       content
     }
+  }
+}
+''';
+
+var cmsPages = '''
+query cmsPage(\$identifier: String){
+  cmsPage(identifier: \$identifier) {
+    identifier
+    url_key
+    title
+    content
+    content_heading
+
   }
 }
 ''';

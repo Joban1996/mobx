@@ -13,11 +13,38 @@ import '../../common_widgets/dashboard/app_bar_title.dart';
 import '../../common_widgets/globally_common/app_bar_common.dart';
 import 'package:provider/provider.dart';
 
+import '../../provider/dashboard/product_provider.dart';
+import '../../provider/wishlist_profile/wishlist_provider.dart';
+import '../../utils/app.dart';
 
 
-class DashboardScreen extends StatelessWidget {
+
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+   hitQueries();
+  }
+
+  hitQueries(){
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
+      await  Provider.of<WishlistProvider>(context, listen: false)
+          .hitGetUserDetails().then((value) {
+        if (App.localStorage.getString(PREF_CART_ID) == null) {
+          Provider.of<ProductProvider>(context, listen: false).hitCreateCartID();
+        }
+      });
+    });
+  }
 
   Widget _gotoScreen(int index,BuildContext context){
     switch(index){

@@ -160,6 +160,8 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                                   itemBuilder: (context,index)
                                   {
                                     return  GridItem(
+                                      itemWidth: 3,
+                                      itemHeight: 4.5,
                                       skuID: "",
                                     );
                                   }),
@@ -171,6 +173,8 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                                   itemBuilder: (context,index)
                                   {
                                     return  GridItem(
+                                      itemWidth: 3,
+                                      itemHeight: 4.5,
                                       skuID: parsedProductData!.products!.items![index].sku!,
                                       productData: parsedProductData!.products!.items![index],
                                     );
@@ -210,7 +214,7 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 3/3,
+                                    childAspectRatio: getItemWidth(context) / getItemHeight(context) ,
                                     crossAxisSpacing: 1,
                                     crossAxisCount: 2,
 
@@ -220,6 +224,8 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                                     return GestureDetector(
                                         onTap: () => Navigator.pushNamed(context, Routes.productDetail1),
                                         child: GridItem(
+                                          itemWidth: 2,
+                                          itemHeight: 4.5,
                                           skuID: parsedProductData!.products!.items![index].sku!,
                                           productData: parsedProductData.products!.items![index],));
                                   }

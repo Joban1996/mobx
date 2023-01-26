@@ -11,6 +11,9 @@ const PREF_CART_ID = "C_ID";
 const PREF_USER_EMAIL = "P_U_E";
 const PREF_WISHLIST_ID = "P_W_I";
 const PREF_NAME = 'P_N';
+const PREF_LASTNAME = 'PL_N';
+const PREF_GEN = 'P_GEN';
+const PREF_DOB = 'P_DOB';
 const PREF_EMAIL = 'P_E';
 const PREF_MOBILE = 'P_M';
 

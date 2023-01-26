@@ -42,10 +42,21 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
   late GoogleMapController _controller;
   Set<Marker> markers = {};
 
-  static  const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(30.7333, 76.7794),
-    zoom: 17.0,
-  );
+     LatLng _kGooglePlex = const LatLng(30.7333, 76.7794);
+
+
+  void getMoveCamera() async {
+    List<Placemark> placemark = await placemarkFromCoordinates(
+        _kGooglePlex.latitude, _kGooglePlex.longitude,
+        localeIdentifier: "en_US");
+    addressController.text="${placemark[0].name},${placemark[0].subLocality},${placemark[0].locality},${placemark[0].postalCode},${placemark[0].administrativeArea},${placemark[0].country}";
+    flatAddress='${placemark[0].name},${placemark[0].subLocality}';
+    state='${placemark[0].administrativeArea}';
+    city='${placemark[0].locality}';
+    country='${placemark[0].country}';
+    pinCode='${placemark[0].postalCode}';
+    street = '${placemark[0].street}';
+  }
 
   @override
   void initState() {
@@ -108,17 +119,41 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                 height: MediaQuery.of(context).size.height * 0.70,
                 child:
                 GoogleMap(
-                  initialCameraPosition: _kGooglePlex,
+                  initialCameraPosition:   CameraPosition(
+                        target: _kGooglePlex,
+                          zoom: 17.0,
+                        ),
                   myLocationButtonEnabled: false,
                   mapToolbarEnabled: false,
                   zoomControlsEnabled: false,
                   myLocationEnabled: true,
                   markers: markers,
                   mapType: MapType.normal,
+                  onCameraIdle: () async{
+                      getMoveCamera();
+                  },
+                  onCameraMove: (position){
+                    setState(() {
+                      _kGooglePlex = position.target;
+                    });
+                    // setState(() {
+                    //               GetAddressFromLatLong(position.target.latitude,position.target.longitude);
+                    //              });
+                  },
                   onMapCreated: (GoogleMapController controller){
                     _controller = controller;
 
                   },
+                ),
+              ),
+              const Positioned.fill(
+                child:  Align(
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.location_on,
+                    size: 50,
+                    color: Colors.red,
+                  ),
                 ),
               ),
               Positioned.fill(
@@ -128,9 +163,9 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: OutlinedButton.icon(
                       onPressed: () async {
-                        setState(() {
-                          markers.remove(markers.firstWhere((Marker marker) => marker.markerId.value == 'currentLocation'));
-                        });
+                        // setState(() {
+                        //   markers.remove(markers.firstWhere((Marker marker) => marker.markerId.value == 'currentLocation'));
+                        // });
                        getCallGoogleMapCurrentPosition();
                       },
                       icon: Icon(
@@ -273,23 +308,23 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
 
     _controller
         .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(position.latitude, position.longitude), zoom: 14)));
-    markers.add(
-        Marker(
-            draggable: true,
-            markerId: const MarkerId('currentLocation'),
-            position: LatLng(position.latitude, position.longitude),
-            onDragEnd: ((newPosition) {
-              //position=newPosition.latitude
-              print('the newLat is ${newPosition.latitude}');
-              print('the newLng is ${newPosition.longitude}');
-              setState(() {
-                GetAddressFromLatLong(newPosition.latitude,newPosition.longitude);
-              });
-            }),
-            infoWindow: const InfoWindow(
-              title: 'Your order will be delivered here',
-              snippet: 'Move pin to your exact location'
-            )));
+    // markers.add(
+    //     Marker(
+    //         draggable: false,
+    //         markerId: const MarkerId('currentLocation'),
+    //         position: LatLng(position.latitude, position.longitude),
+    //         onDragEnd: ((newPosition) {
+    //           //position=newPosition.latitude
+    //           print('the newLat is ${newPosition.latitude}');
+    //           print('the newLng is ${newPosition.longitude}');
+    //           setState(() {
+    //             GetAddressFromLatLong(newPosition.latitude,newPosition.longitude);
+    //           });
+    //         }),
+    //         infoWindow: const InfoWindow(
+    //           title: 'Your order will be delivered here',
+    //           snippet: 'Move pin to your exact location'
+    //         )));
     debugPrint("current location >>>>$position");
     setState(() {
       GetAddressFromLatLong(position.latitude,position.longitude);

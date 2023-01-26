@@ -40,13 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(App.localStorage.getString(PREF_EMAIL) == null) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        Provider.of<WishlistProvider>(context, listen: false)
-            .hitGetUserDetails();
-      });
-    }
-    _timer = Timer.periodic(Duration(seconds: 4), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 4), (Timer timer) {
       if (currentPage! < 2) {
         currentPage++;
       } else {
@@ -62,12 +56,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _timer.cancel();
+  }
+
+  @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    if(App.localStorage.getString(PREF_CART_ID) == null) {
-      Provider.of<ProductProvider>(context, listen: false).hitCreateCartID();
-    }
+
   }
 
   Widget _exploreItem(BuildContext context, String txt,
@@ -168,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 "home page banner result >>>> ${result1.data}");
                             getIndex(
                                 homeBannerData.cmsBlocks!.items![0].content);
-                            debugPrint("home page banner result >>>> ${urls}");
+                            debugPrint("home page banner result >>>> $urls");
                             return Container(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                               height: getCurrentScreenHeight(context) / 3.5,
@@ -281,6 +280,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         itemCount: 6,
                                         itemBuilder: (context, index) {
                                           return GridItem(
+                                            itemWidth: 3,
+                                            itemHeight: 4,
                                             skuID: "",
                                           );
                                         }),
@@ -294,6 +295,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             .products!.items!.length,
                                         itemBuilder: (context, index) {
                                           return GridItem(
+                                            itemWidth: 3,
+                                            itemHeight: 4,
                                             skuID: parsedProductData!
                                                 .products!.items![index].sku!,
                                             productData: parsedProductData!

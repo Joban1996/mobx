@@ -13,10 +13,12 @@ import '../../utils/routes.dart';
 
 
 class GridItem extends StatelessWidget {
-   GridItem({this.productData,required this.skuID,Key? key}) : super(key: key);
+   GridItem({this.productData,required this.skuID,Key? key,required this.itemWidth,required this.itemHeight}) : super(key: key);
 
 pro.Items? productData;
 String skuID;
+double itemWidth;
+double itemHeight;
 
   Widget _listItem(BuildContext context){
     return Column(
@@ -26,11 +28,11 @@ String skuID;
           children: [
             Container(
               padding: EdgeInsets.all(20),
-              width: getCurrentScreenWidth(context)/2,
+              width: getCurrentScreenWidth(context)/itemWidth,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Utility.getColorFromHex(globalGreyColor))),
-              height: getCurrentScreenHeight(context)/5,
+              height: getCurrentScreenHeight(context)/itemHeight,
               child: productData != null ? Image.network(productData!.image!.url.toString(),) :
               Image.asset("assets/images/iphone_pic.png"),),
               Container(
@@ -44,7 +46,7 @@ String skuID;
         ),
         const SizedBox(height: 5,),
           Container(
-              width: getCurrentScreenWidth(context)/2,
+              width: getCurrentScreenWidth(context)/itemWidth,
               child: Text(productData != null ? productData!.name.toString() :
               "Refurbished Apple iPhone 12 128 GB",
                 style: Theme.of(context).textTheme.caption,maxLines: 1,overflow: TextOverflow.ellipsis,)),

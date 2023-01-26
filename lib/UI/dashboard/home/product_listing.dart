@@ -126,14 +126,16 @@ class ProductListing extends StatelessWidget {
                         removeTop: true,
                         child: GridView.builder(
                             gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              childAspectRatio: 4 / 4,
+                                 SliverGridDelegateWithFixedCrossAxisCount(
+                                  childAspectRatio: getItemWidth(context) / getItemHeight(context) ,
                               crossAxisSpacing: 1,
                               crossAxisCount: 2,
                             ),
                             itemCount: subCateProductData!.products!.items!.length,
                             itemBuilder: (BuildContext context, int index) {
                               return GridItem(
+                                itemWidth: 2,
+                                itemHeight: 4.5,
                                 skuID: subCateProductData!.products!.items![index].sku!,
                                 productData: subCateProductData!.products!.items![index],);
                             }

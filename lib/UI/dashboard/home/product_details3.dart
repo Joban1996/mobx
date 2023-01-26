@@ -61,6 +61,8 @@ class ProductDetails3 extends StatelessWidget {
                               itemCount: subCateProductData!.products!.items!.length,
                               itemBuilder: (context, index) {
                                 return subCateProductData!.products!.items![index].sku! != sku  ? GridItem(
+                                  itemWidth: 3,
+                                  itemHeight: 4,
                                   skuID: subCateProductData!.products!.items![index].sku!,
                                   productData: subCateProductData!.products!.items![index],
                                 ): Container();

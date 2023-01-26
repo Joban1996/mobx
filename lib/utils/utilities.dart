@@ -3,10 +3,9 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
-
 import 'constants/constants_colors.dart';
 
 
@@ -230,8 +229,15 @@ String readTimestamp(int timestamp) {
 
   return time;
 }
+
 double getCurrentScreenHeight(BuildContext context) => MediaQuery.of(context).size.height;
 double getCurrentScreenWidth(BuildContext context) => MediaQuery.of(context).size.width;
+
+
+double getItemHeight(BuildContext context) =>  (MediaQuery.of(context).size.height - kToolbarHeight - 24) / 2.9;
+double getItemWidth(BuildContext context) =>  MediaQuery.of(context).size.width / 2.1;
+
+
 
 verticalSpacing({required double heightInDouble,required BuildContext context}){
   return SizedBox(height: getCurrentScreenHeight(context)*heightInDouble);
@@ -251,6 +257,14 @@ Widget  dividerCommon(BuildContext context){
 int timeInMillis = 1586348737122;
 var date = DateTime.fromMillisecondsSinceEpoch(timeInMillis);
 var formattedDate = DateFormat.yMMMd().format(date); // Apr 8, 2
+
+String parseHtmlString(String htmlString) {
+  final document = parse(htmlString);
+  final String parsedString = parse(document.body!.text).documentElement!.text;
+
+  return parsedString;
+}
+
 
 greenTextStyle(double _fontSize) {
   return TextStyle(

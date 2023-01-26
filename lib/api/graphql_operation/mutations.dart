@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' ;
+import 'package:http/http.dart';
 import 'package:mobx/model/product/getRegionModel.dart';
 
-
-
-
-
-
 class QueryMutations {
-
   String loginOTPMutation(String mobileNo, int id) {
     return """
      mutation {
@@ -22,7 +16,88 @@ class QueryMutations {
       """;
   }
 
-  String loginWithEmailMutation(String email,String password) {
+  String createAccountNumberMutation(String mobileNo, int id) {
+    return """
+     mutation {
+  createAccountOTP(mobileNumber: $mobileNo, 
+    websiteId: $id) {
+    message
+    status
+  }
+}
+  
+      """;
+  }
+
+  String signUpOTPMutation(String mobileNo, int id) {
+    return """
+     mutation {
+  loginOTP(mobileNumber: $mobileNo, 
+    websiteId: $id) {
+    message
+    status
+  }
+}
+  
+      """;
+  }
+
+  // String createAccountMutation(String mobileNumber, String otp,String firstname, String lastname, String email) {
+  //   return """
+  //    mutation  {
+  //     createCustomerAccount(
+  //   mobileNumber:$mobileNumber
+  //   otp:$otp
+  //  input:{
+  //  firstname: $firstname
+  //   lastname: $lastname
+  //   email: $email
+  //   }
+  //     )
+
+  //   customer {
+  //       firstname
+  //       lastname
+  //       email
+  //     }
+  //         token
+  //     status
+  //     message
+  // }
+
+  //     """;
+  // }
+
+  String createAccountMutation(String mobileNumber, String otp,
+      String firstname, String lastname, String email) {
+    return """
+
+mutation{
+  createCustomerAccount(
+  mobileNumber:$mobileNumber
+      otp:$otp
+     input:{
+     firstname:"$firstname"
+      lastname: "$lastname"
+      email: "$email"
+      }
+  ){
+ customer {
+        firstname
+        lastname
+        email
+      }
+ token
+      status
+      message
+  }
+  
+}
+  
+      """;
+  }
+
+  String loginWithEmailMutation(String email, String password) {
     return """
 mutation {
   generateCustomerToken(
@@ -38,7 +113,6 @@ mutation {
   }
 
   String addToCart(String cartId, String skuID) {
-
     return """
 mutation {
   addProductsToCart(
@@ -67,7 +141,6 @@ mutation {
 }
       """;
   }
-
 
   String updateCart(String cartId, String cartUID, int quantity) {
     return """
@@ -152,9 +225,16 @@ mutation {
       """;
   }
 
-  String addNewAddress(AvailableRegions regions,String firstName, String lastName,String city, String state,
-      String pinCode, String  phonNumber,bool isBillingAddress,String street)
-  {
+  String addNewAddress(
+      AvailableRegions regions,
+      String firstName,
+      String lastName,
+      String city,
+      String state,
+      String pinCode,
+      String phonNumber,
+      bool isBillingAddress,
+      String street) {
     return """
 mutation {
   createCustomerAddress(
@@ -218,10 +298,16 @@ mutation {
     """;
   }
 
-
-  String addShippingAddress(AvailableRegions regions,String firstName, String lastName,String city,
-      String pinCode, String phonNumber,bool isBillingAddress,String street,String cartId)
-  {
+  String addShippingAddress(
+      AvailableRegions regions,
+      String firstName,
+      String lastName,
+      String city,
+      String pinCode,
+      String phonNumber,
+      bool isBillingAddress,
+      String street,
+      String cartId) {
     return """
 mutation {
   setShippingAddressesOnCart(
@@ -276,8 +362,15 @@ mutation {
     """;
   }
 
- String addBillingAddress(AvailableRegions regions,String firstName, String lastName,String city,
-     String pinCode, String phonNumber,String street,String cartId){
+  String addBillingAddress(
+      AvailableRegions regions,
+      String firstName,
+      String lastName,
+      String city,
+      String pinCode,
+      String phonNumber,
+      String street,
+      String cartId) {
     return '''
     mutation {
   setBillingAddressOnCart(
@@ -324,7 +417,6 @@ mutation {
 
     ''';
   }
-
 
   String setPayMethod(String cartId, String code) {
     return """
@@ -393,7 +485,7 @@ mutation {
       """;
   }
 
-  String addToWishlistMutation(int id,String sku,int quantity) {
+  String addToWishlistMutation(int id, String sku, int quantity) {
     return """
 mutation {
   addProductsToWishlist(
@@ -419,7 +511,10 @@ mutation {
       """;
   }
 
-  String deleteWishlist(int wishlistItemId, int wishListId,) {
+  String deleteWishlist(
+    int wishlistItemId,
+    int wishListId,
+  ) {
     return """
 mutation {
   removeProductsFromWishlist(
@@ -496,23 +591,28 @@ mutation {
       """;
   }
 
-  String updateCustomer(String name, String email) {
+  String updateCustomer(String name, String lastname ,int gender,String date_of_birth ,String email) {
     return """
 mutation {
   updateCustomer(
     input: {
       firstname: "$name"
+      lastname:"$lastname"
       email: "$email"
+      gender:"$gender"
+      date_of_birth:"$date_of_birth"
     }
   ) {
     customer {
       firstname
+      lastname
       email
+      date_of_birth
+      gender
     }
   }
 }
 
       """;
   }
-
 }

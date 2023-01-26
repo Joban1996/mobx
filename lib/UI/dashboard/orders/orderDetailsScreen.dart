@@ -7,6 +7,7 @@ import 'package:mobx/model/product/order_detail_model.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/constants/strings.dart';
 import 'package:mobx/utils/utilities.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../api/graphql_operation/customer_queries.dart';
 class OrderDetailsScreen extends StatelessWidget {
@@ -117,7 +118,14 @@ class OrderDetailsScreen extends StatelessWidget {
         appbar: AppBar(),
         onTapCallback: () {},
         trailingAction: [
-          IconButton(onPressed: (){},
+          IconButton(onPressed: ()async{
+            String phoneNumber = "tel:+91 7676576765";
+            if(await canLaunch(phoneNumber) ){
+              launch(phoneNumber);
+            }else{
+              debugPrint("Not open call app.");
+            }
+          },
               icon: Icon(Icons.phone_outlined,color: Utility.getColorFromHex(globalGreyColor))
           ),
         ],
