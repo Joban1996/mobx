@@ -42,8 +42,9 @@ class LoginWithEmail extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset("assets/images/mobex2.png"),
-                    SizedBox(height: getCurrentScreenHeight(context)*0.02,),
+                    SizedBox(
+                        width: getCurrentScreenWidth(context)*0.5,height: getCurrentScreenHeight(context)*0.1,
+                        child: Image.asset("assets/images/ic_launcher.png",fit: BoxFit.contain,)),
                     Text("SELL | PURCHASE | REPAIR | INSURANCE",
                       style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14.0),
                       textAlign: TextAlign.center,),

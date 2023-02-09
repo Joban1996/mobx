@@ -290,6 +290,20 @@ class GraphQlClient {
     );
   }
 
+  static setRazorpayDetails(String mutation,String cartId,String paymentId,String orderId,String signature) {
+    print(mutation);
+    return MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'cart_id': cartId,
+        'rzp_payment_id': paymentId,
+        'rzp_order_id': orderId,
+        'rzp_signature': signature
+      },
+    );
+  }
+
+
   static deleteAddress(String mutation,int id) {
     print(mutation);
     return MutationOptions(

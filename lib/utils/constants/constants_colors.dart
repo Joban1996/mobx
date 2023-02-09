@@ -16,6 +16,7 @@ const PREF_GEN = 'P_GEN';
 const PREF_DOB = 'P_DOB';
 const PREF_EMAIL = 'P_E';
 const PREF_MOBILE = 'P_M';
+const PREF_ORDER_ID = 'P_O_I';
 
 
 ///colors

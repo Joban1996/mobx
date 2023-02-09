@@ -169,6 +169,7 @@ class WishListScreeen extends StatelessWidget {
     );
   }
 
+
   Widget info(Items productItems,BuildContext context){
     return GestureDetector(
       onTap: (){

@@ -102,4 +102,41 @@ class PaymentProvider with ChangeNotifier{
      }
    }
 
+   Future placeRazorpayOrder({required String cartId}) async {
+     QueryMutations queryMutation = QueryMutations();
+     QueryResult results = await GraphQLClientAPI().mClient
+         .mutate(GraphQlClient.placeUserOrder(queryMutation.placeRazorpayOrderMutation(cartId),
+         cartId));
+     if (results.data != null) {
+       debugPrint("place razorpay order >>> ${results.data!}");
+       await App.localStorage.setString(PREF_ORDER_ID,results.data!['placeRazorpayOrder']['rzp_order_id']);
+       return true;
+     }else{
+       if(results.exception != null){
+         debugPrint("place razorpay order >>> ${results.exception!}");
+         Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
+         debugPrint(results.exception!.graphqlErrors[0].message.toString());
+       }
+       return false;
+     }
+   }
+
+   setRazorpayDetailsToCart({required String cartId,required String paymentId,required String orderId,required String signature})async{
+     QueryMutations queryMutation = QueryMutations();
+     QueryResult results = await GraphQLClientAPI().mClient
+         .mutate(GraphQlClient.setRazorpayDetails(queryMutation.setRazorpayDetails(cartId,paymentId,orderId,signature),
+         cartId,paymentId,orderId,signature));
+     if (results.data != null) {
+       debugPrint(" addNew Address mutation result >>> ${results.data!}");
+       return true;
+     }else{
+       if(results.exception != null){
+         debugPrint(" addNew Address mutation result >>> ${results.exception!}");
+         Utility.showErrorMessage(results.exception!.graphqlErrors[0].message.toString());
+         debugPrint(results.exception!.graphqlErrors[0].message.toString());
+       }
+       return false;
+     }
+   }
+
 }

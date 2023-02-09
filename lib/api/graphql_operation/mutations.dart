@@ -477,6 +477,21 @@ mutation {
       """;
   }
 
+  String placeRazorpayOrderMutation(String cartId){
+    return """
+      mutation {
+    placeRazorpayOrder(cart_id: "$cartId") {
+      success
+      rzp_order_id
+      order_quote_id
+      amount
+      currency
+      message
+    }
+  }
+    """;
+  }
+
   String deleteAddress(int id) {
     return """
 mutation {
@@ -615,4 +630,24 @@ mutation {
 
       """;
   }
+
+  String setRazorpayDetails(String cartId,String paymentId, String orderID,String signature) {
+    return """
+mutation {
+    setRzpPaymentDetailsOnCart(
+      input: {
+        cart_id: "$cartId"
+        rzp_payment_id: "$paymentId"
+        rzp_order_id: "$orderID"
+        rzp_signature: "$signature"
+      }
+    ) {
+      cart {
+        id
+      }
+    }
+  }
+      """;
+  }
+
 }

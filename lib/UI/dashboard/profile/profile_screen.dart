@@ -254,6 +254,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );})
     );
   }
+
+
  Future clearPrefs(DashboardProvider val)async{
     val.setTabIndex(0);
    await App.localStorage.clear();

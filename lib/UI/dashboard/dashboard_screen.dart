@@ -28,11 +28,12 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
 
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-   hitQueries();
+    hitQueries();
   }
 
   hitQueries()async{

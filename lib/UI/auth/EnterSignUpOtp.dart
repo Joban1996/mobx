@@ -12,7 +12,6 @@ import 'package:mobx/provider/auth/login_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/utilities.dart';
 import 'package:provider/provider.dart';
-
 import '../../provider/auth/signUpProvider.dart';
 import '../../utils/routes.dart';
 import 'package:alt_sms_autofill/alt_sms_autofill.dart';

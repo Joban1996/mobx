@@ -13,6 +13,7 @@ class WishlistProvider with ChangeNotifier{
   Future  hitGetUserDetails() async {
     print("hitGetUserDetailscall");
     QueryOptions getUserDetailsQuery = QueryOptions(
+      fetchPolicy: FetchPolicy.noCache,
       document: gql(getUserDetails),);
     final QueryResult results = await GraphQLClientAPI()
         .mClient
@@ -20,7 +21,7 @@ class WishlistProvider with ChangeNotifier{
     if (results.data != null) {
       debugPrint("customer data joban ${results.data!['customer']}");
       if(results.data!['customer']['wishlists'] != null) {
-       await App.localStorage.setString(
+        await App.localStorage.setString(
             PREF_WISHLIST_ID, results.data!['customer']['wishlists'][0]['id']);
       }
        await App.localStorage.setString(PREF_NAME, "${results.data!['customer']['firstname']}");
@@ -81,9 +82,14 @@ class WishlistProvider with ChangeNotifier{
     QueryResult results = await GraphQLClientAPI().mClient
         .mutate(GraphQlClient.deleteOrAddWishlistToCart(queryMutation.addWishlistToCart(wishlistItemId,wishListId),
         wishlistItemId,wishListId));
-    debugPrint(" update to cart mutation result >>> ${results.data}");
+    debugPrint(" add item to wish list result >>> ${results.data}");
+    debugPrint(" add item to wish list result >>> ${ results.data!['addWishlistItemsToCart']['add_wishlist_items_to_cart_user_errors']}");
     if (results.data != null) {
-      Utility.showSuccessMessage("Product added successfully in Cart");
+      if(results.data!['addWishlistItemsToCart']['status'] == false) {
+        Utility.showSuccessMessage("${results.data!['addWishlistItemsToCart']['add_wishlist_items_to_cart_user_errors'][0]['message']}");
+      }else{
+        Utility.showSuccessMessage("Product added to wishlist successfully");
+      }
       return true;
     }else{
       if(results.exception != null){

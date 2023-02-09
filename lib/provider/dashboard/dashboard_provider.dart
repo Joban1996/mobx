@@ -45,6 +45,8 @@ class  DashboardProvider with ChangeNotifier{
   SearchDataModel? get getSearchData => searchData;
   int get getSelectedTabIndex  => selectedTabIndex;
 
+
+
   setTabIndex(int val){
     selectedTabIndex = val;
     notifyListeners();

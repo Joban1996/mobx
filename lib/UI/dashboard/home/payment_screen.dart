@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
-import 'package:mobx/common_widgets/dashboard/item_info_arrow_forward.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/globally_common/app_button.dart';
 import 'package:mobx/common_widgets/globally_common/common_loader.dart';
@@ -45,14 +44,25 @@ class _PaymentScreenState extends State<PaymentScreen> {
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
     debugPrint('payment succeed ::: Payment Id > ${response.paymentId}');
-     context.read<PaymentProvider>().hitPlaceOrder(
+    debugPrint('payment succeed :::order Id > ${response.orderId}');
+    debugPrint('payment succeed ::: signature Id > ${response.signature}');
+     context.read<PaymentProvider>().setRazorpayDetailsToCart(
         cartId: App.localStorage.getString(
-            PREF_CART_ID).toString()).then((
+            PREF_CART_ID).toString(),paymentId: response.paymentId!,
+         orderId: App.localStorage.getString(PREF_ORDER_ID).toString(),
+         signature: response.signature.toString()).then((
         value) async{
       if (value) {
-        await App.localStorage.remove(PREF_CART_ID);
-        debugPrint("cart id removed >>>>> ${App.localStorage.getString(PREF_CART_ID)}");
-        navigate();
+        context.read<PaymentProvider>().hitPlaceOrder(
+            cartId: App.localStorage.getString(
+                PREF_CART_ID).toString()).then((
+            value) async{
+          if (value) {
+            await App.localStorage.remove(PREF_CART_ID);
+            debugPrint("cart id removed >>>>> ${App.localStorage.getString(PREF_CART_ID)}");
+            navigate();
+          }
+        });
       }
     });
   }
@@ -69,6 +79,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 Map<String,dynamic> options(int amount,String name,String des,String contact,String email){
   return  {
     'key': 'rzp_test_S3h5y6fLfZ28tI',
+    'order_id': App.localStorage.getString(PREF_ORDER_ID).toString(),
     'amount': amount*100,
     'name': 'Mobex',
     'description': 'test',
@@ -255,8 +266,10 @@ Map<String,dynamic> options(int amount,String name,String des,String contact,Str
                                }
                                if(parsed.cart!.selectedPaymentMethod != null) {
                                  if (val1.getSelectedCode == "razorpay") {
-                                    paymentUsingRazorpay(parsed, val2, val1);
-                                    val2.setLoadingBool(false);
+                                    val1.placeRazorpayOrder(cartId: App.localStorage.getString(PREF_CART_ID).toString()).then((value){
+                                      paymentUsingRazorpay(parsed, val2, val1);
+                                      val2.setLoadingBool(false);
+                                    });
                                  }else{
                                    val2.setLoadingBool(false);
                                     val1.hitPlaceOrder(

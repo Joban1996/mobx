@@ -53,7 +53,21 @@ class _HomeScreenState extends State<HomeScreen> {
         curve: Curves.easeIn,
       );
     });
+    hitQueries();
   }
+
+  hitQueries()async{
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
+      await  Provider.of<WishlistProvider>(context, listen: false)
+          .hitGetUserDetails().then((value) {
+        if (App.localStorage.getString(PREF_CART_ID) == null) {
+          Provider.of<ProductProvider>(context, listen: false).hitCreateCartID();
+        }
+      });
+    });
+  }
+
+
 
   @override
   void dispose() {

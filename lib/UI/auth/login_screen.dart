@@ -61,14 +61,13 @@ final phoneController = TextEditingController();
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                    height: 80,width: 200,
-                    child: Image.asset("assets/images/Mobex_tp.png")),
-                SizedBox(height: getCurrentScreenHeight(context)*0.02,),
+                SizedBox(
+                    width: getCurrentScreenWidth(context)*0.5,height: getCurrentScreenHeight(context)*0.1,
+                    child: Image.asset("assets/images/ic_launcher.png",fit: BoxFit.contain,)),
                 Text("SELL | PURCHASE | REPAIR | INSURANCE",
                   style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 14.0),
                   textAlign: TextAlign.center,),
-                SizedBox(height: getCurrentScreenHeight(context)/7,),
+                SizedBox(height: getCurrentScreenHeight(context)/8,),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text("Please enter your phone number",

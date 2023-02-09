@@ -42,10 +42,10 @@ class _AccountInformationState extends State<AccountInformation> {
   var valuefirst = false;
   int counter = 0;
 
-  DateTime selectedDate = DateTime.now();
-  var now1 = new DateTime.now().year;
-  var now2 = new DateTime.now().month;
-  var now3 = new DateTime.now().day;
+  DateTime? selectedDate;
+  var now1 = DateTime.now().year;
+  var now2 = DateTime.now().month;
+  var now3 = DateTime.now().day;
 
   void initState() {
     // TODO: implement initState
@@ -73,10 +73,14 @@ last_name =
 
 
   Future<void> _selectDate(BuildContext context) async {
+    selectedDate = DateTime.now();
+    var now1 = new DateTime.now().year;
+    var now2 = new DateTime.now().month;
+    var now3 = new DateTime.now().day;
     try {
       final DateTime? picked = await showDatePicker(
           context: context,
-          initialDate: selectedDate,
+          initialDate: selectedDate!,
           firstDate: DateTime(1971),
           lastDate: DateTime(now1, now2, now3));
 
@@ -158,7 +162,7 @@ last_name =
                   text: result.data!['customer']['mobilenumber']);
               TextEditingController email = TextEditingController(
                   text: result.data!['customer']['email']);
-              String? dateOfBith = result.data!['customer']['date_of_birth'];
+              String? dateOfBirth = result.data!['customer']['date_of_birth'];
               return CommonLoader(
                   screenUI: SingleChildScrollView(
                     child: Container(
@@ -224,7 +228,13 @@ last_name =
                             keyboardType: TextInputType.emailAddress,
                             decoration: CommonStyle.textFieldStyle(context,
                                 borderSideColor: globalTextFieldBorderGrey,
-                                hintText: "john@example.com"),
+                                hintText: "john@example.com") .copyWith(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                      color: Utility.getColorFromHex(
+                                          globalTextFieldBorderGrey))),
+                            ),
                           ),
                           verticalSpacing(heightInDouble: 0.04, context: context),
                           Row(
@@ -308,11 +318,11 @@ last_name =
                                       padding: const EdgeInsets.all(10.0),
                                       child: Text(
                                         hasSubmitted
-                                            ? DateFormat('dd/MM/yyyy')
-                                            .format(selectedDate)
-                                            : dateOfBith == null
+                                            ? DateFormat('yyyy-MM-dd')
+                                            .format(selectedDate!)
+                                            : dateOfBirth == null
                                             ? "Enter your date of birth"
-                                            : dateOfBith,
+                                            : dateOfBirth,
                                         style:
                                         Theme.of(context).textTheme.bodySmall,
                                       ),
@@ -330,20 +340,49 @@ last_name =
                             builder: (_, val, val2, child) {
                               return AppButton(
                                 onTap: () {
-                                  var newCount = DateFormat('dd MMMM yyyy')
-                                      .format(selectedDate);
-                                  val2.setLoadingBool(true);
-                                  val
-                                      .hitUpdateCustomer(
-                                      name: first_name!.text,
-                                      lastname: last_name!.text,
-                                      gender: _value,
-                                      dob: newCount,
-                                      email: email.text)
-                                      .then((value) {
-                                    val2.setLoadingBool(false);
-                                     Navigator.pushNamedAndRemoveUntil(context, Routes.dashboardScreen,ModalRoute.withName(Routes.dashboardScreen));
-                                  });
+                                  print("CHeck value dateOfBirth Variable ${dateOfBirth}");
+                                  print("CHeck value selectedDate Variable ${selectedDate}");
+                                  print("CHeck value selectedDate String Variable ${selectedDate}");
+                                  if(selectedDate== null){
+                                    print("396_IF");
+                                    print("dateOfBirth 393---- $dateOfBirth");
+                                    print("counter $counter");
+                                    var newCount = DateFormat('dd MMMM yyyy')
+                                        .format(DateTime.parse(dateOfBirth!));
+                                    print("VAVAVVAVAVAV${dateOfBirth}");
+                                    print("VAVAVVAVAVAV___SECOND $newCount");
+                                    val2.setLoadingBool(true);
+                                    val
+                                        .hitUpdateCustomer(
+                                        name: first_name!.text,
+                                        lastname: last_name!.text,
+                                        gender: _value,
+                                        dob: newCount,
+                                        email: email.text)
+                                        .then((value) {
+                                      val2.setLoadingBool(false);
+                                      Navigator.pushNamedAndRemoveUntil(context, Routes.dashboardScreen,ModalRoute.withName(Routes.dashboardScreen));
+                                    });
+
+                                  }else{
+                                    print("398__");
+                                    var newCount = DateFormat('dd MMMM yyyy')
+                                        .format(selectedDate!);
+                                    print("VAVAVVAVAVAV${selectedDate}");
+                                    print("VAVAVVAVAVAV___SECOND $newCount");
+                                    val2.setLoadingBool(true);
+                                    val
+                                        .hitUpdateCustomer(
+                                        name: first_name!.text,
+                                        lastname: last_name!.text,
+                                        gender: _value,
+                                        dob: newCount,
+                                        email: email.text)
+                                        .then((value) {
+                                      val2.setLoadingBool(false);
+                                      Navigator.pushNamedAndRemoveUntil(context, Routes.dashboardScreen,ModalRoute.withName(Routes.dashboardScreen));
+                                    });
+                                  }
                                 },
                                 text: "UPDATE",
                                 isTrailing: false,
