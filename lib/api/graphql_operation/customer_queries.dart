@@ -592,3 +592,22 @@ query products(\$search: String!){
   }
 }
 ''';
+
+
+var getFilterData =  ''' 
+query products(\$filter: ProductAttributeFilterInput){
+  products(filter: \$filter) {
+    total_count
+    aggregations{
+      attribute_code
+      label
+      count
+      options{
+        count
+        label
+        value
+      }
+    }
+}
+}
+''';

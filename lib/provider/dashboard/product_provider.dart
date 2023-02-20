@@ -27,11 +27,78 @@ String _cartItemsLength = "";
 String _dropDownValue = "1";
 String _tokenExpireMsg = '';
 String userErrorMsg ="";
+int _filterCatIndex = 0;
+List<bool> _isChecked = [];
+String priceFrom = '';
+String priceTo = '';
+String colorFilter = '';
+String manufacturerFilter = '';
+String osFilter = '';
+String brandFilter = '';
+String countryFilter = '';
+String storageCapacityFilter = '';
 
 int get getItemIndex => _itemIndex;
 String get getCartItemLength => _cartItemsLength;
 String get getDropDownValue => _dropDownValue;
 String get getTokenExpireMsg => _tokenExpireMsg;
+int get getFilterCatIndex => _filterCatIndex;
+List<bool> get getIsCheckedList => _isChecked;
+String get getPriceFrom => priceFrom;
+String get getPriceTo => priceTo;
+String get getManufacturerFilter => manufacturerFilter;
+String get getOsFilter => osFilter;
+String get getBrandFilter => brandFilter;
+String get getCountryFilter => countryFilter;
+String get getStorageCapacityFilter => storageCapacityFilter;
+String get getColorFilter => colorFilter;
+
+
+setPrice(String val){
+  priceFrom = val;
+  notifyListeners();
+}
+
+setPriceTo(String val){
+  priceTo = val;
+  notifyListeners();
+}
+
+setColor(String val){
+  colorFilter = val;
+  notifyListeners();
+}
+
+setManufacturer(String val){
+  manufacturerFilter = val;
+  notifyListeners();
+}
+setOs(String val){
+  osFilter = val;
+  notifyListeners();
+}
+setBrand(String val){
+  brandFilter = val;
+  notifyListeners();
+}
+setCountry(String val){
+  countryFilter = val;
+  notifyListeners();
+}
+setStorageCapacity(String val){
+  storageCapacityFilter = val;
+  notifyListeners();
+}
+
+setIsCheckedList(List<bool> data){
+  _isChecked = data;
+  notifyListeners();
+}
+
+setFilterCatIndex(int index){
+  _filterCatIndex = index;
+  notifyListeners();
+}
 
 setTokenExpireMsg(String msg){
   _tokenExpireMsg = msg;

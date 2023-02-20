@@ -30,6 +30,7 @@ import 'package:mobx/UI/dashboard/sell/brand_model_screen.dart';
 import 'package:mobx/UI/dashboard/sell/device_info_screen.dart';
 import 'package:mobx/UI/dashboard/sell/sell_home.dart';
 import 'package:mobx/model/name_model.dart';
+import '../UI/dashboard/home/filter_screen.dart';
 import '../UI/dashboard/home/product_details3.dart';
 import '../UI/dashboard/home/shopping_cart.dart';
 import '../UI/dashboard/repair/repair_home.dart';
@@ -78,6 +79,7 @@ class Routes {
   static const todayDeals="todayDeals";
   static const termsAndConditions="termsAndConditions";
   static const privacyPolicy="privacyPolicy";
+  static const filterScreen="filterScreen";
 
 static Route<dynamic> generatedRoute(RouteSettings settings){
         switch(settings.name){
@@ -159,6 +161,8 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
             return MaterialPageRoute(builder: (_) =>  TermsAndConditions());
           case privacyPolicy:
             return MaterialPageRoute(builder: (_) => const PrivacyPolicy());
+          case filterScreen:
+            return MaterialPageRoute(builder: (_) => FilterScreen());
           default:
             return MaterialPageRoute(
                 builder: (_) => Scaffold(

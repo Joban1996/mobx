@@ -3,6 +3,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/common_widgets/dashboard/filter_view.dart';
 import 'package:mobx/common_widgets/dashboard/grid_Item.dart';
 import 'package:mobx/common_widgets/dashboard/horizontal_circle_brand_list.dart';
+import 'package:mobx/provider/dashboard/product_provider.dart';
 import 'package:mobx/utils/routes.dart';
 import 'package:mobx/utils/utilities.dart';
 import 'package:provider/provider.dart';
@@ -30,14 +31,23 @@ class ProductListing extends StatelessWidget {
         leadingImage: GestureDetector(
             onTap: () {
               context.read<DashboardProvider>().setSubCategoryName(Strings.refurbished_mobiles);
+              context.read<ProductProvider>().setPrice("");
+              context.read<ProductProvider>().setPriceTo("");
+              context.read<ProductProvider>().setOs("");
+              context.read<ProductProvider>().setBrand("");
+              context.read<ProductProvider>().setManufacturer("");
+              context.read<ProductProvider>().setColor("");
+              context.read<ProductProvider>().setCountry("");
+              context.read<ProductProvider>().setStorageCapacity("");
               Navigator.pop(context);
             },
             child: Image.asset("assets/images/back_arrow.png")),
         trailingAction: [
-          // const Icon(
-          //   Icons.star_border_outlined,
-          //   color: Colors.black,
-          // ),
+          GestureDetector(
+              onTap: (){
+                Navigator.pushReplacementNamed(context, Routes.filterScreen);
+              },
+              child: Image.asset("assets/images/filter_icon.png")),
           GestureDetector(
               onTap: (){
                 if(App.localStorage.getString(PREF_CART_ID) != null){
@@ -107,6 +117,13 @@ class ProductListing extends StatelessWidget {
     variables:  {
     'filter':{
     'category_uid': {'eq': context.read<DashboardProvider>().getSubCategoryID},
+      'price':   {'from': context.read<ProductProvider>().getPriceFrom, 'to' : context.read<ProductProvider>().getPriceTo},
+      'color':  {'eq': context.read<ProductProvider>().getColorFilter},
+      'manufacturer':{'eq': context.read<ProductProvider>().getManufacturerFilter},
+      'os':{'eq': context.read<ProductProvider>().getOsFilter},
+      'brand':{'eq': context.read<ProductProvider>().getBrandFilter},
+      'country_of_origin':{'eq': context.read<ProductProvider>().getCountryFilter},
+      'memory_storage_capacity':{'eq': context.read<ProductProvider>().getStorageCapacityFilter},
     }
     }
     ),
@@ -144,29 +161,29 @@ class ProductListing extends StatelessWidget {
                     );})
                   ],
                 ),
-                GestureDetector(
-                    onTap: (){showModalBottomSheet(
-                        context: context, builder: (context){
-                      return Wrap(
-                        children: [
-                          FilterView()
-                        ],
-                      );
-                    });},
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration:  BoxDecoration(
-                          border: Border.all(),color: Utility.getColorFromHex(globalWhiteColor)
-                         ),
-                      height: 50,width: getCurrentScreenWidth(context),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset("assets/images/filter_icon.png"),
-                        horizontalSpacing(widthInDouble: 0.02, context: context),
-                         Text("Filter",style: Theme.of(context).textTheme.bodyMedium,),
-                      ],
-                    ),))
+                // GestureDetector(
+                //     onTap: (){showModalBottomSheet(
+                //         context: context, builder: (context){
+                //       return Wrap(
+                //         children: [
+                //           FilterView()
+                //         ],
+                //       );
+                //     });},
+                //     child: Container(
+                //       alignment: Alignment.center,
+                //       decoration:  BoxDecoration(
+                //           border: Border.all(),color: Utility.getColorFromHex(globalWhiteColor)
+                //          ),
+                //       height: 50,width: getCurrentScreenWidth(context),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       children: [
+                //         Image.asset("assets/images/filter_icon.png"),
+                //         horizontalSpacing(widthInDouble: 0.02, context: context),
+                //          Text("Filter",style: Theme.of(context).textTheme.bodyMedium,),
+                //       ],
+                //     ),))
               ],
             );
           }),
