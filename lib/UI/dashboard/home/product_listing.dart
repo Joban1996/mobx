@@ -18,7 +18,9 @@ import '../../../utils/constants/constants_colors.dart';
 import '../../../utils/constants/strings.dart';
 
 class ProductListing extends StatelessWidget {
-  const ProductListing({Key? key}) : super(key: key);
+   ProductListing({Key? key}) : super(key: key);
+
+   VoidCallback? reFetchData;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,11 @@ class ProductListing extends StatelessWidget {
         trailingAction: [
           GestureDetector(
               onTap: (){
-                Navigator.pushReplacementNamed(context, Routes.filterScreen);
+                Navigator.pushNamed(context, Routes.filterScreen).then((value) {
+                  if(value == true){
+                    reFetchData!.call();
+                  }
+                });
               },
               child: Image.asset("assets/images/filter_icon.png")),
           GestureDetector(
@@ -57,7 +63,9 @@ class ProductListing extends StatelessWidget {
         ],
       ),
       body: Query(
-          options: QueryOptions(document: gql(categories), variables: {
+          options: QueryOptions(
+              fetchPolicy: FetchPolicy.noCache,
+              document: gql(categories), variables: {
             'filters': {
               'ids': {
                 'in': [
@@ -73,6 +81,7 @@ class ProductListing extends StatelessWidget {
           }),
           builder: (QueryResult result,
               {VoidCallback? refetch, FetchMore? fetchMore}) {
+            reFetchData = refetch;
             if (result.hasException) {
               return Text(result.exception.toString());
             }
@@ -113,6 +122,7 @@ class ProductListing extends StatelessWidget {
                     ),
     Query(
     options: QueryOptions(
+    fetchPolicy: FetchPolicy.noCache,
     document: gql(products),
     variables:  {
     'filter':{
@@ -128,6 +138,7 @@ class ProductListing extends StatelessWidget {
     }
     ),
     builder: (QueryResult result, { VoidCallback? refetch, FetchMore? fetchMore }) {
+      //reFetchData = refetch;
     if (result.hasException) {
     return Text(result.exception.toString());
     }

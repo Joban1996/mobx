@@ -3,6 +3,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/common_widgets/globally_common/app_button.dart';
 import 'package:mobx/model/product/filter_data_model.dart';
 import 'package:mobx/provider/dashboard/dashboard_provider.dart';
+import 'package:mobx/provider/dashboard/filter_provider.dart';
 import 'package:mobx/provider/dashboard/product_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/routes.dart';
@@ -35,12 +36,18 @@ class _FilterViewState extends State<FilterView> {
     super.initState();
       _isChecked =  List.filled(widget.filterData.length, null, growable: true);
       valueList = List.filled(8, "", growable: true);
-       for(int i=0;i<widget.filterData.length;i++){
-        _isChecked[i] =
-        List<bool>.filled(widget.filterData![i].options!.length, false);
+    //WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if(context.read<FilterProvider>().getIsCheckedList == null) {
+        for (int i = 0; i < widget.filterData.length; i++) {
+          _isChecked[i] =
+          List<bool>.filled(widget.filterData![i].options!.length, false);
+        }
+      }else{
+          _isChecked = List.from(context.read<FilterProvider>().getIsCheckedList!);
       }
-      debugPrint("list of bools >>>>> $_isChecked");
-    debugPrint("list of values >>>>> $valueList");
+   // });
+   //    debugPrint("list of bools >>>>> $_isChecked");
+   //  debugPrint("list of values >>>>> $valueList");
    }
 
   @override
@@ -50,7 +57,16 @@ class _FilterViewState extends State<FilterView> {
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
           onTap: (){
-            //_isChecked.clear();
+            context.read<FilterProvider>().setValue = null;
+            if(context.read<FilterProvider>().getIsCheckedList == null) {
+              setState(() {
+                for (int i = 0; i < widget.filterData.length; i++) {
+                  _isChecked[i] =
+                  List<bool>.filled(widget.filterData![i].options!.length, false);
+                }
+              });
+            }
+            valueList = List.filled(8, "", growable: true);
           },
           child: Align(
             alignment: Alignment.topRight,
@@ -62,8 +78,8 @@ class _FilterViewState extends State<FilterView> {
     }
 
     Widget bottomView(){
-      return Consumer<ProductProvider>(
-        builder: (_,val,child){
+      return Consumer2<ProductProvider,FilterProvider>(
+        builder: (_,val,valFilterPro,child){
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child:  AppButton(isTrailing: false,onTap: (){
@@ -78,8 +94,10 @@ class _FilterViewState extends State<FilterView> {
                 val.setBrand(valueList[5]);
                 val.setCountry(valueList[6]);
                 val.setStorageCapacity(valueList[7]);
+                valFilterPro.setValue = _isChecked;
                 //Navigator.popUntil(context, (route) => route.settings.name == Routes.productListing);
-              Navigator.popAndPushNamed(context, Routes.productListing);
+              //Navigator.popAndPushNamed(context, Routes.productListing);
+              Navigator.pop(context,true);
             }, text: "APPLY"),
           );
         },
@@ -97,7 +115,7 @@ class _FilterViewState extends State<FilterView> {
                 return CheckboxListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text(data[value.getFilterCatIndex].options![index].label.toString()),
-                    value: _isChecked[value.getFilterCatIndex][index], onChanged: (val){
+                    value:  _isChecked[value.getFilterCatIndex][index], onChanged: (val){
                        setState(() {
                          for (int i=0;i<data![value.getFilterCatIndex].options!.length;i++) {
                            _isChecked[value.getFilterCatIndex][i] = false;
@@ -130,7 +148,7 @@ class _FilterViewState extends State<FilterView> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(12),
-                child: Text(name),
+                child: Text(name,style: Theme.of(context).textTheme.bodyMedium!.copyWith(height: 1.2),),
               ),
               Divider(height: 0,)
             ],
@@ -168,10 +186,10 @@ class _FilterViewState extends State<FilterView> {
     );
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _isChecked.clear();
-  }
+  // @override
+  // void dispose() {
+  //   // TODO: implement dispose
+  //   super.dispose();
+  //   _isChecked.clear();
+  // }
 }

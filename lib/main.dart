@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:mobx/provider/auth/signUpProvider.dart';
 import 'package:mobx/provider/dashboard/address_provider.dart';
 import 'package:mobx/provider/dashboard/dashboard_provider.dart';
+import 'package:mobx/provider/dashboard/filter_provider.dart';
 import 'package:mobx/provider/dashboard/payment_provider.dart';
 import 'package:mobx/provider/dashboard/product_provider.dart';
 import 'package:mobx/provider/wishlist_profile/wishlist_provider.dart';
@@ -33,6 +34,7 @@ void main()async{
       ChangeNotifierProvider(create: (_) => SignUpProvider()),
       ChangeNotifierProvider(create: (_) => ProductProvider()),
       ChangeNotifierProvider(create: (_) => AddressProvider()),
+      ChangeNotifierProvider(create: (_) => FilterProvider()),
     ],
     child: GraphQLProvider(
       client: GraphQLClientAPI.client(),

@@ -7,6 +7,7 @@ import '../../../api/graphql_operation/customer_queries.dart';
 import '../../../common_widgets/globally_common/app_bar_common.dart';
 import '../../../model/product/filter_data_model.dart';
 import '../../../provider/dashboard/dashboard_provider.dart';
+import '../../../provider/dashboard/product_provider.dart';
 import '../../../utils/utilities.dart';
 import '../../auth/SignUpScreen.dart';
 
@@ -22,7 +23,10 @@ class FilterScreen extends StatelessWidget {
         padding: const EdgeInsets.only(left: 10),
         child: appBarTitle(context, "FILTER"),
       ), appbar: AppBar(), onTapCallback: (){},leadingImage: GestureDetector(
-          onTap: () => Navigator.pop(context),
+          onTap: () {
+            context.read<ProductProvider>().setFilterCatIndex(0);
+            Navigator.pop(context);
+           },
           child: Image.asset("assets/images/back_arrow.png"))),
       body:
       Query(

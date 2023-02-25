@@ -10,7 +10,7 @@ class ProductDetails2 extends StatelessWidget {
   ProductDetails2( this.dataItem,{Key? key}) : super(key: key);
 
   bool _checkbox = false;
-  List<String> titleForDetail = ["PRODUCT DESCRIPTION","TERMS AND CONDITIONS","FAQ"];
+  List<String> titleForDetail = ["PRODUCT DESCRIPTION",]; //"TERMS AND CONDITIONS","FAQ"
 
 
 Widget itemColumn(String txt1,String txt2,BuildContext context){
@@ -101,7 +101,7 @@ Widget itemColumn(String txt1,String txt2,BuildContext context){
             },
             shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: 3,
+              itemCount: 1,
               itemBuilder: (context,index){
                 List<String> descriptionData = [dataItem.description!.html.toString(),"Mobex is committed to deliver the best products to its "
                     "users for which we perform 65+ quality checks.","We have 100% refund policy If you change your"

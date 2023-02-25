@@ -5,6 +5,8 @@ import 'package:mobx/common_widgets/dashboard/horizontal_circle_brand_list.dart'
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/model/categories_model.dart';
 import 'package:mobx/provider/dashboard/dashboard_provider.dart';
+import 'package:mobx/provider/dashboard/filter_provider.dart';
+import 'package:mobx/provider/dashboard/product_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/constants/strings.dart';
 import '../../../api/graphql_operation/customer_queries.dart';
@@ -59,8 +61,8 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
           ],
         ),
         body:
-    Consumer<DashboardProvider>(
-      builder: (_,val,child){
+    Consumer2<DashboardProvider,FilterProvider>(
+      builder: (_,val,valProductProvider,child){
         return Query(
             options: QueryOptions(
                 document: gql(categories),
@@ -111,6 +113,7 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                                         val.setSubCategoryName(parsed.categories!.items![0].children![index].name!);
                                         val.setSubCategoryID(parsed.categories!.items![0].children![index].uid!);
                                         print("id for sub cate products >>>> ${parsed.categories!.items![0].children![index].uid}");
+                                        valProductProvider.setValue = null;
                                         Navigator.pushNamed(context, Routes.productListing);
                                       },
                                       child: HorizontalCircleBrandList(

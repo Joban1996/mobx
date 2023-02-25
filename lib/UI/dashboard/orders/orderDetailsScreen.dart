@@ -174,10 +174,10 @@ class OrderDetailsScreen extends StatelessWidget {
           detailView(context, "PAYMENT DETAILS", "Payment Mode: ${productItems[0].paymentMethods![0].name} ",
             "Transaction ID: 923222090909090",""),
           PriceView(context,productItems[0]),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: OutLineButtonWidget(text: "Download Invoice", onTap: (){}),
-          )
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: OutLineButtonWidget(text: "Download Invoice", onTap: (){}),
+          // )
         ],
       );})
     );

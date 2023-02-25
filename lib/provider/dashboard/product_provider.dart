@@ -1,21 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:mobx/model/categories_model.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
-import 'package:mobx/utils/constants/strings.dart';
-import 'package:mobx/utils/routes.dart';
-
 import '../../api/client_provider.dart';
 import '../../api/graphql_client.dart';
 import '../../api/graphql_operation/customer_queries.dart';
 import '../../api/graphql_operation/mutations.dart';
 import '../../utils/app.dart';
 import '../../utils/utilities.dart';
-
-
-
 
 
 
@@ -28,7 +19,6 @@ String _dropDownValue = "1";
 String _tokenExpireMsg = '';
 String userErrorMsg ="";
 int _filterCatIndex = 0;
-List<bool> _isChecked = [];
 String priceFrom = '';
 String priceTo = '';
 String colorFilter = '';
@@ -37,13 +27,13 @@ String osFilter = '';
 String brandFilter = '';
 String countryFilter = '';
 String storageCapacityFilter = '';
+List<dynamic> isCheckedList = [];
 
 int get getItemIndex => _itemIndex;
 String get getCartItemLength => _cartItemsLength;
 String get getDropDownValue => _dropDownValue;
 String get getTokenExpireMsg => _tokenExpireMsg;
 int get getFilterCatIndex => _filterCatIndex;
-List<bool> get getIsCheckedList => _isChecked;
 String get getPriceFrom => priceFrom;
 String get getPriceTo => priceTo;
 String get getManufacturerFilter => manufacturerFilter;
@@ -52,6 +42,7 @@ String get getBrandFilter => brandFilter;
 String get getCountryFilter => countryFilter;
 String get getStorageCapacityFilter => storageCapacityFilter;
 String get getColorFilter => colorFilter;
+List<dynamic> get getIsCheckedList => isCheckedList;
 
 
 setPrice(String val){
@@ -90,8 +81,8 @@ setStorageCapacity(String val){
   notifyListeners();
 }
 
-setIsCheckedList(List<bool> data){
-  _isChecked = data;
+setIsCheckedList(List<dynamic> data){
+  isCheckedList = data;
   notifyListeners();
 }
 
