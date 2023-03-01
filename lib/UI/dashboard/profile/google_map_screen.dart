@@ -17,8 +17,9 @@ import 'package:mobx/utils/utilities.dart';
 import 'package:provider/provider.dart';
 
 class GoogleMapScreen extends StatefulWidget {
-  const GoogleMapScreen({Key? key}) : super(key: key);
+   GoogleMapScreen({Key? key,this.isEdit}) : super(key: key);
 
+  bool? isEdit;
   @override
   State<GoogleMapScreen> createState() => _GoogleMapScreenState();
 }
@@ -217,9 +218,29 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                             val.setStateName(state);
                             val.hitGetRegionData().then((value) {
                             });
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=>
-                                AddAddressScreen(street: street,flatAddress: flatAddress, city: city, state: state, pinCode: pinCode,
-                                    country: country,isEdit: false,)));
+                            if(context.read<AddressProvider>().getFromWhere == "profile") {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      AddAddressScreen(street: street,
+                                        flatAddress: flatAddress,
+                                        city: city,
+                                        state: state,
+                                        pinCode: pinCode,
+                                        country: country,
+                                        addId: widget.isEdit == true ? int.parse(val.getAddressId) : 0,
+                                        isEdit: widget.isEdit!,)));
+                            }else{
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      AddAddressScreen(street: street,
+                                        flatAddress: flatAddress,
+                                        city: city,
+                                        state: state,
+                                        pinCode: pinCode,
+                                        country: country,
+                                        isEdit: false,)));
+                            }
+
                           }else{
                             Utility.showNormalMessage("Please select current location");
                           }
@@ -272,7 +293,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
     );
   }
 
-  Future<void> GetAddressFromLatLong(double latitude, double longitude
+  Future<void> getAddressFromLatLong(double latitude, double longitude
       ) async {
     if (kDebugMode) {
       print("inside the GetAddressFromLatLong");
@@ -327,7 +348,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
     //         )));
     debugPrint("current location >>>>$position");
     setState(() {
-      GetAddressFromLatLong(position.latitude,position.longitude);
+      getAddressFromLatLong(position.latitude,position.longitude);
     });
   }
 

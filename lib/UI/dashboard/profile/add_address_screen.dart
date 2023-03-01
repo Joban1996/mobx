@@ -174,12 +174,14 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           phonNumber: '1234567890', isBillingAddress: checkedValue).then((value){
         val1.setLoadingBool(false);
         if(value){
-          print("the value of added address is $value");
+          print("the value of added address is jj $value");
           Utility.showSuccessMessage("Address added!");
           // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>AddressesScreen()),
           //         (Route<dynamic>route) => false);
-          Navigator.pushNamed(context, Routes.address);
-        }
+          if(val2.getFromWhere == 'order') {
+            Navigator.pushNamed(context, Routes.address);
+          }else if(val2.getFromWhere == "profile"){
+            Navigator.pushNamed(context, Routes.dashboardScreen);        }}
         else{
           Utility.showSuccessMessage("Something went wrong!");
         }
@@ -207,7 +209,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         if(value){
           print("the value of added address is $value");
           Utility.showSuccessMessage("Address Updated!");
-          Navigator.pushReplacementNamed(context, Routes.profileAddressesScreen);
+          Navigator.pushNamed(context, Routes.dashboardScreen);
         }
         else{
           Utility.showSuccessMessage("Something went wrong!");

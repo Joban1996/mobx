@@ -120,6 +120,7 @@ class AddressesScreen extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(10,10,10,5),
                         child: AppButton(
                           onTap: () {
+                            context.read<AddressProvider>().setFromWhere("order");
                             Navigator.pushReplacementNamed(context, Routes.googleMapScreen);
                           },
                           text: Strings.addNewAddressButton,

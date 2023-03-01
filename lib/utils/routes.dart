@@ -148,7 +148,8 @@ static Route<dynamic> generatedRoute(RouteSettings settings){
             final argument = settings.arguments as String;
             return MaterialPageRoute(builder: (_) =>OrderDetailsScreen(number: argument));
           case googleMapScreen:
-            return MaterialPageRoute(builder: (_) => GoogleMapScreen());
+            final argument = settings.arguments as bool;
+            return MaterialPageRoute(builder: (_) => GoogleMapScreen(isEdit: argument,));
           case brandModelScreen:
             return MaterialPageRoute(builder: (_) => BrandModelScreen());
           case deviceInfoScreen:

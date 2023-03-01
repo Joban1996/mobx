@@ -59,10 +59,13 @@ class ProfileAddressesScreen extends StatelessWidget {
                               children: [
                                 IconButton(
                                     onPressed: () {
-                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context)=>
-                                          AddAddressScreen(street: data.street.toString(),flatAddress: data.street![0].toString(), city: data.city.toString(),
-                                              state: data.region!.region.toString(), pinCode: data.postcode.toString(),
-                                              country: "India",isEdit: true,fistName: name,lastName: lastName,addId: data.id!,)));
+                                      context.read<AddressProvider>().setFromWhere("profile");
+                                      context.read<AddressProvider>().setAddressId(data.id.toString());
+                                      Navigator.pushNamed(context, Routes.googleMapScreen,arguments: true);
+                                      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context)=>
+                                      //     AddAddressScreen(street: data.street.toString(),flatAddress: data.street![0].toString(), city: data.city.toString(),
+                                      //         state: data.region!.region.toString(), pinCode: data.postcode.toString(),
+                                      //         country: "India",isEdit: true,fistName: name,lastName: lastName,addId: data.id!,)));
                                     }, icon: Icon(Icons.edit,size: 20,)),
                                 IconButton(
                                     onPressed: () {
@@ -150,7 +153,6 @@ class ProfileAddressesScreen extends StatelessWidget {
                            itemBuilder: (context, index) {
                              var model = addressesList[index];
                              return addressWidget(
-
                                  context, "Home", "${model.street![0]!}, ${model.postcode}, ${model.city}, ${model.region!.region!},"
                                  " India.",model.id!,model.firstname.toString(),model.lastname.toString(),model);
                            }),
@@ -160,7 +162,8 @@ class ProfileAddressesScreen extends StatelessWidget {
                            alignment: Alignment.bottomCenter,
                            child: AppButton(
                              onTap: () {
-                               Navigator.pushNamed(context, Routes.googleMapScreen);
+                               context.read<AddressProvider>().setFromWhere("profile");
+                               Navigator.pushNamed(context, Routes.googleMapScreen,arguments: false);
                              },
                              text: Strings.addNewAddressButton,
                              isTrailing: false,

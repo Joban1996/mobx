@@ -224,8 +224,7 @@ var generateCartId =  '''query customerCart{
 ''';
 
 var cartList =  '''query cart(\$cart_id: String!){ 
-  cart(cart_id: \$cart_id) {
-    id
+    cart(cart_id: \$cart_id) {
     email
     billing_address {
       city
@@ -289,12 +288,9 @@ var cartList =  '''query cart(\$cart_id: String!){
       }
     }
     items {
-    uid
       id
       product {
-      uid
         name
-        brand
         sku
         small_image{
           url

@@ -173,14 +173,14 @@ Widget _column(BuildContext context,CartListModel data){
       CommonLoader(screenUI: Query(
           options:
           QueryOptions(
-              fetchPolicy: FetchPolicy.networkOnly,
+              fetchPolicy: FetchPolicy.noCache,
               document: gql(cartList), variables: {
             'cart_id': App.localStorage.getString(PREF_CART_ID)!
           }),
           builder: (QueryResult result,
               {VoidCallback? refetch, FetchMore? fetchMore}) {
             reFresh = refetch!;
-            debugPrint("cart exception get shopping cart >>> $result");
+            debugPrint("cart exception get shopping cart >>> ${result.data}");
             if (result.hasException) {
               if(result.exception!.graphqlErrors[0].extensions!['category'].toString() == "graphql-authorization"){
               WidgetsBinding.instance.addPostFrameCallback((_) {

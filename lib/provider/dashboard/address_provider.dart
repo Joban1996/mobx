@@ -13,8 +13,25 @@ import '../../utils/utilities.dart';
 class AddressProvider with ChangeNotifier {
   int selected = -1;
   int get getSelected => selected;
+  String fromWhere = '';
+  String addressIdEdit = '';
 
   late AddressModel addressDataParams;
+
+  String get getFromWhere => fromWhere;
+  String get getAddressId => addressIdEdit;
+
+
+  setFromWhere(String data){
+    fromWhere = data;
+    notifyListeners();
+  }
+
+  setAddressId(String data){
+    addressIdEdit = data;
+    notifyListeners();
+  }
+
 
   setAddressDataParmas(AddressModel val) {
     addressDataParams = val;
