@@ -53,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, Routes.accountInformation,arguments: ProfileNames("${profileData['firstname']}",
-                    "${profileData['lastname']}",profileData['gender']));},
+                    "${profileData['lastname']}",profileData['gender']??0));},
               child: Text("Edit",style: Theme.of(context).textTheme.caption!.copyWith(color: Utility.getColorFromHex(globalRedColor)),))
         ],
       ),

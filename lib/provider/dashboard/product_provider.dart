@@ -146,6 +146,7 @@ Future hitAddToCartMutation({required String cartId,required String skuId}) asyn
       .mutate(GraphQlClient.addToCart(queryMutation.addToCart(cartId,skuId),
       cartId,skuId));
   debugPrint(" add to cart mutation result >>> ${results.exception}");
+  debugPrint("add to cart >>>>>${results.context.entry<HttpLinkResponseContext>()?.statusCode}");
   if (results.data != null) {
     Utility.showSuccessMessage("Item added!");
     return true;

@@ -52,10 +52,11 @@ class PurchasedScreen extends StatelessWidget {
                 Navigator.pushNamed(context,Routes.orderDetails,arguments: productItems[index].number.toString());
               },
               child:
-              ItemInfoCommon(productName: productItems[index].items![0].productName!,
+              ItemInfoCommon(
+                price: productItems[index].total!.grandTotal!.value!.toString(),
                 status: productItems[index].status.toString(),orderDate: productItems[index].orderDate.toString(),
-                grandTotal: productItems[index].total!.grandTotal!.value.toString(),
-                number: productItems[index].number.toString(),)
+                grandTotal: [],
+                number: productItems[index].number.toString(), productName: const [],)
             );
           }
       ): const Center(child: Text("No Data Found.."));})

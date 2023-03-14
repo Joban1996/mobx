@@ -290,6 +290,7 @@ var cartList =  '''query cart(\$cart_id: String!){
     items {
       id
       product {
+      stock_status
         name
         sku
         small_image{
@@ -315,10 +316,6 @@ price_range {
       }
       }
       quantity
-      errors {
-        code
-        message
-      }
     }
     available_payment_methods {
       code
@@ -334,6 +331,13 @@ price_range {
     prices {
        subtotal_excluding_tax {
         value
+      }
+      applied_taxes
+      {
+        amount{
+          value
+        }
+        label
       }
       discounts {
         amount {
@@ -377,7 +381,7 @@ query {
 }
 ''';
 
-var getOrderDetail =  ''' 
+var   getOrderDetail =  ''' 
 query orders(\$filter: CustomerOrdersFilterInput){
   customer {
     orders(filter: \$filter) {

@@ -1,9 +1,9 @@
-class CartListModel {
+class CartOtherData {
   Cart? cart;
 
-  CartListModel({this.cart});
+  CartOtherData({this.cart});
 
-  CartListModel.fromJson(Map<String, dynamic> json) {
+  CartOtherData.fromJson(Map<String, dynamic> json) {
     cart = json['cart'] != null ? new Cart.fromJson(json['cart']) : null;
   }
 
@@ -20,17 +20,15 @@ class Cart {
   String? email;
   BillingAddress? billingAddress;
   List<ShippingAddresses>? shippingAddresses;
-  List<Items>? items;
   List<AvailablePaymentMethods>? availablePaymentMethods;
   AvailablePaymentMethods? selectedPaymentMethod;
-  List<AppliedCoupons>? appliedCoupons;
+  Null? appliedCoupons;
   Prices? prices;
 
   Cart(
       {this.email,
         this.billingAddress,
         this.shippingAddresses,
-        this.items,
         this.availablePaymentMethods,
         this.selectedPaymentMethod,
         this.appliedCoupons,
@@ -47,12 +45,6 @@ class Cart {
         shippingAddresses!.add(new ShippingAddresses.fromJson(v));
       });
     }
-    if (json['items'] != null) {
-      items = <Items>[];
-      json['items'].forEach((v) {
-          items!.add(Items.fromJson(v));
-      });
-    }
     if (json['available_payment_methods'] != null) {
       availablePaymentMethods = <AvailablePaymentMethods>[];
       json['available_payment_methods'].forEach((v) {
@@ -62,12 +54,7 @@ class Cart {
     selectedPaymentMethod = json['selected_payment_method'] != null
         ? new AvailablePaymentMethods.fromJson(json['selected_payment_method'])
         : null;
-    if (json['applied_coupons'] != null) {
-      appliedCoupons = <AppliedCoupons>[];
-      json['applied_coupons'].forEach((v) {
-        appliedCoupons!.add(new AppliedCoupons.fromJson(v));
-      });
-    }
+    appliedCoupons = json['applied_coupons'];
     prices =
     json['prices'] != null ? new Prices.fromJson(json['prices']) : null;
   }
@@ -75,13 +62,12 @@ class Cart {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['email'] = this.email;
-    data['billing_address'] = this.billingAddress;
+    if (this.billingAddress != null) {
+      data['billing_address'] = this.billingAddress!.toJson();
+    }
     if (this.shippingAddresses != null) {
       data['shipping_addresses'] =
           this.shippingAddresses!.map((v) => v.toJson()).toList();
-    }
-    if (this.items != null) {
-      data['items'] = this.items!.map((v) => v.toJson()).toList();
     }
     if (this.availablePaymentMethods != null) {
       data['available_payment_methods'] =
@@ -90,10 +76,7 @@ class Cart {
     if (this.selectedPaymentMethod != null) {
       data['selected_payment_method'] = this.selectedPaymentMethod!.toJson();
     }
-    if (this.appliedCoupons != null) {
-      data['applied_coupons'] =
-          this.appliedCoupons!.map((v) => v.toJson()).toList();
-    }
+    data['applied_coupons'] = this.appliedCoupons;
     if (this.prices != null) {
       data['prices'] = this.prices!.toJson();
     }
@@ -238,52 +221,16 @@ class ShippingAddresses {
   }
 }
 
-
-class AppliedCoupons {
-  String? code;
-
-  AppliedCoupons({this.code});
-
-  AppliedCoupons.fromJson(Map<String, dynamic> json) {
-    code = json['code'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['code'] = this.code;
-    return data;
-  }
-}
-
-class Region {
-  String? code;
-  String? label;
-
-  Region({this.code, this.label});
-
-  Region.fromJson(Map<String, dynamic> json) {
-    code = json['code'];
-    label = json['label'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['code'] = this.code;
-    data['label'] = this.label;
-    return data;
-  }
-}
-
 class AvailableShippingMethods {
-  Amount1? amount;
+  Amount? amount;
   bool? available;
   String? carrierCode;
   String? carrierTitle;
   String? errorMessage;
   String? methodCode;
   String? methodTitle;
-  Amount1? priceExclTax;
-  Amount1? priceInclTax;
+  Amount? priceExclTax;
+  Amount? priceInclTax;
 
   AvailableShippingMethods(
       {this.amount,
@@ -298,7 +245,7 @@ class AvailableShippingMethods {
 
   AvailableShippingMethods.fromJson(Map<String, dynamic> json) {
     amount =
-    json['amount'] != null ? new Amount1.fromJson(json['amount']) : null;
+    json['amount'] != null ? new Amount.fromJson(json['amount']) : null;
     available = json['available'];
     carrierCode = json['carrier_code'];
     carrierTitle = json['carrier_title'];
@@ -306,10 +253,10 @@ class AvailableShippingMethods {
     methodCode = json['method_code'];
     methodTitle = json['method_title'];
     priceExclTax = json['price_excl_tax'] != null
-        ? new Amount1.fromJson(json['price_excl_tax'])
+        ? new Amount.fromJson(json['price_excl_tax'])
         : null;
     priceInclTax = json['price_incl_tax'] != null
-        ? new Amount1.fromJson(json['price_incl_tax'])
+        ? new Amount.fromJson(json['price_incl_tax'])
         : null;
   }
 
@@ -334,13 +281,13 @@ class AvailableShippingMethods {
   }
 }
 
-class Amount1 {
+class Amount {
   String? currency;
-  num? value;
+  int? value;
 
-  Amount1({this.currency, this.value});
+  Amount({this.currency, this.value});
 
-  Amount1.fromJson(Map<String, dynamic> json) {
+  Amount.fromJson(Map<String, dynamic> json) {
     currency = json['currency'];
     value = json['value'];
   }
@@ -354,7 +301,7 @@ class Amount1 {
 }
 
 class SelectedShippingMethod {
-  Amount1? amount;
+  Amount? amount;
   String? carrierCode;
   String? carrierTitle;
   String? methodCode;
@@ -369,7 +316,7 @@ class SelectedShippingMethod {
 
   SelectedShippingMethod.fromJson(Map<String, dynamic> json) {
     amount =
-    json['amount'] != null ? new Amount1.fromJson(json['amount']) : null;
+    json['amount'] != null ? new Amount.fromJson(json['amount']) : null;
     carrierCode = json['carrier_code'];
     carrierTitle = json['carrier_title'];
     methodCode = json['method_code'];
@@ -385,159 +332,6 @@ class SelectedShippingMethod {
     data['carrier_title'] = this.carrierTitle;
     data['method_code'] = this.methodCode;
     data['method_title'] = this.methodTitle;
-    return data;
-  }
-}
-
-class Items {
-  String? id;
-  Product? product;
-  int? quantity;
-  Null? errors;
-
-  Items({this.id, this.product, this.quantity, this.errors});
-
-  Items.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    product =
-    json['product'] != null ? new Product.fromJson(json['product']) : null;
-    quantity = json['quantity'];
-    errors = json['errors'] ;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    if (this.product != null) {
-      data['product'] = this.product!.toJson();
-    }
-    data['quantity'] = this.quantity;
-    data['errors'] = this.errors;
-    return data;
-  }
-}
-
-class Product {
-  String? name;
-  String? sku;
-  SmallImage? smallImage;
-  PriceRange? priceRange;
-
-  Product({this.name, this.sku, this.smallImage, this.priceRange});
-
-  Product.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    sku = json['sku'];
-    smallImage = json['small_image'] != null
-        ? new SmallImage.fromJson(json['small_image'])
-        : null;
-    priceRange = json['price_range'] != null
-        ? new PriceRange.fromJson(json['price_range'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['sku'] = this.sku;
-    if (this.smallImage != null) {
-      data['small_image'] = this.smallImage!.toJson();
-    }
-    if (this.priceRange != null) {
-      data['price_range'] = this.priceRange!.toJson();
-    }
-    return data;
-  }
-}
-
-class SmallImage {
-  String? url;
-  String? label;
-
-  SmallImage({this.url, this.label});
-
-  SmallImage.fromJson(Map<String, dynamic> json) {
-    url = json['url'];
-    label = json['label'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['url'] = this.url;
-    data['label'] = this.label;
-    return data;
-  }
-}
-
-class PriceRange {
-  MinimumPrice? minimumPrice;
-
-  PriceRange({this.minimumPrice});
-
-  PriceRange.fromJson(Map<String, dynamic> json) {
-    minimumPrice = json['minimum_price'] != null
-        ? new MinimumPrice.fromJson(json['minimum_price'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.minimumPrice != null) {
-      data['minimum_price'] = this.minimumPrice!.toJson();
-    }
-    return data;
-  }
-}
-
-class MinimumPrice {
-  Amount1? regularPrice;
-  Amount1? finalPrice;
-  Discount? discount;
-
-  MinimumPrice({this.regularPrice, this.finalPrice, this.discount});
-
-  MinimumPrice.fromJson(Map<String, dynamic> json) {
-    regularPrice = json['regular_price'] != null
-        ? new Amount1.fromJson(json['regular_price'])
-        : null;
-    finalPrice = json['final_price'] != null
-        ? new Amount1.fromJson(json['final_price'])
-        : null;
-    discount = json['discount'] != null
-        ? new Discount.fromJson(json['discount'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.regularPrice != null) {
-      data['regular_price'] = this.regularPrice!.toJson();
-    }
-    if (this.finalPrice != null) {
-      data['final_price'] = this.finalPrice!.toJson();
-    }
-    if (this.discount != null) {
-      data['discount'] = this.discount!.toJson();
-    }
-    return data;
-  }
-}
-
-class Discount {
-  int? amountOff;
-  num? percentOff;
-
-  Discount({this.amountOff, this.percentOff});
-
-  Discount.fromJson(Map<String, dynamic> json) {
-    amountOff = json['amount_off'];
-    percentOff = json['percent_off'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['amount_off'] = this.amountOff;
-    data['percent_off'] = this.percentOff;
     return data;
   }
 }
@@ -564,7 +358,7 @@ class AvailablePaymentMethods {
 class Prices {
   SubtotalExcludingTax? subtotalExcludingTax;
   List<Discounts>? discounts;
-  Amount1? grandTotal;
+  Amount? grandTotal;
   List<AppliedTaxes>? appliedTaxes;
 
   Prices({this.subtotalExcludingTax, this.discounts, this.grandTotal,this.appliedTaxes});
@@ -586,7 +380,7 @@ class Prices {
       });
     }
     grandTotal = json['grand_total'] != null
-        ? new Amount1.fromJson(json['grand_total'])
+        ? new Amount.fromJson(json['grand_total'])
         : null;
   }
 
@@ -603,6 +397,7 @@ class Prices {
     return data;
   }
 }
+
 class Discounts {
   SubtotalExcludingTax? amount;
   String? label;
@@ -625,31 +420,6 @@ class Discounts {
     return data;
   }
 }
-
-//
-// class AppliedTaxes {
-//   List<AppliedTaxes>? appliedTaxes;
-//
-//   AppliedTaxes({this.appliedTaxes});
-//
-//   AppliedTaxes.fromJson(Map<String, dynamic> json) {
-//     if (json['applied_taxes'] != null) {
-//       appliedTaxes = <AppliedTaxes>[];
-//       json['applied_taxes'].forEach((v) {
-//         appliedTaxes!.add(new AppliedTaxes.fromJson(v));
-//       });
-//     }
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     if (this.appliedTaxes != null) {
-//       data['applied_taxes'] =
-//           this.appliedTaxes!.map((v) => v.toJson()).toList();
-//     }
-//     return data;
-//   }
-// }
 
 class AppliedTaxes {
   Amount2? amount;
@@ -688,8 +458,6 @@ class Amount2 {
     return data;
   }
 }
-
-
 
 class SubtotalExcludingTax {
   num? value;

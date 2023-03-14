@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-
-import '../../model/product/getOrdersModel.dart';
 import '../../utils/constants/constants_colors.dart';
 import '../../utils/utilities.dart';
 
 
 
 class ItemInfoCommon extends StatelessWidget {
-   const ItemInfoCommon({Key? key,required this.number,
-     required this.status,required this.productName,required this.grandTotal,required this.orderDate}) : super(key: key);
+   const ItemInfoCommon({Key? key,required this.number,this.price = '',
+     required this.status, required this.productName,required this.grandTotal,required this.orderDate}) : super(key: key);
    final String number;
    final String status;
-   final String productName;
-   final String grandTotal;
+   final List<String> productName;
+   final List<String> grandTotal;
+   final String price;
    final String orderDate;
    @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class ItemInfoCommon extends StatelessWidget {
                   ),
                   TextSpan(
                     text: number,
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 12),
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 12.5),
                   ),
                 ])),
                 RichText(text: TextSpan(children: [
@@ -56,10 +55,25 @@ class ItemInfoCommon extends StatelessWidget {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(productName,
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 13)),
-              const SizedBox(height: 5,),
-              Text("₹$grandTotal",style: Theme.of(context).textTheme.bodySmall,),
+              productName.isNotEmpty ? ListView.builder(
+                padding: EdgeInsets.only(top: 5),
+                shrinkWrap: true,
+                  itemCount: productName.length,
+                  itemBuilder: (context,index){
+                return _column(productName[index], grandTotal[index], context);
+              }): Container(),
+                const SizedBox(height: 5,),
+              productName.isEmpty ? RichText(text: TextSpan(children: [
+                TextSpan(
+                    text: "Price: ",
+                    style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 12.5)
+                ),
+                TextSpan(
+                  text: "₹$price",
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 12),
+                ),
+              ])) : Container(),
+              productName.isNotEmpty ? Container() : verticalSpacing(heightInDouble: 0.002, context: context) ,
               Text("${splitDate[2]}th ${getMonthName(splitDate[1])} ${splitDate[0]} / ${splitTime[0]}:${splitTime[1]} ",style: Theme.of(context).textTheme.bodySmall,),
             ],
           ),
@@ -67,6 +81,20 @@ class ItemInfoCommon extends StatelessWidget {
         dividerCommon(context),
       ],
     );
+  }
+
+  Widget _column(String name,String price,BuildContext context){
+     return Container(
+       padding: EdgeInsets.only(bottom: 7),
+       child: Column(
+         crossAxisAlignment: CrossAxisAlignment.start,
+         children: [
+           Text(name,style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 12)),
+           verticalSpacing(heightInDouble: 0.005, context: context),
+           Text("₹$price",style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 12),),
+         ],
+       ),
+     );
   }
   String getMonthName(String value){
     switch(int.parse(value)){

@@ -261,6 +261,7 @@ class Total {
   TotalTax? totalShipping;
   ShippingHandling? shippingHandling;
   List<Discounts>? discounts;
+  List<Taxes>? taxes;
 
   Total(
       {this.baseGrandTotal,
@@ -269,7 +270,7 @@ class Total {
         this.subtotal,
         this.totalShipping,
         this.shippingHandling,
-        this.discounts});
+        this.discounts,this.taxes});
 
   Total.fromJson(Map<String, dynamic> json) {
     baseGrandTotal = json['base_grand_total'] != null
@@ -294,6 +295,12 @@ class Total {
       discounts = <Discounts>[];
       json['discounts'].forEach((v) {
         discounts!.add(new Discounts.fromJson(v));
+      });
+    }
+    if (json['taxes'] != null) {
+      taxes = <Taxes>[];
+      json['taxes'].forEach((v) {
+        taxes!.add(new Taxes.fromJson(v));
       });
     }
   }
@@ -324,6 +331,52 @@ class Total {
     return data;
   }
 }
+
+class Taxes {
+  Amount? amount;
+  String? title;
+  int? rate;
+
+  Taxes({this.amount, this.title, this.rate});
+
+  Taxes.fromJson(Map<String, dynamic> json) {
+    amount =
+    json['amount'] != null ? new Amount.fromJson(json['amount']) : null;
+    title = json['title'];
+    rate = json['rate'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.amount != null) {
+      data['amount'] = this.amount!.toJson();
+    }
+    data['title'] = this.title;
+    data['rate'] = this.rate;
+    return data;
+  }
+}
+
+class Amount {
+  double? value;
+  String? currency;
+
+  Amount({this.value, this.currency});
+
+  Amount.fromJson(Map<String, dynamic> json) {
+    value = json['value'];
+    currency = json['currency'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['value'] = this.value;
+    data['currency'] = this.currency;
+    return data;
+  }
+}
+
+
 
 class BaseGrandTotal {
   num? value;

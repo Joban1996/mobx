@@ -348,7 +348,7 @@ last_name =
                                     print("dateOfBirth 393---- $dateOfBirth");
                                     print("counter $counter");
                                     var newCount = DateFormat('dd MMMM yyyy')
-                                        .format(DateTime.parse(dateOfBirth!));
+                                        .format(DateTime.parse(dateOfBirth??""));
                                     print("VAVAVVAVAVAV${dateOfBirth}");
                                     print("VAVAVVAVAVAV___SECOND $newCount");
                                     val2.setLoadingBool(true);

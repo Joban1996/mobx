@@ -88,7 +88,7 @@ class WishlistProvider with ChangeNotifier{
       if(results.data!['addWishlistItemsToCart']['status'] == false) {
         Utility.showSuccessMessage("${results.data!['addWishlistItemsToCart']['add_wishlist_items_to_cart_user_errors'][0]['message']}");
       }else{
-        Utility.showSuccessMessage("Product added to wishlist successfully");
+        Utility.showSuccessMessage("Product added to cart successfully");
       }
       return true;
     }else{

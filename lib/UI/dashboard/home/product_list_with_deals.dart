@@ -220,7 +220,6 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                                     childAspectRatio: getItemWidth(context) / getItemHeight(context) ,
                                     crossAxisSpacing: 1,
                                     crossAxisCount: 2,
-
                                   ),
                                   itemCount: parsedProductData.products!.items!.length,
                                   itemBuilder: (BuildContext context, int index) {

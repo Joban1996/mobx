@@ -84,8 +84,10 @@ class OrderDetailsScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText2,
           ),
           verticalSpacing(heightInDouble: 0.01, context: context),
-          _priceDesRow("Sub Total", data.total!.subtotal!.value.toString(), context, globalBlackColor),
-          _priceDesRow("Discount", data!.total!.discounts==null ?
+          _priceDesRow("Sub Total (Excluding Tax)", data.total!.subtotal!.value.toString(), context, globalBlackColor),
+          _priceDesRow(data.total!.taxes!.isNotEmpty ? "Taxes (${data.total!.taxes![0].title!})":"Taxes ",
+              data.total!.taxes!.isNotEmpty?'${data.total!.taxes![0].amount!.value}':'0', context, globalBlackColor),
+          _priceDesRow("Discount", data!.total!.discounts!.isNotEmpty ?
           "₹${data.total!.discounts![0].amount!.value}": "₹0", context, globalGreenColor),
           _priceDesRow("Delivery Fee", data.total!.shippingHandling!.amountIncludingTax!.value.toString(), context, globalBlackColor),
           dividerCommon(context),
@@ -161,18 +163,25 @@ class OrderDetailsScreen extends StatelessWidget {
     var parsed = OrderDetailModel.fromJson(result.data!);
     var productItems = parsed.customer!.orders!.items!;
     debugPrint("get orders data >>> ${result.data!}");
+    debugPrint("data items >>>> ${productItems[0].items!}");
+    List<String> names = [];
+    List<String> price = [];
+    for(int j = 0;j<productItems[0].items!.length;j++){
+      names.add(productItems[0].items![j].productName!);
+      price.add(productItems[0].items![j].productSalePrice!.value.toString());
+    }
     return
       ListView(
         children: [
-          ItemInfoCommon(productName: productItems[0].items![0].productName!,
+          ItemInfoCommon(productName: names,
             status: productItems[0].status.toString(),orderDate: productItems[0].orderDate.toString(),
-            grandTotal: productItems[0].total!.grandTotal!.value.toString(),
+            grandTotal: price,
             number: productItems[0].number.toString(),),
           detailView(context, "BASIC DETAIL", "${productItems[0].shippingAddress!.firstname!} ${productItems[0].shippingAddress!.lastname!}",
-              productItems[0].shippingAddress!.telephone??"9090909090 / john@example.com",""),
-          detailView(context, "SHIPPING ADDRESS", "2nd 3rd 4th  Floor, Shashwat Business Park,Opp. Soma Textiles,Rakhial, Ahmedabad – 380023, Gujarat, India.", "",""),
+              productItems[0].shippingAddress!.telephone??"- / john@example.com",""),
+          detailView(context, "SHIPPING ADDRESS", "${productItems[0].shippingAddress!.street![0]}, ${productItems[0].shippingAddress!.city!}, ${productItems[0].shippingAddress!.postcode!}", "",""),
           detailView(context, "PAYMENT DETAILS", "Payment Mode: ${productItems[0].paymentMethods![0].name} ",
-            "Transaction ID: 923222090909090",""),
+            "",""), //Transaction ID: 923222090909090
           PriceView(context,productItems[0]),
           // Padding(
           //   padding: const EdgeInsets.all(8.0),

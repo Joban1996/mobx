@@ -115,7 +115,9 @@ Map<String,dynamic> options(int amount,String name,String des,String contact,Str
         children: [
           Text("PRICE DETAILS ( ${data.cart!.items!.length} Items)",style: Theme.of(context).textTheme.bodyMedium,),
           verticalSpacing(heightInDouble: 0.01, context: context),
-          _priceDesRow("Sub Total", "₹${data.cart!.prices!.subtotalExcludingTax!.value}", context, globalBlackColor),
+          _priceDesRow("Sub Total (Excluding Tax)", "₹${data.cart!.prices!.subtotalExcludingTax!.value}", context, globalBlackColor),
+          _priceDesRow(data.cart!.prices!.appliedTaxes!.isNotEmpty ? "Taxes (${data.cart!.prices!.appliedTaxes![0].label})":"Taxes ",
+              data!.cart!.prices!.appliedTaxes!.isNotEmpty?'${data!.cart!.prices!.appliedTaxes![0].amount!.value}':'0', context, globalBlackColor),
           _priceDesRow("Discount", data.cart!.prices!.discounts!=null ?
           "₹${data.cart!.prices!.discounts![0].amount!.value}": "₹0", context, globalGreenColor),
           _priceDesRow("Delivery Fee", "₹0", context, globalBlackColor),

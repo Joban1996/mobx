@@ -3,6 +3,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/common_widgets/dashboard/app_bar_title.dart';
 import 'package:mobx/common_widgets/globally_common/common_loader.dart';
+import 'package:mobx/model/product/CartItemModel.dart';
+import 'package:mobx/model/product/CartOtherData.dart';
 import 'package:mobx/model/product/CartListModel.dart';
 import 'package:mobx/provider/auth/login_provider.dart';
 import 'package:mobx/provider/dashboard/product_provider.dart';
@@ -24,8 +26,10 @@ class ShoppingCart extends StatelessWidget {
    List<String> quantitySelect = ['1', '2', '3', '4','5','6','7','8','9','10'];
 
  late VoidCallback reFresh;
-Widget cartItemView(BuildContext context,Items productItems,int index,String cartId){
+ int count = 0;
+Widget cartItemView(BuildContext context,var result,int index,String cartId){
   //Items productItems = data.cart!.items![index];
+  var productItems = CartItemModel.fromJson(result);
   return Padding(
     padding: const EdgeInsets.fromLTRB(10,10,10,5),
     child: Row(
@@ -47,7 +51,8 @@ Widget cartItemView(BuildContext context,Items productItems,int index,String car
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Text(/*productItems.product!.brand??*/"APPLE",style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12,height: 1.3),),
+                productItems.product!.stockStatus == 'OUT_OF_STOCK' ? Text("OUT OF STOCK"??"",style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12,height: 1.3,color: Colors.red ),)
+                : Container(),
                 // SizedBox(height: 3,),
                 Text(productItems.product!.name??"Refurbished Apple iPhone 12 Mini White 128 GB",
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 13)),
@@ -126,15 +131,18 @@ Widget _priceDesRow(String title,String value,BuildContext context,var localColo
     ],
   );
 }
-Widget _column(BuildContext context,CartListModel data){
+Widget _column(BuildContext context,var result,int itemsLength){
+  var data = CartOtherData.fromJson(result);
   return Padding(
     padding: const EdgeInsets.all(10.0),
     child: Column(
       crossAxisAlignment:CrossAxisAlignment.start,
       children: [
-        Text("PRICE DETAILS ( ${data.cart!.items!.length} Items)",style: Theme.of(context).textTheme.bodyMedium,),
+        Text("PRICE DETAILS ( $itemsLength Items)",style: Theme.of(context).textTheme.bodyMedium,),
         verticalSpacing(heightInDouble: 0.01, context: context),
-        _priceDesRow("Sub Total", "₹${data.cart!.prices!.subtotalExcludingTax!.value}", context, globalBlackColor),
+        _priceDesRow("Sub Total (Excluding Tax)", "₹${data.cart!.prices!.subtotalExcludingTax!.value}", context, globalBlackColor),
+        _priceDesRow(data.cart!.prices!.appliedTaxes!.isNotEmpty ? "Taxes (${data.cart!.prices!.appliedTaxes![0].label})":"Taxes ",
+            data!.cart!.prices!.appliedTaxes!.isNotEmpty?'${data!.cart!.prices!.appliedTaxes![0].amount!.value}':'0', context, globalBlackColor),
         _priceDesRow("Discount", data.cart!.prices!.discounts!=null ?
         "₹${data.cart!.prices!.discounts![0].amount!.value}": "₹0", context, globalGreenColor),
         _priceDesRow("Delivery Fee", "₹0", context, globalBlackColor),
@@ -148,9 +156,12 @@ Widget _column(BuildContext context,CartListModel data){
         ),
         SizedBox(height: getCurrentScreenHeight(context)*0.03,),
         AppButton(onTap: (){
-            if(data.cart!.items!.isNotEmpty) {
+          if(count == 0){
+            if(itemsLength > 0) {
               Navigator.pushNamed(context, Routes.address);
-            }
+            }}else{
+            Utility.showErrorMessage("Please remove Out Of Stock items from checkout.");
+          }
         }, text: "SELECT ADDRESS")
       ],
     ),
@@ -174,13 +185,14 @@ Widget _column(BuildContext context,CartListModel data){
           options:
           QueryOptions(
               fetchPolicy: FetchPolicy.noCache,
-              document: gql(cartList), variables: {
-            'cart_id': App.localStorage.getString(PREF_CART_ID)!
-          }),
+                errorPolicy: ErrorPolicy.ignore,
+                document: gql(cartList), variables: {
+              'cart_id': App.localStorage.getString(PREF_CART_ID)!
+            }),
           builder: (QueryResult result,
               {VoidCallback? refetch, FetchMore? fetchMore}) {
             reFresh = refetch!;
-            debugPrint("cart exception get shopping cart >>> ${result.data}");
+            debugPrint("cart exception get shopping cart >>> ${result}");
             if (result.hasException) {
               if(result.exception!.graphqlErrors[0].extensions!['category'].toString() == "graphql-authorization"){
               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -192,11 +204,18 @@ Widget _column(BuildContext context,CartListModel data){
             if (result.isLoading) {
               return globalLoader();
             }
-            var parsed = CartListModel.fromJson(result.data!);
-            var productItems = parsed.cart!.items!;
-            debugPrint("cart list data >>> ${parsed.cart!.shippingAddresses}");
-            App.localStorage.setString(PREF_USER_EMAIL, parsed.cart!.email.toString());
+
+            //var parsed = CartItemList.fromJson(result.data!);
+            List<dynamic> dataList = result.data!['cart']['items'];
+            dataList.removeWhere((element) => element == null);
+            App.localStorage.setString(PREF_USER_EMAIL, result.data!['cart']['email'].toString());
+            for(int i = 0;i<dataList.length;i++){
+              if(dataList[i]['product']['stock_status'] == "OUT_OF_STOCK"){
+                count++;
+              }
+            }
             return
+                // Container();
               SingleChildScrollView(
                 child: Container(
                   color: Colors.white.withOpacity(0.8),
@@ -207,15 +226,15 @@ Widget _column(BuildContext context,CartListModel data){
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           separatorBuilder: (context,index){return const Divider();},
-                          itemCount: productItems.length,
+                          itemCount: dataList.length,
                           itemBuilder: (context,index){
-                            return cartItemView(context,productItems[index],index,App.localStorage.getString(PREF_CART_ID).toString());
+                            return cartItemView(context,dataList[index],index,App.localStorage.getString(PREF_CART_ID).toString());
                           }),
                       dividerCommon(context),
                       ItemInfoArrowForward(onTap: (){}, title: "EMI OPTION", description: "3 interest-free payments of ₹ 15500 with"),
                       dividerCommon(context),
                       ItemInfoArrowForward(
-                          trailingIcon: parsed.cart!.appliedCoupons!=null ?
+                          trailingIcon: result.data!['cart']['applied_coupons']!=null ?
                           Consumer2<LoginProvider,ProductProvider>(
                             builder: (_,val,val1,child){
                               return GestureDetector(
@@ -238,8 +257,8 @@ Widget _column(BuildContext context,CartListModel data){
                                   reFresh.call()
                                 }
                               });
-                      }, title: "COUPONS", description: parsed.cart!.appliedCoupons!=null ?
-                      "Applied coupon: ${parsed.cart!.appliedCoupons![0].code!}" : "Apply coupons"),
+                      }, title: "COUPONS", description: result.data!['cart']['applied_coupons']!=null ?
+                      "Applied coupon: ${result.data!['cart']['applied_coupons']![0]['code']}" : "Apply coupons"),
                       dividerCommon(context),
                       // ItemInfoArrowForward(onTap: (){
                       //   Navigator.pushNamed(context, Routes.address).then((value) {
@@ -249,11 +268,12 @@ Widget _column(BuildContext context,CartListModel data){
                       //     ? parsed.cart!.shippingAddresses![0].street![0].toString() + parsed.cart!.shippingAddresses![0].city.toString()+parsed.cart!.shippingAddresses![0].region!.label.toString()
                       //     : "Click here to add address"),
                       dividerCommon(context),
-                      _column(context,parsed)
+                      _column(context,result.data!,dataList.length,)
                     ],
                   ),
                 ),
-              );}))
+              );
+          }))
     );
   }
 }
