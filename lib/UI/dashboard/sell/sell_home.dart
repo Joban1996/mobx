@@ -34,23 +34,25 @@ class SellHome extends StatelessWidget {
         //       onTap: () => Navigator.pop(context),
         //       child: Image.asset("assets/images/back_arrow.png")),
         // ),
-        body: GridView.builder(
-            gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: 0.9,
-              crossAxisSpacing: 16.0,
-              crossAxisCount: 3,
-            ),
-            padding: EdgeInsets.all(16.0),
-            itemCount: brandList.length,
-            itemBuilder: (BuildContext context, int index) {
-              var model=brandList[index];
-              return BrandGridView(brandImage: model['image'], brandName: model['title'],
-                callback: () {
-                  Navigator.pushNamed(context, Routes.brandModelScreen);
-              },);
-            }
-        ),
+        body:
+         Container(child:  const Center(child: Text("This feature is coming soon."),),)
+        // GridView.builder(
+        //     gridDelegate:
+        //     const SliverGridDelegateWithFixedCrossAxisCount(
+        //       childAspectRatio: 0.9,
+        //       crossAxisSpacing: 16.0,
+        //       crossAxisCount: 3,
+        //     ),
+        //     padding: EdgeInsets.all(16.0),
+        //     itemCount: brandList.length,
+        //     itemBuilder: (BuildContext context, int index) {
+        //       var model=brandList[index];
+        //       return BrandGridView(brandImage: model['image'], brandName: model['title'],
+        //         callback: () {
+        //           Navigator.pushNamed(context, Routes.brandModelScreen);
+        //       },);
+        //     }
+        // ),
     );
   }
 }

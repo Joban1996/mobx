@@ -6,7 +6,6 @@ import 'package:mobx/common_widgets/globally_common/app_bar_common.dart';
 import 'package:mobx/model/categories_model.dart';
 import 'package:mobx/provider/dashboard/dashboard_provider.dart';
 import 'package:mobx/provider/dashboard/filter_provider.dart';
-import 'package:mobx/provider/dashboard/product_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/constants/strings.dart';
 import '../../../api/graphql_operation/customer_queries.dart';
@@ -25,12 +24,7 @@ class ProductListWithDeals extends StatefulWidget {
 
 class _ProductListWithDealsState extends State<ProductListWithDeals> {
 
-  final PageController _pageController = PageController(
-    initialPage: 0,
-    viewportFraction: 0.7,
-  );
   List<String> split = [];
-  int _activePage = 0; // will hold current active page index value
 
 
   @override
@@ -112,7 +106,7 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                                         val.setInnerPath(split);
                                         val.setSubCategoryName(parsed.categories!.items![0].children![index].name!);
                                         val.setSubCategoryID(parsed.categories!.items![0].children![index].uid!);
-                                        print("id for sub cate products >>>> ${parsed.categories!.items![0].children![index].uid}");
+                                        debugPrint("id for sub cate products >>>> ${parsed.categories!.items![0].children![index].uid}");
                                         valProductProvider.setValue = null;
                                         Navigator.pushNamed(context, Routes.productListing);
                                       },
@@ -178,8 +172,8 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                                     return  GridItem(
                                       itemWidth: 3,
                                       itemHeight: 4.5,
-                                      skuID: parsedProductData!.products!.items![index].sku!,
-                                      productData: parsedProductData!.products!.items![index],
+                                      skuID: parsedProductData.products!.items![index].sku!,
+                                      productData: parsedProductData.products!.items![index],
                                     );
                                   }),
                             );
@@ -215,7 +209,7 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                             return
                               GridView.builder(
                                   shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
                                     childAspectRatio: getItemWidth(context) / getItemHeight(context) ,
                                     crossAxisSpacing: 1,
@@ -228,7 +222,7 @@ class _ProductListWithDealsState extends State<ProductListWithDeals> {
                                         child: GridItem(
                                           itemWidth: 2,
                                           itemHeight: 4.5,
-                                          skuID: parsedProductData!.products!.items![index].sku!,
+                                          skuID: parsedProductData.products!.items![index].sku!,
                                           productData: parsedProductData.products!.items![index],));
                                   }
                               );}),

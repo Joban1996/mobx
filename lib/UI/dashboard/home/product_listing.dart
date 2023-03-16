@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:mobx/common_widgets/dashboard/filter_view.dart';
 import 'package:mobx/common_widgets/dashboard/grid_Item.dart';
 import 'package:mobx/common_widgets/dashboard/horizontal_circle_brand_list.dart';
 import 'package:mobx/provider/dashboard/product_provider.dart';
@@ -101,7 +100,7 @@ class ProductListing extends StatelessWidget {
                         : Container(
                       alignment: Alignment.centerLeft,
                       height: getCurrentScreenHeight(context)/7,
-                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                       child: ListView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
@@ -138,9 +137,9 @@ class ProductListing extends StatelessWidget {
     }
     ),
     builder: (QueryResult result, { VoidCallback? refetch, FetchMore? fetchMore }) {
-      //reFetchData = refetch;
+
     if (result.hasException) {
-    return Text(result.exception.toString());
+    return Text(result.exception!.graphqlErrors.toString());
     }
 
     if (result.isLoading) {
@@ -159,13 +158,13 @@ class ProductListing extends StatelessWidget {
                               crossAxisSpacing: 1,
                               crossAxisCount: 2,
                             ),
-                            itemCount: subCateProductData!.products!.items!.length,
+                            itemCount: subCateProductData.products!.items!.length,
                             itemBuilder: (BuildContext context, int index) {
                               return GridItem(
                                 itemWidth: 2,
                                 itemHeight: 4.5,
-                                skuID: subCateProductData!.products!.items![index].sku!,
-                                productData: subCateProductData!.products!.items![index],);
+                                skuID: subCateProductData.products!.items![index].sku!,
+                                productData: subCateProductData.products!.items![index],);
                             }
                             ),
                       ),

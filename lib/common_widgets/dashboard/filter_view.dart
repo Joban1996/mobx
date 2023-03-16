@@ -47,8 +47,8 @@ class _FilterViewState extends State<FilterView> {
 
   @override
   Widget build(BuildContext context) {
-    Widget topView(){
-      return Padding(
+    Widget topView(List<Aggregations>? data){
+      return data!.isNotEmpty ? Padding(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
           onTap: (){
@@ -69,13 +69,13 @@ class _FilterViewState extends State<FilterView> {
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Utility.getColorFromHex(globalOrangeColor))),
           ),
         )
-      );
+      ): Container();
     }
 
-    Widget bottomView(){
+    Widget bottomView(List<Aggregations>? data){
       return Consumer2<ProductProvider,FilterProvider>(
         builder: (_,val,valFilterPro,child){
-          return Padding(
+          return data!.isNotEmpty ? Padding(
             padding: const EdgeInsets.all(8.0),
             child:  AppButton(isTrailing: false,onTap: (){
                   List<String> priceValue = valueList[0].toString().split('_');
@@ -94,7 +94,7 @@ class _FilterViewState extends State<FilterView> {
               //Navigator.popAndPushNamed(context, Routes.productListing);
               Navigator.pop(context,true);
             }, text: "APPLY"),
-          );
+          ): Container();
         },
       );
     }
@@ -102,7 +102,8 @@ class _FilterViewState extends State<FilterView> {
 
       return Consumer<ProductProvider>(
         builder: (_,value,child){
-          return ListView.builder(
+          return data!.isNotEmpty ? ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.only(left: 6),
               shrinkWrap: true,
               itemCount: data![value.getFilterCatIndex].options!.length,
@@ -120,7 +121,7 @@ class _FilterViewState extends State<FilterView> {
                          valueList[value.getFilterCatIndex] = data![value.getFilterCatIndex].options![index].value.toString();
                        });
                 });
-              });
+              }): Container(padding: const EdgeInsets.only(top: 10),child: const Text("No Data Found.."),);
         },
       );
     }
@@ -171,14 +172,16 @@ class _FilterViewState extends State<FilterView> {
     }
 
     return
-   Column(
-        children: [
-          topView(),
-          const Divider(height: 0,),
-          middleView(widget.filterData),
-          bottomView()
-        ],
-    );
+   SingleChildScrollView(
+     child: Column(
+          children: [
+            topView(widget.filterData),
+            const Divider(height: 0,),
+            middleView(widget.filterData),
+            bottomView(widget.filterData)
+          ],
+      ),
+   );
   }
 
   // @override

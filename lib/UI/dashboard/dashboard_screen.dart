@@ -136,8 +136,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             selectedItemColor: Colors.amber[800],
             onTap: (int index) {
               val.setTabIndex(index);
-            },
 
+            },
             unselectedItemColor: Utility.getColorFromHex(globalBlackColor),
             showUnselectedLabels: true,
           );

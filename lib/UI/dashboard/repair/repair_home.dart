@@ -13,7 +13,7 @@ class RepairHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-        body: Center(child: Text("repair screen"),));
+    return  const Scaffold(
+        body:  Center(child: Text("This feature is coming soon."),));
   }
 }
