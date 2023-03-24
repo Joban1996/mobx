@@ -32,14 +32,7 @@ class ProductListing extends StatelessWidget {
         leadingImage: GestureDetector(
             onTap: () {
               context.read<DashboardProvider>().setSubCategoryName(Strings.refurbished_mobiles);
-              context.read<ProductProvider>().setPrice("");
-              context.read<ProductProvider>().setPriceTo("");
-              context.read<ProductProvider>().setOs("");
-              context.read<ProductProvider>().setBrand("");
-              context.read<ProductProvider>().setManufacturer("");
-              context.read<ProductProvider>().setColor("");
-              context.read<ProductProvider>().setCountry("");
-              context.read<ProductProvider>().setStorageCapacity("");
+              context.read<ProductProvider>().setFilterAttributes({});
               Navigator.pop(context);
             },
             child: Image.asset("assets/images/back_arrow.png")),
@@ -94,45 +87,56 @@ class ProductListing extends StatelessWidget {
             return Stack(
               alignment: Alignment.bottomCenter,
               children: [
-                Column(
-                  children: [
-                    parsed.categories!.items!.isEmpty ? const Text("No Data Found..") : parsed.categories!.items![0].children!.isEmpty ? Container()
-                        : Container(
-                      alignment: Alignment.centerLeft,
-                      height: getCurrentScreenHeight(context)/7,
-                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount:
-                              parsed.categories!.items![0].children!.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                context.read<DashboardProvider>().setInnerSubCateId(parsed.categories!.items![0].children![index].uid!);
-                              },
-                              child: HorizontalCircleBrandList(
-                                  brandImage: parsed.categories!.items![0].children![index].image.toString(),
-                                  brandName: parsed
-                                      .categories!.items![0].children![index].name!,
-                                  colorName: Colors.grey),
-                            );
-                          }),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: ListView(
+                    children: [
+                      parsed.categories!.items!.isEmpty ? const Text("No Data Found..") : parsed.categories!.items![0].children!.isEmpty ? Container()
+                          : Container(
+                        // alignment: Alignment.topLeft,
+                        // height: MediaQuery.of(context).size.height * 0.16,
+                        // padding:EdgeInsets.only(
+                        //   left: MediaQuery.of(context).size.width * 0.02,
+                        //   right: MediaQuery.of(context).size.width * 0.02,
+                        // ),
+                        // child: ListView.builder(
+                        //     shrinkWrap: true,
+                        //     scrollDirection: Axis.horizontal,
+                        //     itemCount:
+                        //         parsed.categories!.items![0].children!.length,
+                        //     itemBuilder: (context, index) {
+                        //       return Column(
+                        //         children: [
+                        //           GestureDetector(
+                        //             onTap: () {
+                        //               context.read<DashboardProvider>().setInnerSubCateId(parsed.categories!.items![0].children![index].uid!);
+                        //             },
+                        //             child: HorizontalCircleBrandList(
+                        //                 brandImage: parsed.categories!.items![0].children![index].image.toString(),
+                        //                 brandName: parsed
+                        //                     .categories!.items![0].children![index].name!,
+                        //                 colorName: Colors.grey),
+                        //           ),
+                        //           verticalSpacing(heightInDouble: 0.01, context: context),
+                        //         ],
+                        //       );
+                        //     }),
+                      ),
     Query(
     options: QueryOptions(
     fetchPolicy: FetchPolicy.noCache,
     document: gql(products),
     variables:  {
-    'filter':{
-    'category_uid': {'eq': context.read<DashboardProvider>().getSubCategoryID},
-      'price':   {'from': context.read<ProductProvider>().getPriceFrom, 'to' : context.read<ProductProvider>().getPriceTo},
-      'color':  {'eq': context.read<ProductProvider>().getColorFilter},
-      'manufacturer':{'eq': context.read<ProductProvider>().getManufacturerFilter},
-      'os':{'eq': context.read<ProductProvider>().getOsFilter},
-      'brand':{'eq': context.read<ProductProvider>().getBrandFilter},
-      'country_of_origin':{'eq': context.read<ProductProvider>().getCountryFilter},
-      'memory_storage_capacity':{'eq': context.read<ProductProvider>().getStorageCapacityFilter},
+    'filter': context.read<ProductProvider>().getFilterAttributes.isNotEmpty ? context.read<ProductProvider>().getFilterAttributes:{
+
+    'category_uid':  {'eq': context.read<DashboardProvider>().getSubCategoryID},
+      // 'price':   {'from': context.read<ProductProvider>().getPriceFrom, 'to' : context.read<ProductProvider>().getPriceTo},
+      // 'color':  {'eq': context.read<ProductProvider>().getColorFilter},
+      // 'manufacturer':{'eq': context.read<ProductProvider>().getManufacturerFilter},
+      // //'os':{'eq': context.read<ProductProvider>().getOsFilter},
+      // 'brand':{'eq': context.read<ProductProvider>().getBrandFilter},
+      // //'country_of_origin':{'eq': context.read<ProductProvider>().getCountryFilter},
+      // 'memory_storage_capacity':{'eq': context.read<ProductProvider>().getStorageCapacityFilter},
     }
     }
     ),
@@ -147,11 +151,12 @@ class ProductListing extends StatelessWidget {
     }
     var subCateProductData = pro.ProductModel.fromJson(result.data!);
     return
-                    Expanded(
-                      child: MediaQuery.removePadding(
+                      MediaQuery.removePadding(
                         context: context,
                         removeTop: true,
                         child: GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
                             gridDelegate:
                                  SliverGridDelegateWithFixedCrossAxisCount(
                                   childAspectRatio: getItemWidth(context) / getItemHeight(context) ,
@@ -167,9 +172,9 @@ class ProductListing extends StatelessWidget {
                                 productData: subCateProductData.products!.items![index],);
                             }
                             ),
-                      ),
-                    );})
-                  ],
+                      );})
+                    ],
+                  ),
                 ),
                 // GestureDetector(
                 //     onTap: (){showModalBottomSheet(

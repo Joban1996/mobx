@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mobx/common_widgets/globally_common/app_button.dart';
 import 'package:mobx/model/product/filter_data_model.dart';
@@ -6,6 +8,8 @@ import 'package:mobx/provider/dashboard/product_provider.dart';
 import 'package:mobx/utils/constants/constants_colors.dart';
 import 'package:mobx/utils/utilities.dart';
 import 'package:provider/provider.dart';
+
+import '../../provider/dashboard/dashboard_provider.dart';
 
 
 
@@ -22,6 +26,7 @@ class _FilterViewState extends State<FilterView> {
 
   List _isChecked = [];
   Map<String,dynamic>  dataValue = {};
+  Map<String,dynamic>  dataValueInternal = {};
   List<String> valueList = [];
 
 
@@ -78,20 +83,13 @@ class _FilterViewState extends State<FilterView> {
           return data!.isNotEmpty ? Padding(
             padding: const EdgeInsets.all(8.0),
             child:  AppButton(isTrailing: false,onTap: (){
-                  List<String> priceValue = valueList[0].toString().split('_');
-                  if(priceValue.length ==2){
-                    val.setPrice(priceValue[0]);
-                    val.setPriceTo(priceValue[1]);
-                  }
-                val.setManufacturer(valueList[2]);
-                val.setColor(valueList[3]);
-                val.setOs(valueList[4]);
-                val.setBrand(valueList[5]);
-                val.setCountry(valueList[6]);
-                val.setStorageCapacity(valueList[7]);
+
+                dataValue['category_uid']={'eq': context.read<DashboardProvider>().getSubCategoryID};
+                val.setFilterAttributes(dataValue);
                 valFilterPro.setValue = _isChecked;
-                //Navigator.popUntil(context, (route) => route.settings.name == Routes.productListing);
-              //Navigator.popAndPushNamed(context, Routes.productListing);
+
+                
+
               Navigator.pop(context,true);
             }, text: "APPLY"),
           ): Container();
@@ -108,6 +106,7 @@ class _FilterViewState extends State<FilterView> {
               shrinkWrap: true,
               itemCount: data![value.getFilterCatIndex].options!.length,
               itemBuilder: (context,index){
+              //debugPrint("data for options >>>>>>>++++++${data![value.getFilterCatIndex].options![index].value}");
                 return CheckboxListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text(data[value.getFilterCatIndex].options![index].label.toString()),
@@ -119,7 +118,20 @@ class _FilterViewState extends State<FilterView> {
                          }
                          _isChecked[value.getFilterCatIndex][index] = val!;
                          valueList[value.getFilterCatIndex] = data![value.getFilterCatIndex].options![index].value.toString();
-                       });
+                         if(data![value.getFilterCatIndex].attributeCode.toString() == 'price'){
+                           List<String> priceValue = data![value.getFilterCatIndex]
+                               .options![index].value.toString().split('_');
+                           dataValue[data![value.getFilterCatIndex]
+                               .attributeCode.toString()] = {'from': priceValue[0].toString(),'to': priceValue[1].toString()
+                           };
+                         }else {
+                           dataValue[data![value.getFilterCatIndex]
+                               .attributeCode.toString()] = {
+                             'eq': data![value.getFilterCatIndex]
+                                 .options![index].value.toString()
+                           };
+                         }
+                         });
                 });
               }): Container(padding: const EdgeInsets.only(top: 10),child: const Text("No Data Found.."),);
         },
@@ -133,7 +145,7 @@ class _FilterViewState extends State<FilterView> {
       return  GestureDetector(
         onTap: (){
           context.read<ProductProvider>().setFilterCatIndex(index);
-          debugPrint("list of bools >>>>> $_isChecked");
+          debugPrint("map values >>>>> $dataValue");
           debugPrint("list of values >>>>> $valueList");
         },
         child: Container(

@@ -78,7 +78,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 Map<String,dynamic> options(int amount,String name,String des,String contact,String email){
   return  {
-    'key': 'rzp_test_S3h5y6fLfZ28tI',
+    'key': 'rzp_live_y02vKyCf902gyj',
     'order_id': App.localStorage.getString(PREF_ORDER_ID).toString(),
     'amount': amount*100,
     'name': 'Mobex',

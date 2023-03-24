@@ -28,6 +28,7 @@ String brandFilter = '';
 String countryFilter = '';
 String storageCapacityFilter = '';
 List<dynamic> isCheckedList = [];
+Map<String,dynamic> filterAttributes = {};
 
 int get getItemIndex => _itemIndex;
 String get getCartItemLength => _cartItemsLength;
@@ -43,6 +44,12 @@ String get getCountryFilter => countryFilter;
 String get getStorageCapacityFilter => storageCapacityFilter;
 String get getColorFilter => colorFilter;
 List<dynamic> get getIsCheckedList => isCheckedList;
+Map<String,dynamic> get getFilterAttributes => filterAttributes;
+
+setFilterAttributes(Map<String,dynamic> val){
+  filterAttributes = val;
+  notifyListeners();
+}
 
 
 setPrice(String val){
